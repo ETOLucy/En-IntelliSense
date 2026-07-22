@@ -2,7 +2,7 @@
 
 Context-aware English writing assistance for learners. En-IntelliSense infers the writer's intent from the whole draft, provides word/phrase/sentence completion, reviews problems in context, highlights exact source text, and offers one-click repairs with bilingual explanations.
 
-Permanent public demo: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+Live demo: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
 
 Docs: **English** | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
 
@@ -34,6 +34,16 @@ For letters and emails, the finished draft carries the recipient, subject, and b
 - Letter, essay, and message formats with local draft persistence.
 - Finish a letter in QQ Mail, 163 Mail, Gmail, or a custom webmail compose URL with recipient, subject, and body carried over.
 - Keep completed documents in a local Finished archive and reopen any item as an editable copy.
+
+## Demo model, quota, and privacy
+
+The public demo currently uses Cloudflare Workers AI with `@cf/meta/llama-3.1-8b-instruct-fp8`. Cloudflare's free allocation is currently [10,000 Neurons per day](https://developers.cloudflare.com/workers-ai/platform/pricing/), reset at `00:00 UTC`. This allocation is shared by the Cloudflare account and therefore by all demo visitors; other Workers AI applications in the same account can consume it too. Neurons do not map to a fixed number of essays because usage depends on the model and the amount of input and output text.
+
+Please use the shared AI features considerately: prefer local word completion, wait for an automatic review to finish, and avoid repeatedly running Review, Polish, or Chat on unchanged text. Developers and regular users should deploy their own instance or configure their own compatible model provider.
+
+Drafts, finished documents, and custom webmail settings are stored only in the browser's `localStorage`; the application has no account system or server-side draft database. Visitors using different devices, browsers, or browser profiles cannot see one another's local drafts. People sharing the same browser profile also share that profile's site storage, so use separate browser profiles on a shared computer or clear the site's local data afterward.
+
+AI-powered actions send the relevant draft text to the configured model service for processing. The application does not persist those requests, and API responses use `Cache-Control: no-store`, but the public demo should not be used for confidential or sensitive writing.
 
 ## Configure
 
@@ -86,7 +96,7 @@ An EdgeOne Pages production deployment is also available for personal use and ma
 
 To deploy your own copy, import this GitHub repository into EdgeOne Pages, use `main` as the production branch, and leave the build command empty. The checked-in `edgeone.json` publishes `public/` and deploys the Node Functions under `node-functions/`. Those functions forward `/api/*` to the Cloudflare Worker, so no model API key is stored in EdgeOne.
 
-A permanent public EdgeOne address requires a custom domain. Mainland China acceleration also requires that custom domain to have a valid ICP filing. Until then, use the permanent Cloudflare demo above for public access.
+A stable public EdgeOne address requires a custom domain. Mainland China acceleration also requires that custom domain to have a valid ICP filing. Until then, use the Cloudflare demo above for public access. EdgeOne forwards AI requests to that same Cloudflare Worker, so both addresses use the same model and shared quota.
 
 ## Friendly Links
 

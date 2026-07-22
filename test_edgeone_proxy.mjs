@@ -29,6 +29,7 @@ assert.equal(capturedOptions.headers.get('x-en-intellisense-gateway'), 'edgeone'
 assert.deepEqual(JSON.parse(Buffer.from(capturedOptions.body).toString()), { text: 'This is imp', mode: 'word' });
 assert.equal(response.status, 200);
 assert.equal(response.headers.get('content-type'), 'application/json');
+assert.equal(response.headers.get('cache-control'), 'no-store');
 assert.equal(response.headers.get('content-encoding'), null);
 assert.equal(response.headers.get('x-en-intellisense-origin'), 'edgeone');
 assert.deepEqual(await response.json(), { suggestion: 'ortant', kind: 'word' });

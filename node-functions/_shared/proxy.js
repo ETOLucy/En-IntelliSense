@@ -45,6 +45,7 @@ export async function proxyApiRequest(context, fetchImpl = fetch) {
       const value = upstream.headers.get(name);
       if (value) responseHeaders.set(name, value);
     }
+    responseHeaders.set('cache-control', 'no-store');
     responseHeaders.set('x-en-intellisense-origin', 'edgeone');
     let responseBody = upstream.body;
     if (upstream.ok && requestBody && ['/api/complete', '/api/complete-stream'].includes(incomingUrl.pathname)) {

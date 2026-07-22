@@ -2,7 +2,7 @@
 
 面向英语学习者的上下文智能写作工具。它会结合整篇草稿推断用户想表达的意思，提供单词、短语和句子补全，并检查语法、清晰度、措辞、重复和语气问题。
 
-永久公开演示：[en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+在线演示：[en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
 
 文档：[English](README.md) | **简体中文** | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
 
@@ -33,6 +33,16 @@
 - 支持书信、作文和消息格式，草稿保存在本地浏览器。
 - 完成书信后可选择 QQ 邮箱、163 邮箱、Gmail 或自定义邮箱，并带入收件人、主题和正文；QQ/163 同时自动复制完整邮件作为兜底。
 - 已完成文档保存在本地 Finished 列表中，可重新创建编辑副本。
+
+## 演示模型、额度与隐私
+
+公开演示目前通过 Cloudflare Workers AI 使用 `@cf/meta/llama-3.1-8b-instruct-fp8`。Cloudflare 免费账户目前每天提供 [10,000 Neurons](https://developers.cloudflare.com/workers-ai/platform/pricing/)，在 `00:00 UTC`（北京时间 08:00）重置。该额度由整个 Cloudflare 账户共享，因此所有演示访问者以及同一账户下的其他 Workers AI 应用都会消耗它。Neurons 不能直接换算成固定的作文篇数，实际消耗取决于模型、输入长度和输出长度。
+
+请节制使用共享 AI：优先使用不消耗模型额度的本地单词补全，等待自动审查完成，不要对没有变化的文本反复点击 Review、Polish 或 Chat。开发者和长期用户应部署自己的实例，或配置自己的兼容模型服务。
+
+草稿、Finished 文档和自定义邮箱设置只保存在当前浏览器的 `localStorage` 中；项目没有账户系统，也没有服务端草稿数据库。不同设备、浏览器或浏览器用户配置之间互相隔离，其他在线访问者看不到你的本地草稿。如果多人共用同一个浏览器用户配置，他们也会共用该站点的本地数据；共用电脑时请使用独立浏览器配置，或使用后清除该站点数据。
+
+使用 AI 补全、审查、润色或聊天时，相关正文会发送到已配置的模型服务进行处理。应用本身不会持久化这些请求，API 响应也设置了 `Cache-Control: no-store`，但仍不建议在公开演示中输入机密或敏感内容。
 
 ## 配置与运行
 
@@ -79,7 +89,7 @@ npx wrangler secret put OPENAI_BASE_URL
 
 自行部署时，在 EdgeOne Pages 中导入本 GitHub 仓库，生产分支选择 `main`，构建命令留空。仓库内的 `edgeone.json` 会发布 `public/`，并部署 `node-functions/` 下的 Node Functions。函数会把 `/api/*` 转发到 Cloudflare Worker，因此不需要在 EdgeOne 中保存模型 API Key。
 
-要获得长期公开的 EdgeOne 地址，需要绑定自定义域名；要使用中国大陆节点加速，该自定义域名还需要完成 ICP 备案。在此之前，对外分享请使用上方永久有效的 Cloudflare 演示地址。
+要获得稳定公开的 EdgeOne 地址，需要绑定自定义域名；要使用中国大陆节点加速，该自定义域名还需要完成 ICP 备案。在此之前，对外分享请使用上方 Cloudflare 演示地址。EdgeOne 的 AI 请求会转发到同一个 Cloudflare Worker，因此两个地址使用相同模型和同一份共享额度。
 
 ## 友情链接
 
