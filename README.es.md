@@ -1,5 +1,6 @@
 <div align="center">
-  <img src="docs/assets/en-intellisense-hero.svg" width="860" alt="En-IntelliSense - asistencia contextual para escribir en inglés" />
+  <img src="docs/assets/en-intellisense-logo.svg" width="140" alt="Logotipo de En-IntelliSense" />
+  <h1>En-IntelliSense</h1>
 </div>
 
 Asistente de escritura en inglés que comprende el contexto completo. Infiere la intención, completa palabras/frases/oraciones, detecta problemas y propone correcciones localizadas.

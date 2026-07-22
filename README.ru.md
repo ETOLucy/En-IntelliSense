@@ -1,5 +1,6 @@
 <div align="center">
-  <img src="docs/assets/en-intellisense-hero.svg" width="860" alt="En-IntelliSense - контекстный помощник для английского письма" />
+  <img src="docs/assets/en-intellisense-logo.svg" width="140" alt="Логотип En-IntelliSense" />
+  <h1>En-IntelliSense</h1>
 </div>
 
 Контекстный помощник для написания текстов на английском языке. En-IntelliSense определяет намерение автора по всему черновику, дополняет слова, фразы и предложения, находит проблемы в тексте и предлагает точечные исправления.

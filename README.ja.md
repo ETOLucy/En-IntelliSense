@@ -1,5 +1,6 @@
 <div align="center">
-  <img src="docs/assets/en-intellisense-hero.svg" width="860" alt="En-IntelliSense - 文脈対応の英語ライティング支援" />
+  <img src="docs/assets/en-intellisense-logo.svg" width="140" alt="En-IntelliSense ロゴ" />
+  <h1>En-IntelliSense</h1>
 </div>
 
 文章全体の文脈を理解する英語ライティング支援ツールです。書き手の意図を推測し、単語・フレーズ・文を補完し、問題箇所を特定して修正案を提示します。

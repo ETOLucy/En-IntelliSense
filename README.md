@@ -1,5 +1,6 @@
 <div align="center">
-  <img src="docs/assets/en-intellisense-hero.svg" width="860" alt="En-IntelliSense - context-aware English writing intelligence" />
+  <img src="docs/assets/en-intellisense-logo.svg" width="140" alt="En-IntelliSense logo" />
+  <h1>En-IntelliSense</h1>
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>Context-aware English completion, review, and rewriting for learners.</p>
   <p>

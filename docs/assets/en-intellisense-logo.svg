@@ -4,6 +4,7 @@
   <defs>
     <linearGradient id="key" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#274D48"/><stop offset="1" stop-color="#112F2C"/></linearGradient>
   </defs>
+  <rect x="10" y="10" width="80" height="80" fill="#FFFFFF"/>
   <path d="M17 66 24 81h52l7-15-8-8H25Z" fill="#0B2421"/>
   <rect x="17" y="52" width="66" height="25" rx="7" fill="url(#key)" stroke="#3B756D" stroke-width="1.5"/>
   <text x="29" y="69" fill="#F8FAF9" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="13" font-weight="750">Tab</text>
