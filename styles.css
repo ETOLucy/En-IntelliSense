@@ -13,7 +13,7 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; color: var(--ink); background: var(--bg); font-family: "DM Sans", sans-serif; font-size: 14px; letter-spacing: 0; }
+body { margin: 0; overflow-x: hidden; color: var(--ink); background: var(--bg); font-family: "DM Sans", sans-serif; font-size: 14px; letter-spacing: 0; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -23,7 +23,8 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
 .brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 6px; background: var(--green); color: white; font-family: "Newsreader", serif; }
 .draft-state { justify-self: center; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
 .saved-dot { width: 7px; height: 7px; border-radius: 50%; background: #5ba378; }
-.top-actions { justify-self: end; display: flex; align-items: center; gap: 10px; }
+.top-actions { justify-self: end; display: flex; align-items: center; gap: 8px; }
+.share-button { height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green); font-size: 11px; font-weight: 600; }
 .icon-btn, .more-btn { display: grid; place-items: center; width: 34px; height: 34px; border: 0; background: transparent; border-radius: 6px; color: var(--muted); }
 .icon-btn:hover, .more-btn:hover { background: var(--surface-2); color: var(--ink); }
 .avatar { width: 34px; height: 34px; border-radius: 50%; border: 0; background: #e1ad68; color: #3d2c17; font-size: 11px; font-weight: 700; }
@@ -36,8 +37,7 @@ main { min-height: calc(100vh - 68px); display: grid; grid-template-columns: 240
 .nav-label { margin: 0 10px 8px; color: #8c9891; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; }
 .nav-item { width: 100%; display: grid; grid-template-columns: 24px 1fr auto; align-items: center; gap: 8px; padding: 9px 10px; border: 0; border-radius: 6px; background: transparent; text-align: left; color: var(--muted); }
 .nav-item.active { background: var(--surface-2); color: var(--ink); font-weight: 600; }
-.nav-icon { display: flex; }
-.nav-icon svg { width: 17px; }
+.nav-symbol { color: var(--green); font-size: 14px; }
 .count { color: var(--muted); font-size: 11px; }
 .writing-settings { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); }
 .section-title { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 700; }
@@ -57,13 +57,16 @@ select:focus { border-color: var(--green); }
 .letter-heading { display: flex; justify-content: space-between; align-items: flex-start; max-width: 760px; margin: 0 auto 24px; }
 .eyebrow { color: var(--green); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; }
 h1 { margin: 7px 0 0; font-family: "Newsreader", serif; font-size: 30px; line-height: 1.1; letter-spacing: 0; }
+.title-input { display: block; width: min(620px, 70vw); margin: 6px 0 0; padding: 0; border: 0; outline: 0; background: transparent; font-family: "Newsreader", serif; font-size: 30px; font-weight: 600; line-height: 1.15; }
+.address-fields.hidden { display: none; }
+.editor-wrap.standalone { border-radius: 7px; }
 .address-fields { max-width: 760px; margin: auto; border: 1px solid var(--line); border-bottom: 0; border-radius: 7px 7px 0 0; background: var(--surface); }
 .address-fields label { display: grid; grid-template-columns: 70px 1fr; align-items: center; min-height: 47px; padding: 0 18px; }
 .address-fields label + label { border-top: 1px solid var(--line); }
 .address-fields span { color: var(--muted); font-size: 12px; }
 .address-fields input { border: 0; outline: 0; background: transparent; font-size: 13px; }
 .editor-wrap { position: relative; max-width: 760px; min-height: 430px; margin: auto; border: 1px solid var(--line); border-radius: 0 0 7px 7px; background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
-#editor, .editor-mirror { width: 100%; min-height: 430px; padding: 38px 44px 72px; border: 0; font-family: "Newsreader", Georgia, serif; font-size: 18px; line-height: 1.78; letter-spacing: 0; white-space: pre-wrap; overflow-wrap: break-word; }
+#editor, .editor-mirror { width: 100%; min-width: 0; min-height: 430px; padding: 38px 44px 72px; border: 0; font-family: "Newsreader", Georgia, serif; font-size: 18px; line-height: 1.78; letter-spacing: 0; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
 #editor { position: relative; z-index: 2; display: block; resize: none; background: transparent; outline: none; }
 .editor-mirror { position: absolute; z-index: 1; inset: 0; overflow: hidden; color: transparent; pointer-events: none; }
 .ghost-text { color: #8ea198; opacity: .82; }
@@ -112,6 +115,13 @@ kbd { padding: 2px 5px; border: 1px solid #cad2cc; border-bottom-width: 2px; bor
 .phrase-bank .section-title button { border: 0; background: transparent; color: var(--muted); font-size: 18px; }
 .phrase-bank > button { width: 100%; margin-top: 8px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); text-align: left; color: #58665f; font-family: "Newsreader", serif; font-size: 12px; }
 .phrase-bank > button:hover { border-color: #a7bdb0; background: #f6faf7; }
+.phrase-bank #phraseList > button { width: 100%; margin-top: 8px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); text-align: left; color: #58665f; font-family: "Newsreader", serif; font-size: 12px; }
+.phrase-bank #phraseList > button:hover { border-color: #a7bdb0; background: #f6faf7; }
+.referral { display: grid; grid-template-columns: 30px 1fr; gap: 10px; margin-top: 22px; padding: 14px 0 0; border-top: 1px solid var(--line); }
+.referral-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #fff1d8; color: #93631f; }
+.referral strong { font-size: 11px; }
+.referral p { margin: 4px 0 9px; color: var(--muted); font-size: 9px; line-height: 1.5; }
+.referral button { padding: 0; border: 0; background: transparent; color: var(--green); font-size: 10px; font-weight: 700; }
 .coach-tip { display: grid; grid-template-columns: 22px 1fr; gap: 8px; margin-top: 24px; padding: 12px; border-left: 2px solid var(--gold); background: #fff9ef; }
 .coach-tip > span { display: grid; place-items: center; width: 18px; height: 18px; border: 1px solid var(--gold); border-radius: 50%; color: var(--gold); font-size: 10px; font-weight: 700; }
 .coach-tip p { display: flex; flex-direction: column; gap: 3px; margin: 0; color: #806f58; font-size: 9px; line-height: 1.5; }
@@ -122,6 +132,7 @@ body.dark { --bg: #18201d; --surface: #202a26; --surface-2: #29342f; --ink: #edf
 body.dark .topbar { background: rgba(32,42,38,.9); }
 body.dark .streak, body.dark .coach-tip { background: #342f24; border-color: #4b4231; }
 body.dark .suggestion-popover { background: #21382d; }
+body.dark .title-input { color: var(--ink); }
 @media (max-width: 1050px) {
   main { grid-template-columns: 200px minmax(450px, 1fr); }
   .topbar { grid-template-columns: 220px 1fr 100px; }
@@ -132,12 +143,18 @@ body.dark .suggestion-popover { background: #21382d; }
 @media (max-width: 720px) {
   .topbar { height: 58px; grid-template-columns: 1fr auto; padding: 0 14px; }
   .draft-state { display: none; }
+  .top-actions .icon-btn, .top-actions .avatar { display: none; }
   main { display: block; min-height: calc(100vh - 58px); }
   .left-panel { display: none; }
-  .workspace { padding: 42px 14px 24px; }
+  .workspace { width: 100vw; max-width: 100vw; min-width: 0; padding: 42px 14px 24px; overflow: hidden; }
+  .letter-heading, .address-fields, .editor-wrap, .editor-footer { width: calc(100vw - 28px); max-width: calc(100vw - 28px); min-width: 0; }
+  .address-fields label { grid-template-columns: 60px minmax(0, 1fr); padding: 0 16px; }
+  .address-fields input { width: 100%; min-width: 0; }
   h1 { font-size: 25px; }
+  .title-input { width: 100%; font-size: 25px; }
+  .editor-wrap { contain: inline-size; }
   .editor-wrap, #editor, .editor-mirror { min-height: 480px; }
-  #editor, .editor-mirror { padding: 28px 22px 70px; font-size: 17px; }
+  #editor, .editor-mirror { max-width: 100%; padding: 28px 22px 70px; overflow-x: hidden; font-size: 17px; }
   .suggestion-popover { left: 14px; right: 14px; bottom: 18px; }
   .editor-footer { flex-wrap: wrap; }
   .shortcut { display: none; }
