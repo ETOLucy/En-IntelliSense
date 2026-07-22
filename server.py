@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -7,14 +8,22 @@ from pathlib import Path
 import requests
 
 
-ROOT = Path(__file__).resolve().parent
+SOURCE_ROOT = Path(__file__).resolve().parent
+ROOT = Path(getattr(sys, "_MEIPASS", SOURCE_ROOT))
+CONFIG_ROOT = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else SOURCE_ROOT
 HOST = os.getenv("ENWRITE_HOST", "127.0.0.1")
 PORT = int(os.getenv("ENWRITE_PORT", "8000"))
 
 
 def load_dotenv():
-    path = ROOT / ".env"
-    if not path.exists():
+    configured_path = os.getenv("ENWRITE_ENV_FILE")
+    candidates = [Path(configured_path).expanduser()] if configured_path else []
+    candidates.extend([
+        CONFIG_ROOT / ".env",
+        Path(os.getenv("APPDATA", CONFIG_ROOT)) / "En-IntelliSense" / ".env",
+    ])
+    path = next((candidate for candidate in candidates if candidate.is_file()), None)
+    if path is None:
         return
     for raw_line in path.read_text(encoding="utf-8").splitlines():
         line = raw_line.strip()

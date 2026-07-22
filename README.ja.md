@@ -17,11 +17,11 @@
 - 手紙の完成後、宛先・件名・本文を引き継いで QQ Mail、163 Mail、Gmail、またはカスタム Web メールを開く。
 - 完成済み文書をローカルに保存し、編集可能なコピーとして開き直す。
 
-## デモのモデル、上限、プライバシー
+## モデル、上限、プライバシー
 
-公開デモは現在 Cloudflare Workers AI の `@cf/meta/llama-3.1-8b-instruct-fp8` を使用しています。無料枠は現在 [1 日 10,000 Neurons](https://developers.cloudflare.com/workers-ai/platform/pricing/) で、`00:00 UTC` にリセットされ、すべてのデモ利用者と同じアカウントの Workers AI アプリで共有されます。変更していない文章に Review、Polish、Chat を繰り返し実行しないでください。
+既定のデプロイでは Cloudflare Workers AI の `@cf/meta/llama-3.1-8b-instruct-fp8` を使用します。無料枠は現在 [1 日 10,000 Neurons](https://developers.cloudflare.com/workers-ai/platform/pricing/) で、`00:00 UTC` にリセットされ、デプロイに使用したアカウント内の他の Workers AI アプリと共有されます。
 
-この構成では、マルチユーザー分離はサーバーアカウントではなくブラウザのローカルストレージに依存します。下書きは `localStorage` のみに保存され、サーバー側の下書きデータベースはありません。端末、ブラウザ、ブラウザプロファイルごとに分離されますが、同じプロファイルを共有する利用者はローカルデータも共有します。AI 機能では処理に必要な文章が設定済みプロバイダーへ送信されるため、公開デモに機密情報を入力しないでください。
+この構成では、マルチユーザー分離はサーバーアカウントではなくブラウザのローカルストレージに依存します。下書きは `localStorage` のみに保存され、サーバー側の下書きデータベースはありません。端末、ブラウザ、ブラウザプロファイルごとに分離されますが、同じプロファイルを共有する利用者はローカルデータも共有します。AI 機能では処理に必要な文章が設定済みプロバイダーへ送信されるため、機密情報を扱う前にプロバイダーのプライバシー条件を確認してください。
 
 ## メール連携デモ
 
@@ -38,6 +38,10 @@ python server.py
 
 `http://127.0.0.1:8000` を開きます。
 
+## Windows デスクトップアプリ
+
+通常は[最新リリース](https://github.com/ETOLucy/En-IntelliSense/releases/latest)から `En-IntelliSense.exe` をダウンロードしてダブルクリックするだけで、コマンドは不要です。`powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1` はソース変更後の再ビルド専用です。API キーは EXE に埋め込まれません。
+
 ## Cloudflare へのデプロイ
 
 既定では Cloudflare Workers AI を使用するため、外部 API キーなしでデプロイできます。OpenAI 互換プロバイダーを使用する場合のみ Secret を追加します。
@@ -53,7 +57,7 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## EdgeOne Pages へのデプロイ
 
-EdgeOne のプリセットドメインは `eo_token` と `eo_time` を含む期限付き署名 URL を必要とするため、パラメーターなしの `.edgeone.cool` アドレスは `401 Authorization Required` を返します。安定した公開 URL を用意するには、**EdgeOne Pages > Settings > Custom Domains** でカスタムサブドメインを追加し、表示された CNAME を設定して、状態が `Pass` になるまで待ちます。期限付き署名 URL は共有または Git にコミットしないでください。中国本土向けアクセラレーションには、カスタムドメインの ICP 登録が必要です。
+EdgeOne Pages にこのリポジトリをインポートし、本番ブランチに `main` を指定して、ビルドコマンドは空欄にします。`edgeone.json` が `public/` と `node-functions/` をデプロイします。
 
 ## テスト
 

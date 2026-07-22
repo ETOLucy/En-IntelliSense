@@ -8,3 +8,8 @@ server-error.log
 .edgeone/
 .dev.vars
 *-check.png
+.venv-build/
+build/
+dist/
+desktop-assets/*.ico
+desktop-assets/*.png

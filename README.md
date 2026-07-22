@@ -16,6 +16,8 @@
   <p>
     <a href="#demo">See it in action</a>
     &nbsp;&middot;&nbsp;
+    <a href="https://github.com/ETOLucy/En-IntelliSense/releases/latest">Download Windows EXE</a>
+    &nbsp;&middot;&nbsp;
     <a href="#run">Run locally</a>
     &nbsp;&middot;&nbsp;
     <a href="https://github.com/ETOLucy/En-IntelliSense">GitHub Repository</a>
@@ -61,15 +63,15 @@ For letters and emails, the finished draft carries the recipient, subject, and b
 - Finish a letter in QQ Mail, 163 Mail, Gmail, or a custom webmail compose URL with recipient, subject, and body carried over.
 - Keep completed documents in a local Finished archive and reopen any item as an editable copy.
 
-## Demo model, quota, and privacy
+## Model, quota, and privacy
 
-The public demo currently uses Cloudflare Workers AI with `@cf/meta/llama-3.1-8b-instruct-fp8`. Cloudflare's free allocation is currently [10,000 Neurons per day](https://developers.cloudflare.com/workers-ai/platform/pricing/), reset at `00:00 UTC`. This allocation is shared by the Cloudflare account and therefore by all demo visitors; other Workers AI applications in the same account can consume it too. Neurons do not map to a fixed number of essays because usage depends on the model and the amount of input and output text.
+The default Cloudflare deployment uses Workers AI with `@cf/meta/llama-3.1-8b-instruct-fp8`. Cloudflare's free allocation is currently [10,000 Neurons per day](https://developers.cloudflare.com/workers-ai/platform/pricing/), reset at `00:00 UTC`. The allocation belongs to the deploying Cloudflare account and is shared with any other Workers AI applications under that account. Neurons do not map to a fixed number of essays because usage depends on the model and the amount of input and output text.
 
-Please use the shared AI features considerately: prefer local word completion, wait for an automatic review to finish, and avoid repeatedly running Review, Polish, or Chat on unchanged text. Developers and regular users should deploy their own instance or configure their own compatible model provider.
+For regular use, deploy your own instance or configure your own compatible model provider. Local word completion does not consume model quota.
 
 In this architecture, multi-user isolation relies on browser-local storage rather than server-side accounts. Drafts, finished documents, and custom webmail settings are stored only in the browser's `localStorage`; the application has no server-side draft database. Visitors using different devices, browsers, or browser profiles cannot see one another's local drafts. People sharing the same browser profile also share that profile's site storage, so use separate browser profiles on a shared computer or clear the site's local data afterward.
 
-AI-powered actions send the relevant draft text to the configured model service for processing. The application does not persist those requests, and API responses use `Cache-Control: no-store`, but the public demo should not be used for confidential or sensitive writing.
+AI-powered actions send the relevant draft text to the configured model service for processing. The application does not persist those requests, and API responses use `Cache-Control: no-store`; review the privacy terms of your configured provider before using confidential or sensitive writing.
 
 ## Configure
 
@@ -87,6 +89,20 @@ python server.py
 ```
 
 Open `http://127.0.0.1:8000`.
+
+## Windows desktop app
+
+For normal use, download `En-IntelliSense.exe` from the [latest GitHub release](https://github.com/ETOLucy/En-IntelliSense/releases/latest) and double-click it. No terminal, Python installation, or build command is required.
+
+The following command is only for developers who changed the source and need to rebuild the EXE:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
+```
+
+The result is `dist/En-IntelliSense.exe`. It bundles the local Python service and frontend, chooses an available loopback port automatically, and opens the workspace in a native WebView2 window. Python is not required on the computer running the finished EXE; Microsoft Edge WebView2 Runtime is required and is already included with current Windows 10/11 installations.
+
+API keys are never embedded in the executable. The desktop app reads model settings from user environment variables, a `.env` file beside the EXE, or `%APPDATA%\En-IntelliSense\.env` in that order. Rename the downloaded `En-IntelliSense.env.example` to `.env` when configuration is needed.
 
 ## Test
 
@@ -118,11 +134,7 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## EdgeOne Pages
 
-The EdgeOne preset domain requires an expiring URL containing `eo_token` and `eo_time`; opening the bare `.edgeone.cool` address therefore returns `401 Authorization Required`. It is not published here as a stable demo address. Do not commit or publish signed preset-domain URLs.
-
 To deploy your own copy, import this GitHub repository into EdgeOne Pages, use `main` as the production branch, and leave the build command empty. The checked-in `edgeone.json` publishes `public/` and deploys the Node Functions under `node-functions/`. Those functions forward `/api/*` to the Cloudflare Worker, so no model API key is stored in EdgeOne.
-
-For a stable public EdgeOne address, open **EdgeOne Pages > en-intellisense > Settings > Custom Domains**, add a subdomain, configure the CNAME shown by EdgeOne, and wait for its status to become `Pass`. Mainland China acceleration requires that custom domain to have a valid ICP filing. EdgeOne forwards AI requests to the Cloudflare Worker, so the demo uses the model and shared quota described above.
 
 ## Friendly Links
 

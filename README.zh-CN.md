@@ -16,6 +16,8 @@
   <p>
     <a href="#demo">查看效果</a>
     &nbsp;&middot;&nbsp;
+    <a href="https://github.com/ETOLucy/En-IntelliSense/releases/latest">下载 Windows EXE</a>
+    &nbsp;&middot;&nbsp;
     <a href="#配置与运行">本地运行</a>
     &nbsp;&middot;&nbsp;
     <a href="https://github.com/ETOLucy/En-IntelliSense">GitHub 仓库</a>
@@ -60,15 +62,15 @@ En-IntelliSense 会先结合整篇草稿理解用户真正想表达的意思，�
 - 完成书信后可选择 QQ 邮箱、163 邮箱、Gmail 或自定义邮箱，并带入收件人、主题和正文；QQ/163 同时自动复制完整邮件作为兜底。
 - 已完成文档保存在本地 Finished 列表中，可重新创建编辑副本。
 
-## 演示模型、额度与隐私
+## 模型、额度与隐私
 
-公开演示目前通过 Cloudflare Workers AI 使用 `@cf/meta/llama-3.1-8b-instruct-fp8`。Cloudflare 免费账户目前每天提供 [10,000 Neurons](https://developers.cloudflare.com/workers-ai/platform/pricing/)，在 `00:00 UTC`（北京时间 08:00）重置。该额度由整个 Cloudflare 账户共享，因此所有演示访问者以及同一账户下的其他 Workers AI 应用都会消耗它。Neurons 不能直接换算成固定的作文篇数，实际消耗取决于模型、输入长度和输出长度。
+默认的 Cloudflare 部署通过 Workers AI 使用 `@cf/meta/llama-3.1-8b-instruct-fp8`。Cloudflare 免费账户目前每天提供 [10,000 Neurons](https://developers.cloudflare.com/workers-ai/platform/pricing/)，在 `00:00 UTC`（北京时间 08:00）重置。额度属于实际部署所使用的 Cloudflare 账户，并与该账户下的其他 Workers AI 应用共享。Neurons 不能直接换算成固定的作文篇数，实际消耗取决于模型、输入长度和输出长度。
 
-请节制使用共享 AI：优先使用不消耗模型额度的本地单词补全，等待自动审查完成，不要对没有变化的文本反复点击 Review、Polish 或 Chat。开发者和长期用户应部署自己的实例，或配置自己的兼容模型服务。
+长期使用时请部署自己的实例，或配置自己的兼容模型服务。本地单词补全不消耗模型额度。
 
 “多用户隔离”在这个架构里依靠浏览器本地存储，而不是创建服务端账户。草稿、Finished 文档和自定义邮箱设置只保存在当前浏览器的 `localStorage` 中，项目没有服务端草稿数据库。不同设备、浏览器或浏览器用户配置之间互相隔离，其他在线访问者看不到你的本地草稿。如果多人共用同一个浏览器用户配置，他们也会共用该站点的本地数据；共用电脑时请使用独立浏览器配置，或使用后清除该站点数据。
 
-使用 AI 补全、审查、润色或聊天时，相关正文会发送到已配置的模型服务进行处理。应用本身不会持久化这些请求，API 响应也设置了 `Cache-Control: no-store`，但仍不建议在公开演示中输入机密或敏感内容。
+使用 AI 补全、审查、润色或聊天时，相关正文会发送到已配置的模型服务进行处理。应用本身不会持久化这些请求，API 响应也设置了 `Cache-Control: no-store`；处理机密或敏感内容前，请先确认所配置模型服务的隐私条款。
 
 ## 配置与运行
 
@@ -80,6 +82,20 @@ python server.py
 ```
 
 打开 `http://127.0.0.1:8000`。不要提交 `.env`，也不要把 API Key 写入前端 JavaScript。
+
+## Windows 桌面版
+
+普通使用时，只需从 [GitHub 最新版本](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载 `En-IntelliSense.exe` 并双击打开，不需要终端、Python 或任何构建命令。
+
+下面的命令只供修改源码后需要重新生成 EXE 的开发者使用：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
+```
+
+产物位于 `dist/En-IntelliSense.exe`。它会把本地 Python 服务和前端一起打包，启动时自动选择空闲的回环端口，并在原生 WebView2 窗口中打开工作区。运行打包后的 EXE 不要求用户另外安装 Python；当前 Windows 10/11 通常已自带所需的 Microsoft Edge WebView2 Runtime。
+
+API Key 不会被写进 EXE。桌面版会依次读取系统用户环境变量、EXE 同目录的 `.env`、以及 `%APPDATA%\En-IntelliSense\.env`。需要单独配置时，将下载的 `En-IntelliSense.env.example` 重命名为 `.env`，并放到上述任一位置。
 
 ## 测试
 
@@ -111,11 +127,7 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## EdgeOne Pages 部署
 
-EdgeOne 的预设 `.edgeone.cool` 域名需要带有 `eo_token` 和 `eo_time` 的限时签名链接，因此直接打开裸域名会返回 `401 Authorization Required`。本文档不会把它当作稳定演示地址发布。不要提交或公开预设域名的签名链接。
-
 自行部署时，在 EdgeOne Pages 中导入本 GitHub 仓库，生产分支选择 `main`，构建命令留空。仓库内的 `edgeone.json` 会发布 `public/`，并部署 `node-functions/` 下的 Node Functions。函数会把 `/api/*` 转发到 Cloudflare Worker，因此不需要在 EdgeOne 中保存模型 API Key。
-
-如需稳定公开的 EdgeOne 地址，请进入 **EdgeOne Pages > en-intellisense > Settings > Custom Domains**，添加子域名，按页面提示配置 CNAME，并等待状态变为 `Pass`。要使用中国大陆节点加速，该自定义域名还需要完成 ICP 备案。EdgeOne 的 AI 请求会转发到 Cloudflare Worker，因此演示站使用上文说明的模型和共享额度。
 
 ## 友情链接
 
