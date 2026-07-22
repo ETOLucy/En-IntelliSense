@@ -2,7 +2,7 @@
 
 Context-aware English writing assistance for learners. En-IntelliSense infers the writer's intent from the whole draft, provides word/phrase/sentence completion, reviews problems in context, highlights exact source text, and offers one-click repairs with bilingual explanations.
 
-Live demo: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+Permanent public demo: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
 
 Docs: **English** | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
 
@@ -56,7 +56,7 @@ Open `http://127.0.0.1:8000`.
 
 ```powershell
 python -m unittest discover -p "test_*.py"
-node test_completion.js
+npm test
 ```
 
 ## Use
@@ -79,6 +79,14 @@ npx wrangler deploy
 npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
 ```
+
+## EdgeOne Pages
+
+An EdgeOne Pages production deployment is also available for personal use and mainland-oriented acceleration. Its preset domain, [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool), is protected by EdgeOne and requires a temporary signed link; open it with **Visit site** in the EdgeOne console. Do not commit or share URLs containing `eo_token`.
+
+To deploy your own copy, import this GitHub repository into EdgeOne Pages, use `main` as the production branch, and leave the build command empty. The checked-in `edgeone.json` publishes `public/` and deploys the Node Functions under `node-functions/`. Those functions forward `/api/*` to the Cloudflare Worker, so no model API key is stored in EdgeOne.
+
+A permanent public EdgeOne address requires a custom domain. Mainland China acceleration also requires that custom domain to have a valid ICP filing. Until then, use the permanent Cloudflare demo above for public access.
 
 ## Friendly Links
 

@@ -2,7 +2,7 @@
 
 面向英语学习者的上下文智能写作工具。它会结合整篇草稿推断用户想表达的意思，提供单词、短语和句子补全，并检查语法、清晰度、措辞、重复和语气问题。
 
-在线体验：[en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+永久公开演示：[en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
 
 文档：[English](README.md) | **简体中文** | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
 
@@ -49,7 +49,7 @@ python server.py
 
 ```powershell
 python -m unittest discover -p "test_*.py"
-node test_completion.js
+npm test
 ```
 
 ## 使用方法
@@ -72,6 +72,14 @@ npx wrangler deploy
 npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
 ```
+
+## EdgeOne Pages 部署
+
+项目也已部署到 EdgeOne Pages，可供个人使用并面向中国大陆访问进行加速。EdgeOne 预设域名 [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool) 目前受到访问保护，需要临时签名链接；请在 EdgeOne 控制台中点击 **Visit site** 打开。不要提交或分享含有 `eo_token` 的链接。
+
+自行部署时，在 EdgeOne Pages 中导入本 GitHub 仓库，生产分支选择 `main`，构建命令留空。仓库内的 `edgeone.json` 会发布 `public/`，并部署 `node-functions/` 下的 Node Functions。函数会把 `/api/*` 转发到 Cloudflare Worker，因此不需要在 EdgeOne 中保存模型 API Key。
+
+要获得长期公开的 EdgeOne 地址，需要绑定自定义域名；要使用中国大陆节点加速，该自定义域名还需要完成 ICP 备案。在此之前，对外分享请使用上方永久有效的 Cloudflare 演示地址。
 
 ## 友情链接
 

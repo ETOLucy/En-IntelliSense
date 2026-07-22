@@ -2,7 +2,7 @@
 
 文章全体の文脈を理解する英語ライティング支援ツールです。書き手の意図を推測し、単語・フレーズ・文を補完し、問題箇所を特定して修正案を提示します。
 
-オンラインデモ: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+常設公開デモ: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
 
 ドキュメント: [English](README.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | **日本語** | [Русский](README.ru.md)
 
@@ -45,11 +45,15 @@ npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
 ```
 
+## EdgeOne Pages へのデプロイ
+
+EdgeOne Pages にも本番環境をデプロイ済みです。プリセットドメイン `en-intellisense-85d4szue.edgeone.cool` は保護されているため、EdgeOne コンソールの **Visit site** から開いてください。`eo_token` を含む一時 URL は共有またはコミットしないでください。常設の公開 URL にはカスタムドメインが必要で、中国本土向けアクセラレーションにはそのドメインの ICP 登録も必要です。
+
 ## テスト
 
 ```powershell
 python -m unittest discover -p "test_*.py"
-node test_completion.js
+npm test
 ```
 
 ## ライセンス

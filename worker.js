@@ -74,6 +74,14 @@ function completionInstructions(data) {
 
 function normalizeCompletion(text, source, mode) {
   let output = text.trim().replace(/^['"]|['"]$/g, '').replace(/\n/g, ' ');
+  if (mode === 'word') {
+    const candidate = output.match(/^[A-Za-z'-]+/)?.[0] || '';
+    const fragment = source.match(/[A-Za-z'-]+$/)?.[0] || '';
+    if (fragment && candidate.toLowerCase().startsWith(fragment.toLowerCase())) {
+      return candidate.slice(fragment.length);
+    }
+    return candidate;
+  }
   if (mode !== 'word' && source && !/\s$/.test(source) && /^[A-Za-z0-9]/.test(output)) output = ` ${output}`;
   return output;
 }
@@ -130,6 +138,8 @@ async function chat(request, env) {
   const instructions = 'You are En-IntelliSense, a bilingual English writing tutor. Reply primarily in concise Chinese with useful English examples. Explain tone and nuance plainly and give immediately usable writing.';
   return json({ reply: (await chatText(env, instructions, prompt, 500)).trim() });
 }
+
+export { normalizeCompletion };
 
 export default {
   async fetch(request, env) {

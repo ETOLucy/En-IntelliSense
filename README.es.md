@@ -2,7 +2,7 @@
 
 Asistente de escritura en inglés que comprende el contexto completo. Infiere la intención, completa palabras/frases/oraciones, detecta problemas y propone correcciones localizadas.
 
-Demo en línea: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+Demo pública permanente: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
 
 Documentación: [English](README.md) | [简体中文](README.zh-CN.md) | **Español** | [日本語](README.ja.md) | [Русский](README.ru.md)
 
@@ -45,11 +45,15 @@ npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
 ```
 
+## Despliegue en EdgeOne Pages
+
+También existe un despliegue de producción en EdgeOne Pages. El dominio preestablecido `en-intellisense-85d4szue.edgeone.cool` está protegido y debe abrirse mediante **Visit site** en la consola de EdgeOne. No compartas ni guardes en Git enlaces temporales que contengan `eo_token`. Una URL pública permanente requiere un dominio personalizado; la aceleración en China continental también requiere el registro ICP correspondiente.
+
 ## Pruebas
 
 ```powershell
 python -m unittest discover -p "test_*.py"
-node test_completion.js
+npm test
 ```
 
 ## Licencia

@@ -2,7 +2,7 @@
 
 Контекстный помощник для написания текстов на английском языке. En-IntelliSense определяет намерение автора по всему черновику, дополняет слова, фразы и предложения, находит проблемы в тексте и предлагает точечные исправления.
 
-Онлайн-демо: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+Постоянное публичное демо: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
 
 Документация: [English](README.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [日本語](README.ja.md) | **Русский**
 
@@ -53,11 +53,15 @@ npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
 ```
 
+## Развертывание в EdgeOne Pages
+
+Производственная версия также развернута в EdgeOne Pages. Предустановленный домен `en-intellisense-85d4szue.edgeone.cool` защищен, поэтому открывайте его через **Visit site** в консоли EdgeOne. Не публикуйте и не добавляйте в Git ссылки с временным параметром `eo_token`. Для постоянного публичного адреса нужен собственный домен; для ускорения в материковом Китае этому домену также требуется регистрация ICP.
+
 ## Тесты
 
 ```powershell
 python -m unittest discover -p "test_*.py"
-node test_completion.js
+npm test
 ```
 
 ## Лицензия

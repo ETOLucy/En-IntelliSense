@@ -1,0 +1,8 @@
+{
+  "name": "en-intellisense",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node test_completion.js && node test_worker.mjs && node test_edgeone_proxy.mjs"
+  }
+}
