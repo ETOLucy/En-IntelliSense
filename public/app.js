@@ -284,6 +284,38 @@ function notify(message) {
   setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
+function emailDraft() {
+  return { to: $('#recipient').value.trim(), subject: $('#subject').value.trim(), body: editor.value };
+}
+
+function openEmailModal() {
+  const draft = emailDraft();
+  if (draft.to && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.to)) {
+    notify('Enter an email address in the To field');
+    $('#recipient').focus();
+    return;
+  }
+  $('#emailSummaryTo').textContent = draft.to || 'Add in your email app';
+  $('#emailSummarySubject').textContent = draft.subject || 'No subject';
+  $('#emailModal').classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.querySelector('[data-email-provider="default"]').focus();
+}
+
+function closeEmailModal() {
+  $('#emailModal').classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  $('#finishButton').focus();
+}
+
+function openEmailProvider(provider) {
+  const url = EnWriteCompletion.buildEmailComposeUrl(provider, emailDraft());
+  if (provider === 'default') window.location.href = url;
+  else window.open(url, '_blank', 'noopener,noreferrer');
+  closeEmailModal();
+  notify('Email draft imported');
+}
+
 function friendlyModelError(message) {
   if (/connection|reach model|1005[34]|network|fetch/i.test(message || '')) {
     return '模型服务连接暂时中断，系统已自动重试，请稍后再试。';
@@ -473,7 +505,10 @@ $('#tone').addEventListener('change', scheduleCompletion);
 $('#newDraftButton').addEventListener('click', () => setFormat($('#format').value));
 $('#refreshPhrases').addEventListener('click', () => { phraseOffset = (phraseOffset + 1) % 3; renderPhrases(); notify('Phrase ideas refreshed'); });
 $('#reviewDraft').addEventListener('click', () => reviewDraft(true));
-$('#finishButton').addEventListener('click', () => notify(`${content[$('#format').value].finish} is ready`));
+$('#finishButton').addEventListener('click', () => {
+  if ($('#format').value === 'letter') openEmailModal();
+  else notify(`${content[$('#format').value].finish} is ready`);
+});
 $('#themeButton').addEventListener('click', () => document.body.classList.toggle('dark'));
 $('#closeCoach').addEventListener('click', () => $('.coach-panel').classList.remove('open'));
 document.querySelectorAll('#title, #recipient, #subject').forEach(input => input.addEventListener('input', saveDraft));
@@ -491,6 +526,18 @@ $('#polishText').addEventListener('click', () => requestAssist('polish_text'));
 $('#explainText').addEventListener('click', () => requestAssist('explain'));
 $('#simplifyText').addEventListener('click', () => requestAssist('simplify'));
 $('#closeAssist').addEventListener('click', () => $('#assistResult').classList.add('hidden'));
+$('#closeEmailModal').addEventListener('click', closeEmailModal);
+$('#emailBackdrop').addEventListener('click', closeEmailModal);
+document.querySelectorAll('[data-email-provider]').forEach(button => button.addEventListener('click', () => openEmailProvider(button.dataset.emailProvider)));
+$('#copyEmailDraft').addEventListener('click', async () => {
+  const draft = emailDraft();
+  const completeEmail = `To: ${draft.to}\nSubject: ${draft.subject}\n\n${draft.body}`;
+  try { await navigator.clipboard.writeText(completeEmail); notify('Complete email copied'); }
+  catch { notify('Clipboard access was blocked'); }
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !$('#emailModal').classList.contains('hidden')) closeEmailModal();
+});
 document.querySelectorAll('[data-coach-tab]').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('[data-coach-tab]').forEach(item => item.classList.remove('active'));
   button.classList.add('active');

@@ -81,5 +81,16 @@
     }).filter(Boolean).sort((a, b) => a.start - b.start);
   }
 
-  return { getWordSuggestion, getContextSuggestion, getSentenceRange, findIssueRanges };
+  function buildEmailComposeUrl(provider, draft) {
+    const to = String(draft.to || '').trim();
+    const subject = String(draft.subject || '').trim();
+    const body = String(draft.body || '');
+    const encoded = { to: encodeURIComponent(to), subject: encodeURIComponent(subject), body: encodeURIComponent(body) };
+    if (provider === 'gmail') return `https://mail.google.com/mail/?view=cm&fs=1&to=${encoded.to}&su=${encoded.subject}&body=${encoded.body}`;
+    if (provider === 'outlook') return `https://outlook.live.com/mail/0/deeplink/compose?to=${encoded.to}&subject=${encoded.subject}&body=${encoded.body}`;
+    if (provider === 'yahoo') return `https://compose.mail.yahoo.com/?to=${encoded.to}&subject=${encoded.subject}&body=${encoded.body}`;
+    return `mailto:${encoded.to}?subject=${encoded.subject}&body=${encoded.body}`;
+  }
+
+  return { getWordSuggestion, getContextSuggestion, getSentenceRange, findIssueRanges, buildEmailComposeUrl };
 });

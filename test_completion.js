@@ -13,4 +13,12 @@ assert.deepEqual(
   ]).map(({ start, end }) => ({ start, end })),
   [{ start: 2, end: 11 }, { start: 18, end: 27 }]
 );
+assert.equal(
+  completion.buildEmailComposeUrl('gmail', { to: 'friend@example.com', subject: 'Hello there', body: 'Hi!\nHow are you?' }),
+  'https://mail.google.com/mail/?view=cm&fs=1&to=friend%40example.com&su=Hello%20there&body=Hi!%0AHow%20are%20you%3F'
+);
+assert.equal(
+  completion.buildEmailComposeUrl('default', { to: 'friend@example.com', subject: 'Hello', body: 'Hi' }),
+  'mailto:friend%40example.com?subject=Hello&body=Hi'
+);
 console.log('contextual completion tests passed');

@@ -24,6 +24,7 @@ The learner writes an essay using direct Chinese logic. En-IntelliSense infers t
 - Translation, explanation, simplification, and contextual bilingual chat.
 - Useful phrases replace the selection or current sentence instead of appending duplicate text.
 - Letter, essay, and message formats with local draft persistence.
+- Finish a letter by choosing Gmail, Outlook, Yahoo, or the default mail app; recipient, subject, and body are imported automatically.
 
 ## Configure
 
