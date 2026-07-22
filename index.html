@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="EnWrite provides inline English autocomplete for letter writing." />
+    <title>EnWrite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="EnWrite home">
+          <span class="brand-mark">L</span>
+          <span>EnWrite</span>
+        </a>
+        <div class="draft-state"><span class="saved-dot"></span><span id="saveStatus">Draft saved</span></div>
+        <div class="top-actions">
+          <button class="icon-btn" id="themeButton" aria-label="Toggle dark mode" title="Toggle theme">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          </button>
+          <button class="avatar" aria-label="Account menu">EN</button>
+        </div>
+      </header>
+
+      <main>
+        <aside class="left-panel">
+          <button class="new-letter" id="newLetterButton">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            New letter
+          </button>
+
+          <nav class="draft-nav" aria-label="Letters">
+            <p class="nav-label">Letters</p>
+            <button class="nav-item active"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></span><span>Drafts</span><span class="count">1</span></button>
+            <button class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></span><span>Sent</span></button>
+          </nav>
+
+          <div class="writing-settings">
+            <div class="section-title">
+              <span>Writing settings</span>
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+            </div>
+            <label for="relationship">Writing to</label>
+            <select id="relationship">
+              <option value="friend">A friend</option>
+              <option value="penpal">A new pen pal</option>
+              <option value="colleague">A colleague</option>
+              <option value="teacher">A teacher</option>
+            </select>
+            <label for="level">My English</label>
+            <div class="segmented" id="level" role="group" aria-label="English level">
+              <button data-level="simple">Simple</button>
+              <button class="selected" data-level="natural">Natural</button>
+              <button data-level="advanced">Advanced</button>
+            </div>
+            <label for="tone">Tone</label>
+            <select id="tone">
+              <option value="warm">Warm & friendly</option>
+              <option value="casual">Relaxed & casual</option>
+              <option value="polite">Polite & thoughtful</option>
+            </select>
+          </div>
+
+          <div class="streak"><span class="streak-icon">7</span><div><strong>7-day streak</strong><span>Keep your English flowing</span></div></div>
+        </aside>
+
+        <section class="workspace">
+          <div class="letter-heading">
+            <div>
+              <span class="eyebrow">DRAFT LETTER</span>
+              <h1>A letter to an old friend</h1>
+            </div>
+            <button class="more-btn" aria-label="More actions" title="More actions">•••</button>
+          </div>
+
+          <div class="address-fields">
+            <label><span>To</span><input id="recipient" type="text" value="Emma" aria-label="Recipient" /></label>
+            <label><span>Subject</span><input id="subject" type="text" value="Greetings from Shanghai" aria-label="Subject" /></label>
+          </div>
+
+          <div class="editor-wrap">
+            <div class="editor-mirror" id="editorMirror" aria-hidden="true"><span id="mirrorText"></span><span class="ghost-text" id="ghostText"></span></div>
+            <textarea id="editor" spellcheck="true" aria-label="Letter body">Hi Emma,\n\nIt was so lovely to receive your last letter. I was happy to hear about your new apartment and the little garden you have started.\n\nLife here has been busy, but in a good way. Last weekend, I</textarea>
+            <div class="autocomplete-status" id="autocompleteStatus" aria-live="polite"><span>✦</span> Inline suggestion ready <kbd>Tab ↹</kbd></div>
+          </div>
+
+          <div class="editor-footer">
+            <span><strong id="wordCount">53</strong> words</span>
+            <span class="shortcut"><kbd>Tab</kbd> accept suggestion <kbd>Esc</kbd> dismiss</span>
+            <button class="send-button" id="sendButton">Send letter <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
+          </div>
+        </section>
+
+        <aside class="coach-panel">
+          <div class="coach-head"><div><span class="coach-icon">✦</span><div><strong>Writing coach</strong><span>Here when you need me</span></div></div><button class="icon-btn" id="closeCoach" aria-label="Close writing coach">×</button></div>
+
+          <div class="score-block">
+            <div class="score-label"><span>Letter flow</span><strong>Good</strong></div>
+            <div class="score-bar"><span></span></div>
+            <p>Your letter feels warm and easy to follow.</p>
+          </div>
+
+          <div class="insights">
+            <p class="nav-label">LIVE NOTES</p>
+            <button class="insight" data-replacement="I was delighted to hear about your new apartment and the little garden you have started.">
+              <span class="insight-mark green"><svg viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></svg></span>
+              <span><strong>Clear and natural</strong><small>“It was so lovely to receive...” sounds warm and genuine.</small></span>
+            </button>
+            <button class="insight" data-replacement="Life here has been full lately, in the best possible way.">
+              <span class="insight-mark amber">Aa</span>
+              <span><strong>Try a richer phrase</strong><small>“Busy, but in a good way” could be more vivid.</small><em>See suggestion →</em></span>
+            </button>
+          </div>
+
+          <div class="phrase-bank">
+            <div class="section-title"><span>Useful phrases</span><button id="refreshPhrases" aria-label="Refresh phrases" title="Refresh phrases">↻</button></div>
+            <button data-phrase="I have been meaning to tell you about ">I’ve been meaning to tell you...</button>
+            <button data-phrase="That reminded me of the time when ">That reminded me of...</button>
+            <button data-phrase="I would love to hear more about ">I’d love to hear more about...</button>
+          </div>
+
+          <div class="coach-tip"><span>i</span><p><strong>Learning tip</strong>Accept only the phrases you would use yourself. That is how they become yours.</p></div>
+        </aside>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
