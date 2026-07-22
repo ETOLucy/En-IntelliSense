@@ -4,6 +4,20 @@ function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: jsonHeaders });
 }
 
+async function serveAsset(request, env) {
+  const response = await env.ASSETS.fetch(request);
+  if (!response.ok || !['GET', 'HEAD'].includes(request.method)) return response;
+  const headers = new Headers(response.headers);
+  const pathname = new URL(request.url).pathname;
+  if (/\.(?:css|js|png|jpg|jpeg|webp|ico)$/i.test(pathname)) {
+    headers.set('cache-control', 'public, max-age=3600, stale-while-revalidate=86400');
+  } else if (pathname === '/' || pathname.endsWith('.html')) {
+    headers.set('cache-control', 'no-cache');
+  }
+  headers.set('x-content-type-options', 'nosniff');
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
 function apiBase(env) {
   const base = (env.OPENAI_BASE_URL || 'https://api.openai.com').replace(/\/$/, '');
   return base.endsWith('/v1') ? base : `${base}/v1`;
@@ -120,7 +134,7 @@ async function chat(request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
+    if (!url.pathname.startsWith('/api/')) return serveAsset(request, env);
     const workersAIModel = env.CLOUDFLARE_AI_MODEL || '@cf/meta/llama-3.1-8b-instruct-fp8';
     const configured = Boolean(env.OPENAI_API_KEY || env.AI);
     if (url.pathname === '/api/status') return json({

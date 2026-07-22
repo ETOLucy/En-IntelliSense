@@ -33,4 +33,8 @@ assert.equal(
   completion.buildEmailComposeUrl('custom', { to: 'friend@example.com', subject: 'Hello there', body: 'Hi!' }, 'https://mail.example/compose?to={to}&subject={subject}&body={body}'),
   'https://mail.example/compose?to=friend%40example.com&subject=Hello%20there&body=Hi!'
 );
+assert.equal(
+  completion.buildCompleteEmailText({ to: 'friend@example.com', subject: 'Hello there', body: 'Hi!\nHow are you?' }),
+  'To: friend@example.com\nSubject: Hello there\n\nHi!\nHow are you?'
+);
 console.log('contextual completion tests passed');

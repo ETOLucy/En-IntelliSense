@@ -449,9 +449,23 @@ function openEmailProvider(provider) {
   }
   archiveCurrentDocument();
   const url = EnWriteCompletion.buildEmailComposeUrl(provider, draft, customTemplate);
+  let fallbackCopy = null;
+  if (['qq', 'netease'].includes(provider)) {
+    try {
+      fallbackCopy = navigator.clipboard?.writeText(EnWriteCompletion.buildCompleteEmailText(draft)) || null;
+    } catch {
+      fallbackCopy = null;
+    }
+  }
   window.open(url, '_blank', 'noopener,noreferrer');
   closeEmailModal();
-  notify('Email draft imported');
+  if (fallbackCopy) {
+    fallbackCopy
+      .then(() => notify('Email opened; complete draft copied as backup'))
+      .catch(() => notify('Email opened; use Copy complete email if fields are missing'));
+  } else {
+    notify('Email draft imported');
+  }
 }
 
 function closeDocumentMenu() {
@@ -732,7 +746,7 @@ document.querySelectorAll('[data-email-provider]').forEach(button => button.addE
 $('#openCustomProvider').addEventListener('click', () => openEmailProvider('custom'));
 $('#copyEmailDraft').addEventListener('click', async () => {
   const draft = emailDraft();
-  const completeEmail = `To: ${draft.to}\nSubject: ${draft.subject}\n\n${draft.body}`;
+  const completeEmail = EnWriteCompletion.buildCompleteEmailText(draft);
   try { await navigator.clipboard.writeText(completeEmail); notify('Complete email copied'); }
   catch { notify('Clipboard access was blocked'); }
 });

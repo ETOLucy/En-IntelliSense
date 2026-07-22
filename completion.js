@@ -103,5 +103,12 @@
     return `mailto:${encoded.to}?subject=${encoded.subject}&body=${encoded.body}`;
   }
 
-  return { getWordSuggestion, getContextSuggestion, getSentenceRange, findIssueRanges, buildEmailComposeUrl };
+  function buildCompleteEmailText(draft) {
+    const to = String(draft.to || '').trim();
+    const subject = String(draft.subject || '').trim();
+    const body = String(draft.body || '');
+    return `To: ${to}\nSubject: ${subject}\n\n${body}`;
+  }
+
+  return { getWordSuggestion, getContextSuggestion, getSentenceRange, findIssueRanges, buildEmailComposeUrl, buildCompleteEmailText };
 });

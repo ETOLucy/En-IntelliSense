@@ -59,9 +59,9 @@ try:
     evaluate(socket, 6, "document.querySelector('#moreButton').click(); document.querySelector('#finishButton').click();")
     if not evaluate(socket, 7, "!document.querySelector('#emailModal').classList.contains('hidden') && document.querySelector('#emailRecipientInput').type === 'email' && document.querySelectorAll('[data-email-provider]').length === 4 && document.querySelector('[data-email-provider=\"qq\"]') && document.querySelector('[data-email-provider=\"netease\"]') && document.querySelector('label[for=\"emailRecipientInput\"]').textContent.includes('To')"):
         raise RuntimeError("Editable email chooser did not open")
-    evaluate(socket, 8, "window.open = url => { window.__openedEmailUrl = url; }; document.querySelector('[data-email-provider=\"qq\"]').click();")
-    if not evaluate(socket, 9, "window.__openedEmailUrl.startsWith('https://mail.qq.com/cgi-bin/readtemplate') && window.__openedEmailUrl.includes('to=emma%40example.com') && window.__openedEmailUrl.includes('subject=Greetings%20from%20Shanghai') && document.querySelector('#emailModal').classList.contains('hidden')"):
-        raise RuntimeError("QQ Mail did not receive the current email fields")
+    evaluate(socket, 8, "window.open = url => { window.__openedEmailUrl = url; }; Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: text => { window.__copiedEmail = text; return Promise.resolve(); } } }); document.querySelector('[data-email-provider=\"qq\"]').click();")
+    if not evaluate(socket, 9, "window.__openedEmailUrl.startsWith('https://mail.qq.com/cgi-bin/readtemplate') && window.__openedEmailUrl.includes('to=emma%40example.com') && window.__openedEmailUrl.includes('subject=Greetings%20from%20Shanghai') && window.__copiedEmail.includes('To: emma@example.com') && window.__copiedEmail.includes('Subject: Greetings from Shanghai') && window.__copiedEmail.includes('It was so lovely') && document.querySelector('#emailModal').classList.contains('hidden')"):
+        raise RuntimeError("QQ Mail did not receive the current fields and clipboard fallback")
     evaluate(socket, 10, "localStorage.removeItem('enwrite-finished'); document.querySelector('#finishButton').click(); document.querySelector('[data-email-provider=\"custom\"]').click();")
     if not evaluate(socket, 11, "!document.querySelector('#customProviderPanel').classList.contains('hidden') && document.querySelector('#customProviderUrl').placeholder.includes('{to}')"):
         raise RuntimeError("Custom webmail setup did not open")

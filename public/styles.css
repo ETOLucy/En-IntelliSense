@@ -10,17 +10,19 @@
   --mint: #dcebe1;
   --gold: #bd7b28;
   --shadow: 0 18px 50px rgba(30, 50, 40, .08);
+  --font-ui: "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  --font-writing: Georgia, "Times New Roman", "Songti SC", SimSun, serif;
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; overflow-x: hidden; color: var(--ink); background: var(--bg); font-family: "DM Sans", sans-serif; font-size: 14px; letter-spacing: 0; }
+body { margin: 0; overflow-x: hidden; color: var(--ink); background: var(--bg); font-family: var(--font-ui); font-size: 14px; letter-spacing: 0; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .app-shell { min-height: 100vh; }
 .topbar { height: 68px; display: grid; grid-template-columns: 260px 1fr 260px; align-items: center; padding: 0 22px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.85); }
-.brand { display: flex; min-width: 0; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-family: "Newsreader", serif; font-size: 19px; font-weight: 600; white-space: nowrap; }
-.brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 6px; background: var(--green); color: white; font-family: "Newsreader", serif; }
+.brand { display: flex; min-width: 0; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-family: var(--font-writing); font-size: 19px; font-weight: 600; white-space: nowrap; }
+.brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 6px; background: var(--green); color: white; font-family: var(--font-writing); }
 .draft-state { justify-self: center; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
 .saved-dot { width: 7px; height: 7px; border-radius: 50%; background: #5ba378; }
 .top-actions { justify-self: end; display: flex; align-items: center; gap: 8px; }
@@ -59,11 +61,11 @@ select:focus { border-color: var(--green); }
 .finished-list { display: grid; gap: 9px; }
 .archive-empty { padding: 52px 24px; border: 1px dashed #bdc8c0; border-radius: 6px; background: var(--surface); text-align: center; }
 .archive-empty strong, .archive-empty span { display: block; }
-.archive-empty strong { font-family: "Newsreader", serif; font-size: 20px; }
+.archive-empty strong { font-family: var(--font-writing); font-size: 20px; }
 .archive-empty span { margin-top: 7px; color: var(--muted); font-size: 11px; }
 .finished-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 16px 17px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
 .finished-copy { min-width: 0; }
-.finished-copy strong { display: block; overflow: hidden; font-family: "Newsreader", serif; font-size: 17px; text-overflow: ellipsis; white-space: nowrap; }
+.finished-copy strong { display: block; overflow: hidden; font-family: var(--font-writing); font-size: 17px; text-overflow: ellipsis; white-space: nowrap; }
 .finished-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; color: var(--muted); font-size: 9px; }
 .finished-meta span:first-child { color: var(--green); font-weight: 700; text-transform: uppercase; }
 .finished-actions { display: flex; gap: 7px; }
@@ -78,8 +80,8 @@ select:focus { border-color: var(--green); }
 .document-menu button:hover, .document-menu button:focus { background: var(--surface-2); outline: 0; }
 .document-menu button.danger { color: #a04f43; }
 .eyebrow { color: var(--green); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; }
-h1 { margin: 7px 0 0; font-family: "Newsreader", serif; font-size: 30px; line-height: 1.1; letter-spacing: 0; }
-.title-input { display: block; width: min(620px, 70vw); margin: 6px 0 0; padding: 0; border: 0; outline: 0; background: transparent; font-family: "Newsreader", serif; font-size: 30px; font-weight: 600; line-height: 1.15; }
+h1 { margin: 7px 0 0; font-family: var(--font-writing); font-size: 30px; line-height: 1.1; letter-spacing: 0; }
+.title-input { display: block; width: min(620px, 70vw); margin: 6px 0 0; padding: 0; border: 0; outline: 0; background: transparent; font-family: var(--font-writing); font-size: 30px; font-weight: 600; line-height: 1.15; }
 .address-fields.hidden { display: none; }
 .editor-wrap.standalone { border-radius: 7px; }
 .address-fields { max-width: 760px; margin: auto; border: 1px solid var(--line); border-bottom: 0; border-radius: 7px 7px 0 0; background: var(--surface); }
@@ -103,12 +105,12 @@ h1 { margin: 7px 0 0; font-family: "Newsreader", serif; font-size: 30px; line-he
 .subject-options.text-options { grid-template-columns: 1fr; }
 .subject-option { padding: 9px; border: 1px solid #c9dbcf; border-radius: 5px; background: var(--surface); text-align: left; }
 .subject-option strong, .subject-option small { display: block; }
-.subject-option strong { font-family: "Newsreader", serif; font-size: 13px; }
+.subject-option strong { font-family: var(--font-writing); font-size: 13px; }
 .subject-option small { margin-top: 4px; color: var(--muted); font-size: 9px; line-height: 1.4; }
 .apply-simple { margin-top: 10px; padding: 6px 10px; border: 0; border-radius: 4px; background: var(--green); color: white; font-size: 10px; font-weight: 700; }
 .assist-loading { color: var(--muted); font-size: 11px; }
 .editor-wrap { position: relative; max-width: 760px; min-height: 430px; margin: auto; border: 1px solid var(--line); border-radius: 0 0 7px 7px; background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
-#editor, .editor-mirror { width: 100%; min-width: 0; min-height: 430px; padding: 38px 44px 72px; border: 0; font-family: "Newsreader", Georgia, serif; font-size: 18px; line-height: 1.78; letter-spacing: 0; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+#editor, .editor-mirror { width: 100%; min-width: 0; min-height: 430px; padding: 38px 44px 72px; border: 0; font-family: var(--font-writing); font-size: 18px; line-height: 1.78; letter-spacing: 0; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
 #editor { position: relative; z-index: 2; display: block; resize: none; background: transparent; outline: none; }
 .editor-mirror { position: absolute; z-index: 1; inset: 0; overflow: hidden; color: transparent; pointer-events: none; }
 .ghost-text { color: #8ea198; opacity: .82; }
@@ -125,15 +127,15 @@ h1 { margin: 7px 0 0; font-family: "Newsreader", serif; font-size: 30px; line-he
 .suggestion-bar.hidden { display: none; }
 .suggestion-bar > span { min-width: 0; display: flex; align-items: baseline; gap: 10px; }
 .suggestion-bar b { flex: 0 0 auto; color: var(--green); font-size: 9px; text-transform: uppercase; }
-.suggestion-bar #barText { overflow: hidden; color: var(--ink); font-family: "Newsreader", serif; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+.suggestion-bar #barText { overflow: hidden; color: var(--ink); font-family: var(--font-writing); font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
 body.dark .suggestion-bar { background: #21382d; }
 .suggestion-popover { position: absolute; left: 43px; right: 43px; bottom: 28px; padding: 13px 15px; border: 1px solid #b9cfc1; border-radius: 6px; background: #f3f9f5; box-shadow: 0 9px 24px rgba(35, 76, 55, .12); transition: opacity .15s, transform .15s; }
 .suggestion-popover.hidden { opacity: 0; pointer-events: none; transform: translateY(4px); }
 .suggestion-top { display: flex; align-items: center; gap: 7px; color: var(--green); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; }
 .suggestion-top kbd { margin-left: auto; }
 .spark { font-size: 14px; }
-.suggestion-popover p { margin: 8px 0 10px; font-family: "Newsreader", Georgia, serif; font-size: 16px; }
-kbd { padding: 2px 5px; border: 1px solid #cad2cc; border-bottom-width: 2px; border-radius: 4px; background: var(--surface); color: var(--muted); font: 9px "DM Sans", sans-serif; text-transform: none; }
+.suggestion-popover p { margin: 8px 0 10px; font-family: var(--font-writing); font-size: 16px; }
+kbd { padding: 2px 5px; border: 1px solid #cad2cc; border-bottom-width: 2px; border-radius: 4px; background: var(--surface); color: var(--muted); font: 9px var(--font-ui); text-transform: none; }
 .suggestion-actions { display: flex; gap: 7px; }
 .suggestion-actions button { padding: 5px 9px; border: 1px solid #c9dbcf; border-radius: 4px; background: var(--surface); color: var(--green); font-size: 10px; font-weight: 600; }
 .suggestion-actions .icon-only { margin-left: auto; border: 0; background: transparent; color: var(--muted); font-size: 18px; }
@@ -202,9 +204,9 @@ kbd { padding: 2px 5px; border: 1px solid #cad2cc; border-bottom-width: 2px; bor
 .insight em { color: var(--green); font-size: 9px; font-style: normal; font-weight: 600; }
 .phrase-bank { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
 .phrase-bank .section-title button { border: 0; background: transparent; color: var(--muted); font-size: 18px; }
-.phrase-bank > button { width: 100%; margin-top: 8px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); text-align: left; color: #58665f; font-family: "Newsreader", serif; font-size: 12px; }
+.phrase-bank > button { width: 100%; margin-top: 8px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); text-align: left; color: #58665f; font-family: var(--font-writing); font-size: 12px; }
 .phrase-bank > button:hover { border-color: #a7bdb0; background: #f6faf7; }
-.phrase-bank #phraseList > button { width: 100%; margin-top: 8px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); text-align: left; color: #58665f; font-family: "Newsreader", serif; font-size: 12px; }
+.phrase-bank #phraseList > button { width: 100%; margin-top: 8px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); text-align: left; color: #58665f; font-family: var(--font-writing); font-size: 12px; }
 .phrase-bank #phraseList > button:hover { border-color: #a7bdb0; background: #f6faf7; }
 .coach-tip { display: grid; grid-template-columns: 22px 1fr; gap: 8px; margin-top: 24px; padding: 12px; border-left: 2px solid var(--gold); background: #fff9ef; }
 .coach-tip > span { display: grid; place-items: center; width: 18px; height: 18px; border: 1px solid var(--gold); border-radius: 50%; color: var(--gold); font-size: 10px; font-weight: 700; }
@@ -218,7 +220,7 @@ kbd { padding: 2px 5px; border: 1px solid #cad2cc; border-bottom-width: 2px; bor
 .email-dialog { position: relative; width: min(520px, 100%); padding: 22px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); box-shadow: 0 24px 70px rgba(20, 35, 28, .22); }
 .email-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; }
 .email-dialog-head span { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: 1.2px; }
-.email-dialog-head h2 { margin: 5px 0 0; font-family: "Newsreader", serif; font-size: 25px; letter-spacing: 0; }
+.email-dialog-head h2 { margin: 5px 0 0; font-family: var(--font-writing); font-size: 25px; letter-spacing: 0; }
 .email-dialog-head > button { width: 30px; height: 30px; border: 0; background: transparent; color: var(--muted); font-size: 20px; }
 .email-summary { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 8px 12px; margin-top: 18px; padding: 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
 .email-summary span, .email-summary label { align-self: center; color: var(--muted); font-size: 10px; }

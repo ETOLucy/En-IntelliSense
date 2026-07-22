@@ -18,7 +18,7 @@ The learner writes an essay using direct Chinese logic. En-IntelliSense infers t
 
 ### Finish in your webmail
 
-For letters and emails, the finished draft carries the recipient, subject, and body into QQ Mail, 163 Mail, Gmail, or a custom webmail compose URL.
+For letters and emails, the finished draft carries the recipient, subject, and body into QQ Mail, 163 Mail, Gmail, or a custom webmail compose URL. QQ Mail and 163 Mail also copy the complete email automatically as a fallback if login removes compose parameters.
 
 ![Choose a webmail provider and carry over the finished email](docs/assets/demo-email.png)
 
