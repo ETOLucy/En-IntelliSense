@@ -285,21 +285,19 @@ function notify(message) {
 }
 
 function emailDraft() {
-  return { to: $('#recipient').value.trim(), subject: $('#subject').value.trim(), body: editor.value };
+  const modalOpen = !$('#emailModal').classList.contains('hidden');
+  const modalAddress = modalOpen ? $('#emailRecipientInput').value.trim() : '';
+  return { to: modalAddress || $('#recipient').value.trim(), subject: $('#subject').value.trim(), body: editor.value };
 }
 
 function openEmailModal() {
   const draft = emailDraft();
-  if (draft.to && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.to)) {
-    notify('Enter an email address in the To field');
-    $('#recipient').focus();
-    return;
-  }
-  $('#emailSummaryTo').textContent = draft.to || 'Add in your email app';
+  $('#emailRecipientInput').value = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.to) ? draft.to : '';
+  $('#emailRecipientInput').setCustomValidity('');
   $('#emailSummarySubject').textContent = draft.subject || 'No subject';
   $('#emailModal').classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.querySelector('[data-email-provider="default"]').focus();
+  $('#emailRecipientInput').focus();
 }
 
 function closeEmailModal() {
@@ -309,11 +307,57 @@ function closeEmailModal() {
 }
 
 function openEmailProvider(provider) {
-  const url = EnWriteCompletion.buildEmailComposeUrl(provider, emailDraft());
+  const draft = emailDraft();
+  const emailInput = $('#emailRecipientInput');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.to)) {
+    emailInput.setCustomValidity('Enter a valid recipient email address');
+    emailInput.reportValidity();
+    emailInput.focus();
+    return;
+  }
+  emailInput.setCustomValidity('');
+  $('#recipient').value = draft.to;
+  saveDraft();
+  const url = EnWriteCompletion.buildEmailComposeUrl(provider, draft);
   if (provider === 'default') window.location.href = url;
   else window.open(url, '_blank', 'noopener,noreferrer');
   closeEmailModal();
   notify('Email draft imported');
+}
+
+function closeDocumentMenu() {
+  $('#documentMenu').classList.add('hidden');
+  $('#moreButton').setAttribute('aria-expanded', 'false');
+}
+
+function toggleDocumentMenu() {
+  const opening = $('#documentMenu').classList.contains('hidden');
+  $('#documentMenu').classList.toggle('hidden', !opening);
+  $('#moreButton').setAttribute('aria-expanded', String(opening));
+  if (opening) document.querySelector('[data-doc-action="review"]').focus();
+}
+
+async function runDocumentAction(action) {
+  closeDocumentMenu();
+  if (action === 'review') return reviewDraft(true);
+  if (action === 'copy') {
+    const draftText = `${$('#title').value}\n\n${editor.value}`;
+    try { await navigator.clipboard.writeText(draftText); notify('Draft copied'); }
+    catch { notify('Clipboard access was blocked'); }
+    return;
+  }
+  if (action === 'download') {
+    const safeName = ($('#title').value || 'en-intellisense-draft').replace(/[\\/:*?"<>|]+/g, '-').trim();
+    const blob = new Blob([editor.value], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a'); link.href = url; link.download = `${safeName}.txt`; link.click();
+    URL.revokeObjectURL(url); notify('Draft downloaded');
+    return;
+  }
+  if (action === 'clear' && window.confirm('Clear this draft? This cannot be undone.')) {
+    editor.value = ''; $('#subject').value = ''; $('#recipient').value = ''; $('#title').value = 'Untitled letter';
+    reviewIssues = []; currentIntent = ''; renderMirror(); renderReview(); updateStats(); saveDraft(); editor.focus(); notify('Draft cleared');
+  }
 }
 
 function friendlyModelError(message) {
@@ -528,6 +572,7 @@ $('#simplifyText').addEventListener('click', () => requestAssist('simplify'));
 $('#closeAssist').addEventListener('click', () => $('#assistResult').classList.add('hidden'));
 $('#closeEmailModal').addEventListener('click', closeEmailModal);
 $('#emailBackdrop').addEventListener('click', closeEmailModal);
+$('#emailRecipientInput').addEventListener('input', event => event.currentTarget.setCustomValidity(''));
 document.querySelectorAll('[data-email-provider]').forEach(button => button.addEventListener('click', () => openEmailProvider(button.dataset.emailProvider)));
 $('#copyEmailDraft').addEventListener('click', async () => {
   const draft = emailDraft();
@@ -535,8 +580,14 @@ $('#copyEmailDraft').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(completeEmail); notify('Complete email copied'); }
   catch { notify('Clipboard access was blocked'); }
 });
+$('#moreButton').addEventListener('click', event => { event.stopPropagation(); toggleDocumentMenu(); });
+document.querySelectorAll('[data-doc-action]').forEach(button => button.addEventListener('click', () => runDocumentAction(button.dataset.docAction)));
+document.addEventListener('click', event => {
+  if (!event.target.closest('.more-menu-wrap')) closeDocumentMenu();
+});
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !$('#emailModal').classList.contains('hidden')) closeEmailModal();
+  if (event.key === 'Escape' && !$('#documentMenu').classList.contains('hidden')) { closeDocumentMenu(); $('#moreButton').focus(); }
 });
 document.querySelectorAll('[data-coach-tab]').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('[data-coach-tab]').forEach(item => item.classList.remove('active'));

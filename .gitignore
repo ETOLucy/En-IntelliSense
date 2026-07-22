@@ -6,3 +6,4 @@ server.log
 server-error.log
 .wrangler/
 .dev.vars
+*-check.png
