@@ -52,6 +52,13 @@
               <button type="button" class="selected" data-level="natural">Natural</button>
               <button type="button" data-level="advanced">Advanced</button>
             </div>
+            <label>Completion</label>
+            <div class="segmented completion-level" id="completionMode" role="group" aria-label="Completion level">
+              <button type="button" class="selected" data-completion="auto">Auto</button>
+              <button type="button" data-completion="word">Word</button>
+              <button type="button" data-completion="phrase">Phrase</button>
+              <button type="button" data-completion="sentence">Sentence</button>
+            </div>
             <label for="tone">Tone</label>
             <select id="tone">
               <option value="warm">Warm and friendly</option>
@@ -71,7 +78,19 @@
 
           <div class="address-fields" id="addressFields">
             <label><span>To</span><input id="recipient" type="text" value="Emma" aria-label="Recipient" /></label>
-            <label><span>Subject</span><input id="subject" type="text" value="Greetings from Shanghai" aria-label="Subject" /></label>
+            <label class="subject-row"><span>Subject</span><input id="subject" type="text" value="Greetings from Shanghai" aria-label="Subject" /><button class="field-action" id="polishSubject" type="button">✦ Polish 润色</button></label>
+          </div>
+
+          <div class="editor-tools">
+            <span>Select text or place the cursor in a sentence</span>
+            <button id="polishText" type="button">✦ Polish 正文润色</button>
+            <button id="explainText" type="button">? Explain 解释</button>
+            <button id="simplifyText" type="button">Aa Simplify 简化</button>
+          </div>
+
+          <div class="assist-result hidden" id="assistResult" aria-live="polite">
+            <div class="assist-head"><strong id="assistTitle">Writing help</strong><button id="closeAssist" type="button" aria-label="Close">×</button></div>
+            <div id="assistContent"></div>
           </div>
 
           <div class="editor-wrap" id="editorWrap">
@@ -82,6 +101,8 @@ It was so lovely to receive your last letter. I was happy to hear about your new
 
 Life here has been busy, but in a good way. Last weekend, I</textarea>
             <div class="autocomplete-status hidden" id="autocompleteStatus" aria-live="polite"><span>✦</span> <span id="suggestionKind">Sentence</span> suggestion <kbd>Tab</kbd></div>
+            <div class="model-thinking hidden" id="modelThinking"><span></span> Thinking</div>
+            <button class="suggestion-bar hidden" id="suggestionBar" type="button"><span><b id="barKind">Suggestion</b><span id="barText"></span></span><kbd>Tab to accept</kbd></button>
           </div>
 
           <div class="editor-footer">
@@ -92,22 +113,35 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
         </section>
 
         <aside class="coach-panel">
-          <div class="coach-head"><div><span class="coach-icon">✦</span><div><strong>Writing coach</strong><span>Context-aware suggestions</span></div></div><button class="icon-btn" id="closeCoach" type="button" aria-label="Close writing coach">×</button></div>
+          <div class="coach-head"><div><span class="coach-icon">✦</span><div><strong>Writing coach</strong><span class="connection-state" id="connectionState"><i></i> Checking model</span></div></div><button class="icon-btn" id="closeCoach" type="button" aria-label="Close writing coach">×</button></div>
+          <div class="coach-tabs" role="tablist"><button class="active" type="button" data-coach-tab="coach">Coach</button><button type="button" data-coach-tab="chat">Ask AI</button></div>
+          <div id="coachView">
           <div class="score-block"><div class="score-label"><span>Writing flow</span><strong id="flowLabel">Good</strong></div><div class="score-bar"><span id="flowBar"></span></div><p id="flowNote">Your writing feels warm and easy to follow.</p></div>
           <div class="insights">
-            <p class="nav-label">LIVE NOTES</p>
-            <div class="insight"><span class="insight-mark green">✓</span><span><strong>Clear and natural</strong><small id="clarityNote">Your opening sounds warm and genuine.</small></span></div>
-            <button class="insight" id="improveButton" type="button"><span class="insight-mark amber">Aa</span><span><strong>Polish this draft</strong><small>Replace one plain phrase with a more natural alternative.</small><em>Apply suggestion →</em></span></button>
+            <div class="review-heading"><p class="nav-label">LIVE REVIEW</p><button id="reviewDraft" type="button">Review</button></div>
+            <p class="intent-note hidden" id="intentNote"></p>
+            <div id="issueList"><div class="insight"><span class="insight-mark green">✓</span><span><strong>No issues yet</strong><small>Keep writing and the coach will review your draft.</small></span></div></div>
           </div>
           <div class="phrase-bank">
             <div class="section-title"><span>Useful phrases</span><button id="refreshPhrases" type="button" aria-label="Refresh phrases" title="Refresh phrases">↻</button></div>
             <div id="phraseList"></div>
           </div>
           <div class="referral"><span class="referral-mark">↗</span><div><strong>Help a friend write</strong><p>Share this quiet writing space with another English learner.</p><button id="copyReferral" type="button">Copy invite link</button></div></div>
+          </div>
+          <div class="chat-view hidden" id="chatView">
+            <div class="chat-messages" id="chatMessages"><div class="chat-message assistant">你可以用中文问我当前草稿里的表达、语气或语法。选中一段文字后提问，我会重点解释那一段。</div></div>
+            <div class="chat-prompts">
+              <button type="button" data-chat-prompt="这句话是什么意思？请用简单中文解释。">解释选中内容</button>
+              <button type="button" data-chat-prompt="请把选中的内容改得更自然，但不要太难。">自然一点</button>
+              <button type="button" data-chat-prompt="请指出当前草稿里最需要修改的一处，并解释原因。">检查草稿</button>
+            </div>
+            <form class="chat-form" id="chatForm"><textarea id="chatInput" rows="3" placeholder="用中文或英文提问..." aria-label="Ask the writing coach"></textarea><button type="submit">Send</button></form>
+          </div>
         </aside>
       </main>
     </div>
     <div class="toast" id="toast" role="status"></div>
+    <script src="completion.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
