@@ -86,7 +86,7 @@
           </div>
 
           <div class="address-fields" id="addressFields">
-            <label><span>Email</span><input id="recipient" type="email" value="emma@example.com" placeholder="name@example.com" aria-label="Recipient email address" /></label>
+            <label><span>To</span><input id="recipient" type="email" value="emma@example.com" placeholder="recipient@example.com" aria-label="To, recipient email address" /></label>
             <label class="subject-row"><span>Subject</span><input id="subject" type="text" value="Greetings from Shanghai" aria-label="Subject" /><button class="field-action" id="polishSubject" type="button">✦ Polish 润色</button></label>
           </div>
 
@@ -163,13 +163,18 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
       <button class="modal-backdrop" id="emailBackdrop" type="button" aria-label="Close email options"></button>
       <section class="email-dialog">
         <div class="email-dialog-head"><div><span>READY TO SEND</span><h2 id="emailModalTitle">Open in your email</h2></div><button id="closeEmailModal" type="button" aria-label="Close">×</button></div>
-        <div class="email-summary"><label for="emailRecipientInput">Email address</label><input id="emailRecipientInput" type="email" placeholder="name@example.com" autocomplete="email" required /><span>Subject</span><strong id="emailSummarySubject">No subject</strong></div>
-        <p class="email-import-note">Recipient, subject, and letter body will be imported into the compose window.</p>
+        <div class="email-summary"><label for="emailRecipientInput">To / 收件人</label><input id="emailRecipientInput" type="email" placeholder="recipient@example.com" autocomplete="email" required aria-describedby="recipientHelp" /><span>Subject</span><strong id="emailSummarySubject">No subject</strong></div>
+        <p class="email-import-note" id="recipientHelp"><strong>To</strong> is the address of the person who will receive this email. The recipient, subject, and letter body will be carried into the compose window.</p>
         <div class="email-provider-grid">
-          <button type="button" data-email-provider="default"><i class="provider-mark default">@</i><span><strong>Default mail app</strong><small>QQ Mail, 163 Mail, Apple Mail...</small></span></button>
-          <button type="button" data-email-provider="gmail"><i class="provider-mark gmail">G</i><span><strong>Gmail</strong><small>Open a new web draft</small></span></button>
-          <button type="button" data-email-provider="outlook"><i class="provider-mark outlook">O</i><span><strong>Outlook</strong><small>Open a new web draft</small></span></button>
-          <button type="button" data-email-provider="yahoo"><i class="provider-mark yahoo">Y!</i><span><strong>Yahoo Mail</strong><small>Open a new web draft</small></span></button>
+          <button type="button" data-email-provider="qq"><i class="provider-mark qq">QQ</i><span><strong>QQ Mail</strong><small>Open QQ 邮箱写信</small></span></button>
+          <button type="button" data-email-provider="netease"><i class="provider-mark netease">163</i><span><strong>163 Mail</strong><small>Open 163 邮箱写信</small></span></button>
+          <button type="button" data-email-provider="gmail"><i class="provider-mark gmail">G</i><span><strong>Gmail</strong><small>Open a pre-filled draft</small></span></button>
+          <button type="button" data-email-provider="custom" aria-expanded="false" aria-controls="customProviderPanel"><i class="provider-mark custom">+</i><span><strong>Custom</strong><small>Use another webmail</small></span></button>
+        </div>
+        <div class="custom-provider-panel hidden" id="customProviderPanel">
+          <label for="customProviderUrl">Compose URL template</label>
+          <input id="customProviderUrl" type="url" placeholder="https://mail.example.com/compose?to={to}&subject={subject}&body={body}" autocomplete="url" />
+          <button id="openCustomProvider" type="button">Open custom webmail</button>
         </div>
         <button class="copy-email" id="copyEmailDraft" type="button">Copy complete email</button>
       </section>

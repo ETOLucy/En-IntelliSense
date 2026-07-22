@@ -10,6 +10,7 @@ const wordCount = $('#wordCount');
 const saveStatus = $('#saveStatus');
 const toast = $('#toast');
 const FINISHED_KEY = 'enwrite-finished';
+const CUSTOM_PROVIDER_KEY = 'enwrite-custom-provider';
 
 const content = {
   letter: {
@@ -393,6 +394,9 @@ function openEmailModal() {
   $('#emailRecipientInput').value = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.to) ? draft.to : '';
   $('#emailRecipientInput').setCustomValidity('');
   $('#emailSummarySubject').textContent = draft.subject || 'No subject';
+  $('#customProviderUrl').value = localStorage.getItem(CUSTOM_PROVIDER_KEY) || '';
+  $('#customProviderPanel').classList.add('hidden');
+  document.querySelector('[data-email-provider="custom"]').setAttribute('aria-expanded', 'false');
   $('#emailModal').classList.remove('hidden');
   document.body.classList.add('modal-open');
   $('#emailRecipientInput').focus();
@@ -402,6 +406,14 @@ function closeEmailModal() {
   $('#emailModal').classList.add('hidden');
   document.body.classList.remove('modal-open');
   $('#finishButton').focus();
+}
+
+function toggleCustomProvider() {
+  const panel = $('#customProviderPanel');
+  const opening = panel.classList.contains('hidden');
+  panel.classList.toggle('hidden', !opening);
+  document.querySelector('[data-email-provider="custom"]').setAttribute('aria-expanded', String(opening));
+  if (opening) $('#customProviderUrl').focus();
 }
 
 function openEmailProvider(provider) {
@@ -416,10 +428,28 @@ function openEmailProvider(provider) {
   emailInput.setCustomValidity('');
   $('#recipient').value = draft.to;
   saveDraft();
+  const customTemplate = provider === 'custom' ? $('#customProviderUrl').value.trim() : '';
+  if (provider === 'custom') {
+    if (!/\{(?:to|subject|body)\}/.test(customTemplate)) {
+      $('#customProviderUrl').setCustomValidity('Include at least one placeholder: {to}, {subject}, or {body}');
+      $('#customProviderUrl').reportValidity();
+      $('#customProviderUrl').focus(); return;
+    }
+    const previewUrl = EnWriteCompletion.buildEmailComposeUrl(provider, draft, customTemplate);
+    try {
+      const parsed = new URL(previewUrl);
+      if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('Unsupported protocol');
+    } catch {
+      $('#customProviderUrl').setCustomValidity('Enter a valid http or https compose URL template');
+      $('#customProviderUrl').reportValidity();
+      $('#customProviderUrl').focus(); return;
+    }
+    $('#customProviderUrl').setCustomValidity('');
+    localStorage.setItem(CUSTOM_PROVIDER_KEY, customTemplate);
+  }
   archiveCurrentDocument();
-  const url = EnWriteCompletion.buildEmailComposeUrl(provider, draft);
-  if (provider === 'default') window.location.href = url;
-  else window.open(url, '_blank', 'noopener,noreferrer');
+  const url = EnWriteCompletion.buildEmailComposeUrl(provider, draft, customTemplate);
+  window.open(url, '_blank', 'noopener,noreferrer');
   closeEmailModal();
   notify('Email draft imported');
 }
@@ -685,7 +715,12 @@ $('#closeAssist').addEventListener('click', () => $('#assistResult').classList.a
 $('#closeEmailModal').addEventListener('click', closeEmailModal);
 $('#emailBackdrop').addEventListener('click', closeEmailModal);
 $('#emailRecipientInput').addEventListener('input', event => event.currentTarget.setCustomValidity(''));
-document.querySelectorAll('[data-email-provider]').forEach(button => button.addEventListener('click', () => openEmailProvider(button.dataset.emailProvider)));
+$('#customProviderUrl').addEventListener('input', event => event.currentTarget.setCustomValidity(''));
+document.querySelectorAll('[data-email-provider]').forEach(button => button.addEventListener('click', () => {
+  if (button.dataset.emailProvider === 'custom') toggleCustomProvider();
+  else openEmailProvider(button.dataset.emailProvider);
+}));
+$('#openCustomProvider').addEventListener('click', () => openEmailProvider('custom'));
 $('#copyEmailDraft').addEventListener('click', async () => {
   const draft = emailDraft();
   const completeEmail = `To: ${draft.to}\nSubject: ${draft.subject}\n\n${draft.body}`;

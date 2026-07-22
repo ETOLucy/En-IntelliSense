@@ -81,14 +81,25 @@
     }).filter(Boolean).sort((a, b) => a.start - b.start);
   }
 
-  function buildEmailComposeUrl(provider, draft) {
+  function buildEmailComposeUrl(provider, draft, customTemplate = '') {
     const to = String(draft.to || '').trim();
     const subject = String(draft.subject || '').trim();
     const body = String(draft.body || '');
     const encoded = { to: encodeURIComponent(to), subject: encodeURIComponent(subject), body: encodeURIComponent(body) };
+    if (provider === 'qq') return `https://mail.qq.com/cgi-bin/readtemplate?check=false&t=compose&to=${encoded.to}&subject=${encoded.subject}&body=${encoded.body}`;
+    if (provider === 'netease') {
+      const composeData = encodeURIComponent(JSON.stringify({ to, subject, content: body }));
+      return `https://mail.163.com/#module=compose.ComposeModule%7C${composeData}`;
+    }
     if (provider === 'gmail') return `https://mail.google.com/mail/?view=cm&fs=1&to=${encoded.to}&su=${encoded.subject}&body=${encoded.body}`;
     if (provider === 'outlook') return `https://outlook.live.com/mail/0/deeplink/compose?to=${encoded.to}&subject=${encoded.subject}&body=${encoded.body}`;
     if (provider === 'yahoo') return `https://compose.mail.yahoo.com/?to=${encoded.to}&subject=${encoded.subject}&body=${encoded.body}`;
+    if (provider === 'custom') {
+      return String(customTemplate || '')
+        .replaceAll('{to}', encoded.to)
+        .replaceAll('{subject}', encoded.subject)
+        .replaceAll('{body}', encoded.body);
+    }
     return `mailto:${encoded.to}?subject=${encoded.subject}&body=${encoded.body}`;
   }
 

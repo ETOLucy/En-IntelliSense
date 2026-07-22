@@ -54,23 +54,34 @@ try:
     if not evaluate(socket, 3, "!document.querySelector('#documentMenu').classList.contains('hidden') && document.querySelectorAll('#documentMenu [data-doc-action]').length === 4"):
         raise RuntimeError("Document menu actions are incomplete")
     evaluate(socket, 4, "document.querySelector('#moreButton').click(); document.querySelector('#finishButton').click();")
-    if not evaluate(socket, 5, "!document.querySelector('#emailModal').classList.contains('hidden') && document.querySelector('#emailRecipientInput').type === 'email'"):
+    if not evaluate(socket, 5, "!document.querySelector('#emailModal').classList.contains('hidden') && document.querySelector('#emailRecipientInput').type === 'email' && document.querySelectorAll('[data-email-provider]').length === 4 && document.querySelector('[data-email-provider=\"qq\"]') && document.querySelector('[data-email-provider=\"netease\"]') && document.querySelector('label[for=\"emailRecipientInput\"]').textContent.includes('To')"):
         raise RuntimeError("Editable email chooser did not open")
-    evaluate(socket, 6, "document.querySelector('#closeEmailModal').click(); document.querySelector('#format').value = 'essay'; document.querySelector('#format').dispatchEvent(new Event('change')); document.querySelector('#finishButton').click();")
-    if not evaluate(socket, 7, "!document.querySelector('#finishedView').classList.contains('hidden') && document.querySelector('#finishedCount').textContent === '1' && document.querySelectorAll('.finished-item').length === 1"):
+    evaluate(socket, 6, "window.open = url => { window.__openedEmailUrl = url; }; document.querySelector('[data-email-provider=\"qq\"]').click();")
+    if not evaluate(socket, 7, "window.__openedEmailUrl.startsWith('https://mail.qq.com/cgi-bin/readtemplate') && window.__openedEmailUrl.includes('to=emma%40example.com') && window.__openedEmailUrl.includes('subject=Greetings%20from%20Shanghai') && document.querySelector('#emailModal').classList.contains('hidden')"):
+        raise RuntimeError("QQ Mail did not receive the current email fields")
+    evaluate(socket, 8, "localStorage.removeItem('enwrite-finished'); document.querySelector('#finishButton').click(); document.querySelector('[data-email-provider=\"custom\"]').click();")
+    if not evaluate(socket, 9, "!document.querySelector('#customProviderPanel').classList.contains('hidden') && document.querySelector('#customProviderUrl').placeholder.includes('{to}')"):
+        raise RuntimeError("Custom webmail setup did not open")
+    email_screenshot = command(socket, 100, "Page.captureScreenshot", {"format": "png"})
+    (root / "email-ui-check.png").write_bytes(base64.b64decode(email_screenshot["data"]))
+    evaluate(socket, 10, "document.querySelector('#customProviderUrl').value = 'https://mail.example/compose?to={to}&subject={subject}&body={body}'; document.querySelector('#openCustomProvider').click();")
+    if not evaluate(socket, 11, "window.__openedEmailUrl.startsWith('https://mail.example/compose?') && window.__openedEmailUrl.includes('to=emma%40example.com') && document.querySelector('#emailModal').classList.contains('hidden')"):
+        raise RuntimeError("Custom webmail did not receive the current email fields")
+    evaluate(socket, 12, "localStorage.removeItem('enwrite-finished'); document.querySelector('#format').value = 'essay'; document.querySelector('#format').dispatchEvent(new Event('change')); document.querySelector('#finishButton').click();")
+    if not evaluate(socket, 13, "!document.querySelector('#finishedView').classList.contains('hidden') && document.querySelector('#finishedCount').textContent === '1' && document.querySelectorAll('.finished-item').length === 1"):
         raise RuntimeError("Finishing a document did not open the archive")
-    evaluate(socket, 8, "document.querySelector('#draftsNav').click();")
-    if not evaluate(socket, 9, "!document.querySelector('#composeView').classList.contains('hidden') && document.querySelector('#draftsNav').classList.contains('active')"):
+    evaluate(socket, 14, "document.querySelector('#draftsNav').click();")
+    if not evaluate(socket, 15, "!document.querySelector('#composeView').classList.contains('hidden') && document.querySelector('#draftsNav').classList.contains('active')"):
         raise RuntimeError("Drafts navigation did not return to the editor")
-    evaluate(socket, 10, "document.querySelector('#finishedNav').click();")
-    if not evaluate(socket, 11, "document.querySelector('#finishedNav').classList.contains('active') && !document.querySelector('#finishedView').classList.contains('hidden')"):
+    evaluate(socket, 16, "document.querySelector('#finishedNav').click();")
+    if not evaluate(socket, 17, "document.querySelector('#finishedNav').classList.contains('active') && !document.querySelector('#finishedView').classList.contains('hidden')"):
         raise RuntimeError("Finished navigation did not open the archive")
-    screenshot = command(socket, 12, "Page.captureScreenshot", {"format": "png"})
-    evaluate(socket, 13, "document.querySelector('[data-finished-action=\"edit\"]').click();")
-    if not evaluate(socket, 14, "document.querySelector('#draftsNav').classList.contains('active') && document.querySelector('#editor').value.includes('Learning a new language')"):
+    screenshot = command(socket, 18, "Page.captureScreenshot", {"format": "png"})
+    evaluate(socket, 19, "document.querySelector('[data-finished-action=\"edit\"]').click();")
+    if not evaluate(socket, 20, "document.querySelector('#draftsNav').classList.contains('active') && document.querySelector('#editor').value.includes('Learning a new language')"):
         raise RuntimeError("Editing a finished copy did not restore the document")
-    evaluate(socket, 15, "document.querySelector('#finishedNav').click(); window.confirm = () => true; document.querySelector('[data-finished-action=\"delete\"]').click();")
-    if not evaluate(socket, 16, "document.querySelector('#finishedCount').textContent === '0' && document.querySelectorAll('.finished-item').length === 0"):
+    evaluate(socket, 21, "document.querySelector('#finishedNav').click(); window.confirm = () => true; document.querySelector('[data-finished-action=\"delete\"]').click();")
+    if not evaluate(socket, 22, "document.querySelector('#finishedCount').textContent === '0' && document.querySelectorAll('.finished-item').length === 0"):
         raise RuntimeError("Deleting a finished document did not update the archive")
     (root / "ui-check.png").write_bytes(base64.b64decode(screenshot["data"]))
     socket.close()

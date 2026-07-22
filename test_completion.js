@@ -21,4 +21,16 @@ assert.equal(
   completion.buildEmailComposeUrl('default', { to: 'friend@example.com', subject: 'Hello', body: 'Hi' }),
   'mailto:friend%40example.com?subject=Hello&body=Hi'
 );
+assert.equal(
+  completion.buildEmailComposeUrl('qq', { to: 'friend@example.com', subject: 'Hello there', body: 'Hi!' }),
+  'https://mail.qq.com/cgi-bin/readtemplate?check=false&t=compose&to=friend%40example.com&subject=Hello%20there&body=Hi!'
+);
+assert.equal(
+  completion.buildEmailComposeUrl('netease', { to: 'friend@example.com', subject: 'Hello there', body: 'Hi!' }),
+  'https://mail.163.com/#module=compose.ComposeModule%7C%7B%22to%22%3A%22friend%40example.com%22%2C%22subject%22%3A%22Hello%20there%22%2C%22content%22%3A%22Hi!%22%7D'
+);
+assert.equal(
+  completion.buildEmailComposeUrl('custom', { to: 'friend@example.com', subject: 'Hello there', body: 'Hi!' }, 'https://mail.example/compose?to={to}&subject={subject}&body={body}'),
+  'https://mail.example/compose?to=friend%40example.com&subject=Hello%20there&body=Hi!'
+);
 console.log('contextual completion tests passed');

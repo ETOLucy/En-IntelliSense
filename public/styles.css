@@ -233,23 +233,30 @@ kbd { padding: 2px 5px; border: 1px solid #cad2cc; border-bottom-width: 2px; bor
 .email-dialog-head span { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: 1.2px; }
 .email-dialog-head h2 { margin: 5px 0 0; font-family: "Newsreader", serif; font-size: 25px; letter-spacing: 0; }
 .email-dialog-head > button { width: 30px; height: 30px; border: 0; background: transparent; color: var(--muted); font-size: 20px; }
-.email-summary { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 8px 12px; margin-top: 18px; padding: 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
+.email-summary { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 8px 12px; margin-top: 18px; padding: 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
 .email-summary span, .email-summary label { align-self: center; color: var(--muted); font-size: 10px; }
 .email-summary strong { overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 .email-summary input { width: 100%; min-width: 0; height: 30px; padding: 0 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); outline: 0; font-size: 11px; }
 .email-summary input:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(40, 100, 77, .1); }
 .email-import-note { margin: 12px 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+.email-import-note strong { color: var(--ink); }
 .email-provider-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .email-provider-grid > button { min-width: 0; padding: 11px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: center; gap: 10px; text-align: left; }
 .email-provider-grid > button:hover { border-color: #9db9a8; background: #f5faf6; }
 .provider-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 5px; color: white; font-style: normal; font-size: 12px; font-weight: 700; }
-.provider-mark.default { background: var(--green); }
+.provider-mark.qq { background: #1683e2; font-size: 9px; }
+.provider-mark.netease { background: #d63b37; font-size: 9px; }
 .provider-mark.gmail { background: #c94c3f; }
-.provider-mark.outlook { background: #2774c5; }
-.provider-mark.yahoo { background: #6c3bad; }
+.provider-mark.custom { background: var(--green); font-size: 18px; font-weight: 500; }
 .email-provider-grid span, .email-provider-grid strong, .email-provider-grid small { display: block; min-width: 0; }
 .email-provider-grid strong { font-size: 11px; }
 .email-provider-grid small { margin-top: 3px; overflow: hidden; color: var(--muted); font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.custom-provider-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px; margin-top: 9px; padding: 11px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
+.custom-provider-panel.hidden { display: none; }
+.custom-provider-panel label { grid-column: 1 / -1; color: var(--muted); font-size: 9px; font-weight: 700; }
+.custom-provider-panel input { min-width: 0; height: 34px; padding: 0 9px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); outline: 0; font-size: 10px; }
+.custom-provider-panel input:focus { border-color: var(--green); }
+.custom-provider-panel button { min-height: 34px; padding: 0 10px; border: 0; border-radius: 4px; background: var(--green); color: white; font-size: 9px; font-weight: 700; }
 .copy-email { width: 100%; height: 36px; margin-top: 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green); font-size: 10px; font-weight: 700; }
 body.modal-open { overflow: hidden; }
 body.dark { --bg: #18201d; --surface: #202a26; --surface-2: #29342f; --ink: #edf2ef; --muted: #9baaa2; --line: #36423c; --mint: #254536; --shadow: 0 18px 50px rgba(0,0,0,.25); }
@@ -295,4 +302,6 @@ body.dark .title-input { color: var(--ink); }
   .coach-panel { top: 58px; width: min(90vw, 320px); }
   .email-dialog { padding: 18px; }
   .email-provider-grid { grid-template-columns: 1fr; }
+  .custom-provider-panel { grid-template-columns: 1fr; }
+  .custom-provider-panel button { min-height: 36px; }
 }
