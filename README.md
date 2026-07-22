@@ -2,7 +2,7 @@
 
 Context-aware English writing assistance for learners. En-IntelliSense infers the writer's intent from the whole draft, provides word/phrase/sentence completion, reviews problems in context, highlights exact source text, and offers one-click repairs with bilingual explanations.
 
-Live demo: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+Live demo: [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)
 
 Docs: **English** | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
 
@@ -41,7 +41,7 @@ The public demo currently uses Cloudflare Workers AI with `@cf/meta/llama-3.1-8b
 
 Please use the shared AI features considerately: prefer local word completion, wait for an automatic review to finish, and avoid repeatedly running Review, Polish, or Chat on unchanged text. Developers and regular users should deploy their own instance or configure their own compatible model provider.
 
-Drafts, finished documents, and custom webmail settings are stored only in the browser's `localStorage`; the application has no account system or server-side draft database. Visitors using different devices, browsers, or browser profiles cannot see one another's local drafts. People sharing the same browser profile also share that profile's site storage, so use separate browser profiles on a shared computer or clear the site's local data afterward.
+In this architecture, multi-user isolation relies on browser-local storage rather than server-side accounts. Drafts, finished documents, and custom webmail settings are stored only in the browser's `localStorage`; the application has no server-side draft database. Visitors using different devices, browsers, or browser profiles cannot see one another's local drafts. People sharing the same browser profile also share that profile's site storage, so use separate browser profiles on a shared computer or clear the site's local data afterward.
 
 AI-powered actions send the relevant draft text to the configured model service for processing. The application does not persist those requests, and API responses use `Cache-Control: no-store`, but the public demo should not be used for confidential or sensitive writing.
 
@@ -92,11 +92,11 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## EdgeOne Pages
 
-An EdgeOne Pages production deployment is also available for personal use and mainland-oriented acceleration. Its preset domain, [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool), is protected by EdgeOne and requires a temporary signed link; open it with **Visit site** in the EdgeOne console. Do not commit or share URLs containing `eo_token`.
+The live demo is deployed on EdgeOne Pages at [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/). If a direct visit returns `401 Authorization Required`, access protection is still enabled for the preset domain; disable it in the EdgeOne console before sharing the demo publicly. Do not commit or share temporary URLs containing `eo_token`.
 
 To deploy your own copy, import this GitHub repository into EdgeOne Pages, use `main` as the production branch, and leave the build command empty. The checked-in `edgeone.json` publishes `public/` and deploys the Node Functions under `node-functions/`. Those functions forward `/api/*` to the Cloudflare Worker, so no model API key is stored in EdgeOne.
 
-A stable public EdgeOne address requires a custom domain. Mainland China acceleration also requires that custom domain to have a valid ICP filing. Until then, use the Cloudflare demo above for public access. EdgeOne forwards AI requests to that same Cloudflare Worker, so both addresses use the same model and shared quota.
+A custom domain can provide a more stable branded address. Mainland China acceleration requires that custom domain to have a valid ICP filing. EdgeOne forwards AI requests to the Cloudflare Worker, so the demo uses the model and shared quota described above.
 
 ## Friendly Links
 

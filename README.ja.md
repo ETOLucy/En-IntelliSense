@@ -2,7 +2,7 @@
 
 文章全体の文脈を理解する英語ライティング支援ツールです。書き手の意図を推測し、単語・フレーズ・文を補完し、問題箇所を特定して修正案を提示します。
 
-オンラインデモ: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+オンラインデモ: [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)
 
 ドキュメント: [English](README.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | **日本語** | [Русский](README.ru.md)
 
@@ -21,7 +21,7 @@
 
 公開デモは現在 Cloudflare Workers AI の `@cf/meta/llama-3.1-8b-instruct-fp8` を使用しています。無料枠は現在 [1 日 10,000 Neurons](https://developers.cloudflare.com/workers-ai/platform/pricing/) で、`00:00 UTC` にリセットされ、すべてのデモ利用者と同じアカウントの Workers AI アプリで共有されます。変更していない文章に Review、Polish、Chat を繰り返し実行しないでください。
 
-下書きはブラウザの `localStorage` のみに保存され、サーバー側の下書きデータベースはありません。端末、ブラウザ、ブラウザプロファイルごとに分離されますが、同じプロファイルを共有する利用者はローカルデータも共有します。AI 機能では処理に必要な文章が設定済みプロバイダーへ送信されるため、公開デモに機密情報を入力しないでください。
+この構成では、マルチユーザー分離はサーバーアカウントではなくブラウザのローカルストレージに依存します。下書きは `localStorage` のみに保存され、サーバー側の下書きデータベースはありません。端末、ブラウザ、ブラウザプロファイルごとに分離されますが、同じプロファイルを共有する利用者はローカルデータも共有します。AI 機能では処理に必要な文章が設定済みプロバイダーへ送信されるため、公開デモに機密情報を入力しないでください。
 
 ## メール連携デモ
 
@@ -53,7 +53,7 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## EdgeOne Pages へのデプロイ
 
-EdgeOne Pages にも本番環境をデプロイ済みです。プリセットドメイン `en-intellisense-85d4szue.edgeone.cool` は保護されているため、EdgeOne コンソールの **Visit site** から開いてください。`eo_token` を含む一時 URL は共有またはコミットしないでください。常設の公開 URL にはカスタムドメインが必要で、中国本土向けアクセラレーションにはそのドメインの ICP 登録も必要です。
+デモは [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/) にデプロイされています。`401 Authorization Required` が返る場合は、公開前に EdgeOne コンソールでアクセス保護を無効にしてください。`eo_token` を含む一時 URL は共有またはコミットしないでください。カスタムドメインで中国本土向けアクセラレーションを利用するには ICP 登録が必要です。
 
 ## テスト
 

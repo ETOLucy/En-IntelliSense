@@ -2,7 +2,7 @@
 
 面向英语学习者的上下文智能写作工具。它会结合整篇草稿推断用户想表达的意思，提供单词、短语和句子补全，并检查语法、清晰度、措辞、重复和语气问题。
 
-在线演示：[en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+在线演示：[en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)
 
 文档：[English](README.md) | **简体中文** | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
 
@@ -40,7 +40,7 @@
 
 请节制使用共享 AI：优先使用不消耗模型额度的本地单词补全，等待自动审查完成，不要对没有变化的文本反复点击 Review、Polish 或 Chat。开发者和长期用户应部署自己的实例，或配置自己的兼容模型服务。
 
-草稿、Finished 文档和自定义邮箱设置只保存在当前浏览器的 `localStorage` 中；项目没有账户系统，也没有服务端草稿数据库。不同设备、浏览器或浏览器用户配置之间互相隔离，其他在线访问者看不到你的本地草稿。如果多人共用同一个浏览器用户配置，他们也会共用该站点的本地数据；共用电脑时请使用独立浏览器配置，或使用后清除该站点数据。
+“多用户隔离”在这个架构里依靠浏览器本地存储，而不是创建服务端账户。草稿、Finished 文档和自定义邮箱设置只保存在当前浏览器的 `localStorage` 中，项目没有服务端草稿数据库。不同设备、浏览器或浏览器用户配置之间互相隔离，其他在线访问者看不到你的本地草稿。如果多人共用同一个浏览器用户配置，他们也会共用该站点的本地数据；共用电脑时请使用独立浏览器配置，或使用后清除该站点数据。
 
 使用 AI 补全、审查、润色或聊天时，相关正文会发送到已配置的模型服务进行处理。应用本身不会持久化这些请求，API 响应也设置了 `Cache-Control: no-store`，但仍不建议在公开演示中输入机密或敏感内容。
 
@@ -85,11 +85,11 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## EdgeOne Pages 部署
 
-项目也已部署到 EdgeOne Pages，可供个人使用并面向中国大陆访问进行加速。EdgeOne 预设域名 [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool) 目前受到访问保护，需要临时签名链接；请在 EdgeOne 控制台中点击 **Visit site** 打开。不要提交或分享含有 `eo_token` 的链接。
+在线演示已部署到 EdgeOne Pages：[en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)。如果直接访问返回 `401 Authorization Required`，说明预设域名仍开启访问保护；对外分享前需要在 EdgeOne 控制台中关闭访问保护。不要提交或分享含有 `eo_token` 的临时链接。
 
 自行部署时，在 EdgeOne Pages 中导入本 GitHub 仓库，生产分支选择 `main`，构建命令留空。仓库内的 `edgeone.json` 会发布 `public/`，并部署 `node-functions/` 下的 Node Functions。函数会把 `/api/*` 转发到 Cloudflare Worker，因此不需要在 EdgeOne 中保存模型 API Key。
 
-要获得稳定公开的 EdgeOne 地址，需要绑定自定义域名；要使用中国大陆节点加速，该自定义域名还需要完成 ICP 备案。在此之前，对外分享请使用上方 Cloudflare 演示地址。EdgeOne 的 AI 请求会转发到同一个 Cloudflare Worker，因此两个地址使用相同模型和同一份共享额度。
+绑定自定义域名可以获得更稳定、易识别的地址；要使用中国大陆节点加速，该自定义域名还需要完成 ICP 备案。EdgeOne 的 AI 请求会转发到 Cloudflare Worker，因此演示站使用上文说明的模型和共享额度。
 
 ## 友情链接
 

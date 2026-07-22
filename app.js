@@ -47,7 +47,6 @@ let reviewIssues = [];
 let currentIntent = '';
 let reviewTimer;
 let reviewRequest;
-let lastAutomaticReviewKey = '';
 
 function words() {
   const matches = editor.value.trim().match(/\b[\w'-]+\b/g);
@@ -208,29 +207,25 @@ function renderMirror() {
 function scheduleReview() {
   clearTimeout(reviewTimer);
   if (!modelConfigured || words() < 4) return;
-  reviewTimer = setTimeout(() => reviewDraft(false), 3000);
+  reviewTimer = setTimeout(() => reviewDraft(false), 1600);
 }
 
 async function reviewDraft(manual = true) {
   clearTimeout(reviewTimer);
-  if (!editor.value.trim()) return;
-  const reviewPayload = { text: editor.value, level: currentLevel, format: $('#format').value, audience: $('#relationship').value, tone: $('#tone').value };
-  const reviewKey = JSON.stringify(reviewPayload);
-  if (!manual && reviewKey === lastAutomaticReviewKey) return;
   if (reviewRequest) reviewRequest.abort();
+  if (!editor.value.trim()) return;
   reviewRequest = new AbortController();
   $('#reviewDraft').disabled = true;
   $('#reviewStatus').textContent = 'Reviewing context and wording...';
   try {
     const response = await fetch('/api/review', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: reviewRequest.signal,
-      body: reviewKey
+      body: JSON.stringify({ text: editor.value, level: currentLevel, format: $('#format').value, audience: $('#relationship').value, tone: $('#tone').value })
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Review failed');
     currentIntent = data.intent || '';
     reviewIssues = EnWriteCompletion.findIssueRanges(editor.value, data.issues || []);
-    lastAutomaticReviewKey = reviewKey;
     renderMirror(); renderReview();
     $('#reviewStatus').textContent = reviewIssues.length ? `${reviewIssues.length} possible improvement${reviewIssues.length === 1 ? '' : 's'} found.` : 'No clear problems found.';
     if (manual && !reviewIssues.length) notify('No clear writing problems found');
