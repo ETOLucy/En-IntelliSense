@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -54,8 +55,11 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
+        try:
+            self.end_headers()
+            self.wfile.write(body)
+        except (BrokenPipeError, ConnectionAbortedError, ConnectionResetError):
+            return
 
     def do_GET(self):
         if self.path == "/api/status":
@@ -110,7 +114,8 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             status = error.response.status_code if error.response is not None else "unknown"
             self.send_json(502, {"error": f"Model API returned {status}", "detail": detail})
         except requests.RequestException as error:
-            self.send_json(502, {"error": f"Could not reach model API: {error}"})
+            print(f"Model connection failed after retries: {error}")
+            self.send_json(502, {"error": "Model connection was interrupted after automatic retries. Please try again."})
         except Exception as error:
             self.send_json(500, {"error": f"Completion failed: {error}"})
 
@@ -177,7 +182,8 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             instructions = (
                 "You help a Chinese learner write a friendly English letter subject. "
                 "Return valid JSON only: {\"suggestions\":[{\"text\":\"...\",\"meaning\":\"Chinese meaning\",\"tone\":\"short Chinese tone note\"}]}. "
-                "Give exactly 3 natural subjects, each under 8 words. Preserve the user's intended meaning and avoid marketing language."
+                "Give exactly 3 natural subjects, each under 8 words. Every suggestion must differ meaningfully from the current subject. "
+                "Preserve the user's intended meaning and avoid marketing language."
             )
             prompt = f"Current subject: {text}\nLetter context: {context}"
         elif action == "polish_text":
@@ -215,7 +221,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
     def chat_text(self, instructions, prompt, max_tokens=120):
         base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE") or "https://api.openai.com"
         chat_url = responses_url(base_url).removesuffix("/responses") + "/chat/completions"
-        response = requests.post(chat_url, json={
+        response = self.model_post(chat_url, json={
             "model": os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
             "messages": [{"role": "system", "content": instructions}, {"role": "user", "content": prompt}],
             "max_tokens": max_tokens,
@@ -226,6 +232,22 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
 
     def model_headers(self):
         return {"Authorization": f"Bearer {api_key_value()}", "Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0 En-IntelliSense/1.0"}
+
+    def model_post(self, url, **kwargs):
+        last_error = None
+        for attempt in range(3):
+            try:
+                response = requests.post(url, **kwargs)
+                if response.status_code not in {429, 500, 502, 503, 504} or attempt == 2:
+                    return response
+            except (requests.ConnectionError, requests.Timeout) as error:
+                last_error = error
+                if attempt == 2:
+                    raise
+            time.sleep(0.35 * (2 ** attempt))
+        if last_error:
+            raise last_error
+        return response
 
     def model_completion(self, request_data, text, mode):
         level = request_data.get("level", "natural")
@@ -250,7 +272,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE") or "https://api.openai.com"
         headers = self.model_headers()
         api_style = os.getenv("OPENAI_API_STYLE", "chat").lower()
-        response = requests.post(responses_url(base_url), json=responses_payload, timeout=20, headers=headers) if api_style == "responses" else None
+        response = self.model_post(responses_url(base_url), json=responses_payload, timeout=20, headers=headers) if api_style == "responses" else None
         if response is not None and response.ok:
             data = response.json()
             output = data.get("output_text", "") or "".join(
@@ -261,7 +283,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             )
         else:
             chat_url = responses_url(base_url).removesuffix("/responses") + "/chat/completions"
-            response = requests.post(chat_url, json={
+            response = self.model_post(chat_url, json={
                 "model": os.getenv("OPENAI_AUTOCOMPLETE_MODEL", "gpt-5.4-mini"),
                 "messages": [
                     {"role": "system", "content": instructions},
@@ -295,7 +317,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         )
         base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE") or "https://api.openai.com"
         chat_url = responses_url(base_url).removesuffix("/responses") + "/chat/completions"
-        response = requests.post(chat_url, json={
+        response = self.model_post(chat_url, json={
             "model": os.getenv("OPENAI_AUTOCOMPLETE_MODEL", "gpt-5.4-mini"),
             "messages": [{"role": "system", "content": instructions}, {"role": "user", "content": f"Text to continue:\n{text}"}],
             "max_tokens": 60,

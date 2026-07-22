@@ -13,8 +13,23 @@ function headers(env) {
   return { authorization: `Bearer ${env.OPENAI_API_KEY}`, 'content-type': 'application/json', accept: 'application/json', 'user-agent': 'En-IntelliSense/1.0' };
 }
 
+async function fetchWithRetry(url, options) {
+  let lastError;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const response = await fetch(url, options);
+      if (![429, 500, 502, 503, 504].includes(response.status) || attempt === 2) return response;
+    } catch (error) {
+      lastError = error;
+      if (attempt === 2) throw error;
+    }
+    await new Promise(resolve => setTimeout(resolve, 350 * (2 ** attempt)));
+  }
+  throw lastError || new Error('Model connection failed');
+}
+
 async function chatText(env, instructions, prompt, maxTokens = 300, model = env.OPENAI_MODEL) {
-  const response = await fetch(`${apiBase(env)}/chat/completions`, {
+  const response = await fetchWithRetry(`${apiBase(env)}/chat/completions`, {
     method: 'POST', headers: headers(env),
     body: JSON.stringify({ model, messages: [{ role: 'system', content: instructions }, { role: 'user', content: prompt }], max_tokens: maxTokens, stream: false })
   });
@@ -67,7 +82,7 @@ async function assist(request, env) {
   let instructions;
   let prompt;
   if (data.action === 'polish_subject') {
-    instructions = 'Help a Chinese learner write a natural English subject. Return JSON only: {"suggestions":[{"text":"...","meaning":"Chinese meaning","tone":"short Chinese tone note"}]}. Give exactly 3 subjects under 8 words and preserve intent.';
+    instructions = 'Help a Chinese learner write a natural English subject. Return JSON only: {"suggestions":[{"text":"...","meaning":"Chinese meaning","tone":"short Chinese tone note"}]}. Give exactly 3 subjects under 8 words. Every suggestion must differ meaningfully from the current subject while preserving intent.';
     prompt = `Current subject: ${text}\nDraft context: ${String(data.context || '').slice(-3000)}`;
   } else if (data.action === 'polish_text') {
     instructions = `Polish English for a Chinese learner at ${data.level || 'natural'} level. Return JSON only: {"suggestions":[{"text":"...","meaning":"Chinese meaning","tone":"Chinese difference note"}]}. Give exactly 3 alternatives: simple, natural, and expressive. Preserve meaning.`;

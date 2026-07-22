@@ -228,7 +228,7 @@ async function reviewDraft(manual = true) {
     $('#reviewStatus').textContent = reviewIssues.length ? `${reviewIssues.length} possible improvement${reviewIssues.length === 1 ? '' : 's'} found.` : 'No clear problems found.';
     if (manual && !reviewIssues.length) notify('No clear writing problems found');
   } catch (error) {
-    if (error.name !== 'AbortError') $('#reviewStatus').textContent = `Review unavailable: ${error.message}`;
+    if (error.name !== 'AbortError') $('#reviewStatus').textContent = friendlyModelError(error.message);
   } finally {
     $('#reviewDraft').disabled = false;
   }
@@ -284,6 +284,13 @@ function notify(message) {
   setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
+function friendlyModelError(message) {
+  if (/connection|reach model|1005[34]|network|fetch/i.test(message || '')) {
+    return '模型服务连接暂时中断，系统已自动重试，请稍后再试。';
+  }
+  return message || '模型服务暂时不可用，请稍后再试。';
+}
+
 function renderPhrases() {
   const phrases = content[$('#format').value].phrases;
   $('#phraseList').innerHTML = phrases.map((phrase, index) => {
@@ -326,7 +333,7 @@ async function requestAssist(action) {
     else if (action === 'polish_text') renderTextIdeas(data.suggestions || []);
     else renderExplanation(data, action === 'simplify');
   } catch (error) {
-    $('#assistContent').textContent = error.message;
+    $('#assistContent').textContent = friendlyModelError(error.message);
   }
 }
 
@@ -420,7 +427,7 @@ async function sendChat(message) {
     if (chatHistory.length > 8) chatHistory.splice(0, chatHistory.length - 8);
   } catch (error) {
     thinking.classList.remove('thinking');
-    thinking.textContent = `暂时无法回答：${error.message}`;
+    thinking.textContent = friendlyModelError(error.message);
   }
 }
 

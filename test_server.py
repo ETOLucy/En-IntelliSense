@@ -96,6 +96,16 @@ class CompletionTests(unittest.TestCase):
         self.assertEqual(len(result["issues"]), 1)
         self.assertEqual(result["issues"][0]["replacement"], "I really like it")
 
+    @patch("server.time.sleep")
+    @patch("server.requests.post")
+    def test_model_request_retries_connection_reset(self, post, sleep):
+        response = Mock(status_code=200)
+        post.side_effect = [server.requests.ConnectionError("connection reset"), response]
+        result = self.make_handler().model_post("https://example.test", timeout=1)
+        self.assertIs(result, response)
+        self.assertEqual(post.call_count, 2)
+        sleep.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()
