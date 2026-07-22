@@ -4,6 +4,10 @@ Context-aware English writing assistance for learners. En-IntelliSense infers th
 
 Docs: **English** | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [日本語](README.ja.md)
 
+## Demo
+
+![En-IntelliSense writing workspace](docs/assets/demo.png)
+
 ## Features
 
 - Local word completion and model-powered phrase/sentence completion.
@@ -57,3 +61,7 @@ npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
 npx wrangler deploy
 ```
+
+## Friendly Links
+
+- [LINUX DO - A new kind of community](https://linux.do/)

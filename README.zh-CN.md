@@ -4,6 +4,10 @@
 
 文档：[English](README.md) | **简体中文** | [Español](README.es.md) | [日本語](README.ja.md)
 
+## Demo
+
+![En-IntelliSense 英语写作工作区](docs/assets/demo.png)
+
 ## 功能
 
 - 本地单词补全，以及模型驱动的短语和句子补全。
@@ -50,3 +54,7 @@ npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
 npx wrangler deploy
 ```
+
+## 友情链接
+
+- [LINUX DO - 新的理想型社区](https://linux.do/)
