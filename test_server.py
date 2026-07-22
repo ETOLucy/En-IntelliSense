@@ -84,6 +84,18 @@ class CompletionTests(unittest.TestCase):
             result = self.make_handler().model_assist({"action": "polish_text", "text": "I want know recent how", "context": "Hi Ayna", "level": "simple"})
         self.assertEqual(result["suggestions"][0]["text"], "I would love to hear how you have been.")
 
+    @patch("server.requests.post")
+    def test_review_keeps_only_issues_that_map_to_source(self, post):
+        response = Mock(ok=True)
+        response.raise_for_status.return_value = None
+        response.json.return_value = {"choices": [{"message": {"content": '{"intent":"ask about a friend","issues":[{"quote":"I very like it","replacement":"I really like it","message":"word order","category":"grammar","severity":"warning"},{"quote":"missing text","replacement":"fixed","message":"not in source","category":"clarity","severity":"suggestion"}]}'}}]}
+        post.return_value = response
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}):
+            result = self.make_handler().model_review({"text": "I very like it", "level": "simple", "format": "message"})
+        self.assertEqual(result["intent"], "ask about a friend")
+        self.assertEqual(len(result["issues"]), 1)
+        self.assertEqual(result["issues"][0]["replacement"], "I really like it")
+
 
 if __name__ == "__main__":
     unittest.main()

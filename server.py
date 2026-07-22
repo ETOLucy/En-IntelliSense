@@ -118,6 +118,8 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         text = str(request_data.get("text", "")).strip()[:7000]
         level = request_data.get("level", "natural")
         writing_format = request_data.get("format", "letter")
+        audience = request_data.get("audience", "general reader")
+        tone = request_data.get("tone", "natural")
         if not text:
             raise ValueError("Draft cannot be empty")
         instructions = (
@@ -127,7 +129,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             "\"replacement\":\"improved English\",\"message\":\"concise Chinese explanation\",\"category\":\"grammar|clarity|wording|repetition|tone\",\"severity\":\"warning|suggestion\"}]}. "
             "Return at most 5 non-overlapping issues. Every quote must exactly match the draft."
         )
-        prompt = f"Format: {writing_format}\nLearner level: {level}\nDraft:\n{text}"
+        prompt = f"Format: {writing_format}\nAudience: {audience}\nDesired tone: {tone}\nLearner level: {level}\nDraft:\n{text}"
         output = self.chat_text(instructions, prompt, 700)
         cleaned = output.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
         try:
@@ -136,6 +138,13 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             result = {"intent": "", "issues": []}
         result.setdefault("intent", "")
         result.setdefault("issues", [])
+        result["issues"] = [
+            issue for issue in result["issues"]
+            if isinstance(issue, dict)
+            and str(issue.get("quote", "")) in text
+            and str(issue.get("replacement", "")).strip()
+            and issue.get("replacement") != issue.get("quote")
+        ][:5]
         return result
 
     def model_chat(self, request_data):
@@ -150,7 +159,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             for item in history if isinstance(item, dict)
         )
         instructions = (
-            "You are EnWrite's bilingual English writing tutor. Help a Chinese learner understand and improve their own writing. "
+            "You are En-IntelliSense's bilingual English writing tutor. Help a Chinese learner understand and improve their own writing. "
             "Reply primarily in concise Chinese, keeping English examples where useful. Explain tone and nuance plainly, adapt to the learner, "
             "and never replace their whole draft unless asked. When suggesting English, give an immediately usable version."
         )
@@ -216,7 +225,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         return response.json().get("choices", [{}])[0].get("message", {}).get("content", "")
 
     def model_headers(self):
-        return {"Authorization": f"Bearer {api_key_value()}", "Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0 EnWrite/1.0"}
+        return {"Authorization": f"Bearer {api_key_value()}", "Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0 En-IntelliSense/1.0"}
 
     def model_completion(self, request_data, text, mode):
         level = request_data.get("level", "natural")
@@ -334,5 +343,5 @@ def api_key_value():
 
 
 if __name__ == "__main__":
-    print(f"EnWrite running at http://{HOST}:{PORT}")
+    print(f"En-IntelliSense running at http://{HOST}:{PORT}")
     ThreadingHTTPServer((HOST, PORT), EnWriteHandler).serve_forever()
