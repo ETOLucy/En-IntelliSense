@@ -18,11 +18,13 @@
 - 手紙の完成後、宛先・件名・本文を引き継いで QQ Mail、163 Mail、Gmail、またはカスタム Web メールを開く。
 - 完成済み文書をローカルに保存し、編集可能なコピーとして開き直す。
 
-## モデル、上限、プライバシー
+## AI モデル、費用、プライバシー
 
-既定のデプロイでは Cloudflare Workers AI の `@cf/meta/llama-3.1-8b-instruct-fp8` を使用します。無料枠は現在 [1 日 10,000 Neurons](https://developers.cloudflare.com/workers-ai/platform/pricing/) で、`00:00 UTC` にリセットされ、デプロイに使用したアカウント内の他の Workers AI アプリと共有されます。
+En-IntelliSense には言語モデル、共有 API キー、無料の AI 利用枠は含まれません。モデルによる補完、レビュー、推敲、チャットを使用するには、各利用者が OpenAI 互換プロバイダーを設定します。料金、上限、データ保持、プライバシー条件は選択したプロバイダーに従います。本プロジェクトは非公式な中継サービスを提供または推奨しません。
 
-この構成では、マルチユーザー分離はサーバーアカウントではなくブラウザのローカルストレージに依存します。下書きは `localStorage` のみに保存され、サーバー側の下書きデータベースはありません。端末、ブラウザ、ブラウザプロファイルごとに分離されますが、同じプロファイルを共有する利用者はローカルデータも共有します。AI 機能では処理に必要な文章が設定済みプロバイダーへ送信されるため、機密情報を扱う前にプロバイダーのプライバシー条件を確認してください。
+API キーがなくても、ローカル単語補完、下書き、完成済み文書、メール連携は利用できます。AI 機能は無効のままで、画面には `Add API key for AI` と表示されます。
+
+この構成では、マルチユーザー分離はサーバーアカウントではなくブラウザのローカルストレージに依存します。下書きは `localStorage` のみに保存され、サーバー側の下書きデータベースはありません。AI 機能では必要な文章が利用者の設定したプロバイダーへ送信されます。`.env` はローカルの平文ファイルです。Git に追加したり、GitHub Issue にキーを貼り付けたりせず、機密情報を扱う前にプロバイダーの条件を確認してください。
 
 ## メール連携デモ
 
@@ -30,7 +32,17 @@
 
 ## 設定と実行
 
-`.env.example` を `.env` にコピーし、`OPENAI_API_KEY` を設定してください。必要に応じて `OPENAI_MODEL`、`OPENAI_AUTOCOMPLETE_MODEL`、`OPENAI_BASE_URL` も設定できます。
+`.env.example` を `.env` にコピーし、自分のプロバイダー情報を設定します。
+
+```dotenv
+OPENAI_API_KEY=your_own_api_key
+OPENAI_BASE_URL=https://api.openai.com
+OPENAI_MODEL=gpt-4.1-mini
+OPENAI_AUTOCOMPLETE_MODEL=gpt-4.1-mini
+OPENAI_API_STYLE=chat
+```
+
+選択したプロバイダーが対応するモデル名を使用してください。
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -41,7 +53,9 @@ python server.py
 
 ## Windows デスクトップアプリ
 
-通常は[最新リリース](https://github.com/ETOLucy/En-IntelliSense/releases/latest)から `En-IntelliSense.exe` をダウンロードしてダブルクリックするだけで、コマンドは不要です。`powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1` はソース変更後の再ビルド専用です。API キーは EXE に埋め込まれません。
+通常は[最新リリース](https://github.com/ETOLucy/En-IntelliSense/releases/latest)から `En-IntelliSense.exe` をダウンロードしてダブルクリックするだけで、コマンドは不要です。現在の `v1.0.1` は未署名のため、Windows Smart App Control にブロックされる場合があります。プロジェクトは SignPath Foundation に申請済みで、承認後に署名済み公開リリースを提供します。
+
+`powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1` はソース変更後の再ビルド専用です。EXE に API キー、モデル、メンテナー個人のリソースは含まれません。`En-IntelliSense.env.example` を `.env` に変更し、自分のプロバイダー情報を入力してアプリを再起動します。
 
 ## Cloudflare へのデプロイ
 

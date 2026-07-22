@@ -18,11 +18,13 @@ Documentación: [English](README.md) | [简体中文](README.zh-CN.md) | **Espa�
 - Al terminar una carta, abre QQ Mail, 163 Mail, Gmail o un correo web personalizado con destinatario, asunto y cuerpo preparados.
 - Conserva los documentos terminados localmente y permite volver a editarlos como una copia.
 
-## Modelo, cuota y privacidad
+## Modelo de IA, coste y privacidad
 
-El despliegue predeterminado usa Cloudflare Workers AI con `@cf/meta/llama-3.1-8b-instruct-fp8`. La asignación gratuita actual es de [10.000 Neurons al día](https://developers.cloudflare.com/workers-ai/platform/pricing/), se restablece a las `00:00 UTC` y se comparte con las demás aplicaciones Workers AI de la cuenta que realiza el despliegue.
+En-IntelliSense no incluye un modelo de lenguaje, una clave API compartida ni crédito gratuito de IA. El autocompletado mediante modelo, la revisión, la reescritura y el chat requieren que cada usuario configure su propio proveedor compatible con OpenAI. Los costes, límites y condiciones de privacidad pertenecen al proveedor elegido; el proyecto no proporciona ni recomienda servicios intermediarios no oficiales.
 
-En esta arquitectura, el aislamiento entre usuarios depende del almacenamiento local del navegador, no de cuentas en el servidor. Los borradores se guardan únicamente en `localStorage`; no existe una base de datos de borradores en el servidor. Distintos dispositivos, navegadores y perfiles están aislados, pero las personas que comparten el mismo perfil del navegador también comparten sus datos locales. Las funciones de IA envían el texto necesario al proveedor configurado; revisa sus condiciones de privacidad antes de procesar información confidencial.
+Sin una clave API, la aplicación sigue ofreciendo autocompletado local de palabras, borradores, documentos terminados y transferencia al correo. Las funciones de IA permanecen desactivadas y el asistente muestra `Add API key for AI`.
+
+En esta arquitectura, el aislamiento entre usuarios depende del almacenamiento local del navegador, no de cuentas en el servidor. Los borradores se guardan únicamente en `localStorage`; no existe una base de datos de borradores en el servidor. Las funciones de IA envían el texto necesario al proveedor configurado por el usuario. El archivo `.env` es texto local sin cifrar: no lo añadas a Git, no publiques una clave en una incidencia y revisa la privacidad del proveedor antes de procesar información confidencial.
 
 ## Demostración de correo
 
@@ -30,7 +32,17 @@ En esta arquitectura, el aislamiento entre usuarios depende del almacenamiento l
 
 ## Configuración
 
-Copia `.env.example` como `.env` y configura `OPENAI_API_KEY`. También puedes definir `OPENAI_MODEL`, `OPENAI_AUTOCOMPLETE_MODEL` y `OPENAI_BASE_URL`.
+Copia `.env.example` como `.env` y configura las credenciales de tu propio proveedor:
+
+```dotenv
+OPENAI_API_KEY=your_own_api_key
+OPENAI_BASE_URL=https://api.openai.com
+OPENAI_MODEL=gpt-4.1-mini
+OPENAI_AUTOCOMPLETE_MODEL=gpt-4.1-mini
+OPENAI_API_STYLE=chat
+```
+
+Usa nombres de modelos admitidos por el proveedor seleccionado.
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -41,7 +53,9 @@ Abre `http://127.0.0.1:8000`.
 
 ## Aplicación de escritorio para Windows
 
-Para usarlo normalmente, descarga `En-IntelliSense.exe` desde la [última versión](https://github.com/ETOLucy/En-IntelliSense/releases/latest) y haz doble clic; no necesitas ejecutar comandos. `powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1` solo sirve para volver a compilar después de modificar el código. El ejecutable no incorpora claves de API.
+Para usarlo normalmente, descarga `En-IntelliSense.exe` desde la [última versión](https://github.com/ETOLucy/En-IntelliSense/releases/latest) y haz doble clic; no necesitas ejecutar comandos. La versión `v1.0.1` todavía no está firmada y Windows Smart App Control puede bloquearla. El proyecto ha solicitado la firma de SignPath Foundation y publicará versiones firmadas después de la aprobación.
+
+`powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1` solo sirve para volver a compilar después de modificar el código. El ejecutable no incorpora claves de API, modelos ni recursos personales del mantenedor. Descarga `En-IntelliSense.env.example`, renómbralo como `.env`, añade los datos de tu proveedor y reinicia la aplicación.
 
 ## Despliegue en Cloudflare
 

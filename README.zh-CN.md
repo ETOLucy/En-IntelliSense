@@ -25,7 +25,7 @@
   </p>
   <p>
     <img src="https://img.shields.io/badge/补全-单词%20%7C%20短语%20%7C%20句子-1f6f5b?style=flat-square" alt="单词、短语和句子补全" />
-    <img src="https://img.shields.io/badge/AI-Workers%20AI-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers AI" />
+    <img src="https://img.shields.io/badge/AI-用户自备模型-3a7ca5?style=flat-square" alt="用户自备模型" />
     <img src="https://img.shields.io/badge/存储-本地优先-3a7ca5?style=flat-square" alt="本地优先存储" />
     <a href="LICENSE"><img src="https://img.shields.io/badge/协议-MIT-c65d3b?style=flat-square" alt="MIT 协议" /></a>
   </p>
@@ -63,19 +63,31 @@ En-IntelliSense 会先结合整篇草稿理解用户真正想表达的意思，�
 - 完成书信后可选择 QQ 邮箱、163 邮箱、Gmail 或自定义邮箱，并带入收件人、主题和正文；QQ/163 同时自动复制完整邮件作为兜底。
 - 已完成文档保存在本地 Finished 列表中，可重新创建编辑副本。
 
-## 模型、额度与隐私
+## AI 模型、费用与隐私
 
-默认的 Cloudflare 部署通过 Workers AI 使用 `@cf/meta/llama-3.1-8b-instruct-fp8`。Cloudflare 免费账户目前每天提供 [10,000 Neurons](https://developers.cloudflare.com/workers-ai/platform/pricing/)，在 `00:00 UTC`（北京时间 08:00）重置。额度属于实际部署所使用的 Cloudflare 账户，并与该账户下的其他 Workers AI 应用共享。Neurons 不能直接换算成固定的作文篇数，实际消耗取决于模型、输入长度和输出长度。
+En-IntelliSense 不包含语言模型、共享 API Key 或免费 AI 额度。AI 短语/句子补全、审查、润色和聊天功能需要每位用户配置自己的 OpenAI 兼容模型服务。费用、限速、数据保留规则和隐私条款均由用户选择的提供商决定；本项目不提供或推荐来源不明的中转站。
 
-长期使用时请部署自己的实例，或配置自己的兼容模型服务。本地单词补全不消耗模型额度。
+没有配置 API Key 时，应用仍可打开，本地单词补全、草稿、Finished 文档和邮件跳转均可使用；右侧会显示 `Add API key for AI`。模型驱动的补全、审查、润色和聊天会保持不可用，直到用户完成配置。
 
 “多用户隔离”在这个架构里依靠浏览器本地存储，而不是创建服务端账户。草稿、Finished 文档和自定义邮箱设置只保存在当前浏览器的 `localStorage` 中，项目没有服务端草稿数据库。不同设备、浏览器或浏览器用户配置之间互相隔离，其他在线访问者看不到你的本地草稿。如果多人共用同一个浏览器用户配置，他们也会共用该站点的本地数据；共用电脑时请使用独立浏览器配置，或使用后清除该站点数据。
 
-使用 AI 补全、审查、润色或聊天时，相关正文会发送到已配置的模型服务进行处理。应用本身不会持久化这些请求，API 响应也设置了 `Cache-Control: no-store`；处理机密或敏感内容前，请先确认所配置模型服务的隐私条款。
+使用 AI 功能时，相关正文会发送给用户自行选择的模型服务。应用本身不会持久化这些请求，API 响应也设置了 `Cache-Control: no-store`；处理机密或敏感内容前，请确认提供商的隐私条款。桌面版 `.env` 是本地明文文件，请妥善保管，不要提交到 Git，也不要把 API Key 粘贴到 GitHub Issue。
+
+自行部署 Cloudflare 版本时可以使用 Workers AI，并消耗部署者自己的 Cloudflare 账户额度。该额度不包含在 Windows EXE 中，也不会使用或共享维护者的个人模型资源。
 
 ## 配置与运行
 
-复制 `.env.example` 为 `.env`，设置 `OPENAI_API_KEY`。可通过 `OPENAI_MODEL`、`OPENAI_AUTOCOMPLETE_MODEL` 和 `OPENAI_BASE_URL` 配置兼容模型服务。
+复制 `.env.example` 为 `.env`，填写用户自己的模型服务：
+
+```dotenv
+OPENAI_API_KEY=your_own_api_key
+OPENAI_BASE_URL=https://api.openai.com
+OPENAI_MODEL=gpt-4.1-mini
+OPENAI_AUTOCOMPLETE_MODEL=gpt-4.1-mini
+OPENAI_API_STYLE=chat
+```
+
+模型名称必须是所选提供商实际支持的名称。`OPENAI_MODEL` 用于辅导和审查，`OPENAI_AUTOCOMPLETE_MODEL` 可配置速度更快的补全模型；兼容提供商可以使用不同的 `OPENAI_BASE_URL`。
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -88,6 +100,8 @@ python server.py
 
 普通使用时，只需从 [GitHub 最新版本](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载 `En-IntelliSense.exe` 并双击打开，不需要终端、Python 或任何构建命令。
 
+> **签名状态：** 当前 `v1.0.1` 尚未签名，可能被 Windows Smart App Control 阻止，现阶段主要用于本地测试。项目已申请 SignPath Foundation，审核通过后将发布可公开验证的签名版本。
+
 下面的命令只供修改源码后需要重新生成 EXE 的开发者使用：
 
 ```powershell
@@ -96,7 +110,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
 
 产物位于 `dist/En-IntelliSense.exe`。它会把本地 Python 服务和前端一起打包，启动时自动选择空闲的回环端口，并在原生 WebView2 窗口中打开工作区。运行打包后的 EXE 不要求用户另外安装 Python；当前 Windows 10/11 通常已自带所需的 Microsoft Edge WebView2 Runtime。
 
-API Key 不会被写进 EXE。桌面版会依次读取系统用户环境变量、EXE 同目录的 `.env`、以及 `%APPDATA%\En-IntelliSense\.env`。需要单独配置时，将下载的 `En-IntelliSense.env.example` 重命名为 `.env`，并放到上述任一位置。
+API Key 和维护者个人模型资源都不会被写进 EXE。桌面版会依次读取系统用户环境变量、EXE 同目录的 `.env`、以及 `%APPDATA%\En-IntelliSense\.env`。下载 `En-IntelliSense.env.example` 后将其重命名为 `.env`，填写自己的模型服务配置，并重新启动应用。
 
 ## 测试
 

@@ -25,7 +25,7 @@
   </p>
   <p>
     <img src="https://img.shields.io/badge/completion-word%20%7C%20phrase%20%7C%20sentence-1f6f5b?style=flat-square" alt="Word, phrase, and sentence completion" />
-    <img src="https://img.shields.io/badge/AI-Workers%20AI-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers AI" />
+    <img src="https://img.shields.io/badge/AI-bring%20your%20own%20model-3a7ca5?style=flat-square" alt="Bring your own model" />
     <img src="https://img.shields.io/badge/storage-local--first-3a7ca5?style=flat-square" alt="Local-first storage" />
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-c65d3b?style=flat-square" alt="MIT license" /></a>
   </p>
@@ -64,19 +64,33 @@ For letters and emails, the finished draft carries the recipient, subject, and b
 - Finish a letter in QQ Mail, 163 Mail, Gmail, or a custom webmail compose URL with recipient, subject, and body carried over.
 - Keep completed documents in a local Finished archive and reopen any item as an editable copy.
 
-## Model, quota, and privacy
+<a id="model-quota-and-privacy"></a>
 
-The default Cloudflare deployment uses Workers AI with `@cf/meta/llama-3.1-8b-instruct-fp8`. Cloudflare's free allocation is currently [10,000 Neurons per day](https://developers.cloudflare.com/workers-ai/platform/pricing/), reset at `00:00 UTC`. The allocation belongs to the deploying Cloudflare account and is shared with any other Workers AI applications under that account. Neurons do not map to a fixed number of essays because usage depends on the model and the amount of input and output text.
+## AI model, cost, and privacy
 
-For regular use, deploy your own instance or configure your own compatible model provider. Local word completion does not consume model quota.
+En-IntelliSense does not include a language model, shared API key, or free AI credit. AI completion, review, rewriting, and chat require each user to configure their own OpenAI-compatible model provider. Any fees, rate limits, retention rules, and privacy terms belong to that provider; the project does not provide or endorse unofficial relay services.
+
+Without an API key, the app still opens and supports local word completion, drafts, finished documents, and email handoff. The coach displays `Add API key for AI`; model-powered phrase/sentence completion, review, polish, and chat remain unavailable until configuration is added.
 
 In this architecture, multi-user isolation relies on browser-local storage rather than server-side accounts. Drafts, finished documents, and custom webmail settings are stored only in the browser's `localStorage`; the application has no server-side draft database. Visitors using different devices, browsers, or browser profiles cannot see one another's local drafts. People sharing the same browser profile also share that profile's site storage, so use separate browser profiles on a shared computer or clear the site's local data afterward.
 
-AI-powered actions send the relevant draft text to the configured model service for processing. The application does not persist those requests, and API responses use `Cache-Control: no-store`; review the privacy terms of your configured provider before using confidential or sensitive writing.
+AI-powered actions send the relevant draft text to the provider selected by the user. The application does not persist those requests, and API responses use `Cache-Control: no-store`; review the provider's privacy terms before processing confidential or sensitive writing. A desktop `.env` file is local plaintext: keep it private, never commit it, and never paste an API key into a GitHub issue.
+
+Self-hosted Cloudflare deployments can use Workers AI and consume the deploying account's quota. That quota is not bundled with the Windows EXE and is never shared from the maintainer's personal account.
 
 ## Configure
 
-Copy `.env.example` to `.env`, then set `OPENAI_API_KEY`. `OPENAI_MODEL` handles tutoring and review; `OPENAI_AUTOCOMPLETE_MODEL` may use a faster compatible model for inline completion. `OPENAI_BASE_URL` supports an OpenAI-compatible provider.
+Copy `.env.example` to `.env` and enter credentials from your own provider:
+
+```dotenv
+OPENAI_API_KEY=your_own_api_key
+OPENAI_BASE_URL=https://api.openai.com
+OPENAI_MODEL=gpt-4.1-mini
+OPENAI_AUTOCOMPLETE_MODEL=gpt-4.1-mini
+OPENAI_API_STYLE=chat
+```
+
+Use model names supported by the selected provider. `OPENAI_MODEL` handles tutoring and review; `OPENAI_AUTOCOMPLETE_MODEL` may use a faster model for inline completion. Compatible providers may use a different `OPENAI_BASE_URL`.
 
 Never commit `.env` or place an API key in browser-side JavaScript.
 
@@ -95,6 +109,8 @@ Open `http://127.0.0.1:8000`.
 
 For normal use, download `En-IntelliSense.exe` from the [latest GitHub release](https://github.com/ETOLucy/En-IntelliSense/releases/latest) and double-click it. No terminal, Python installation, or build command is required.
 
+> **Signing status:** `v1.0.1` is currently unsigned and may be blocked by Windows Smart App Control. It is intended for local testing. The project has applied to SignPath Foundation; signed public releases will follow after approval.
+
 The following command is only for developers who changed the source and need to rebuild the EXE:
 
 ```powershell
@@ -103,7 +119,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
 
 The result is `dist/En-IntelliSense.exe`. It bundles the local Python service and frontend, chooses an available loopback port automatically, and opens the workspace in a native WebView2 window. Python is not required on the computer running the finished EXE; Microsoft Edge WebView2 Runtime is required and is already included with current Windows 10/11 installations.
 
-API keys are never embedded in the executable. The desktop app reads model settings from user environment variables, a `.env` file beside the EXE, or `%APPDATA%\En-IntelliSense\.env` in that order. Rename the downloaded `En-IntelliSense.env.example` to `.env` when configuration is needed.
+API keys and maintainer-owned model resources are never embedded in the executable. The desktop app reads model settings from user environment variables, a `.env` file beside the EXE, or `%APPDATA%\En-IntelliSense\.env` in that order. Download `En-IntelliSense.env.example`, rename it to `.env`, enter your own provider settings, and restart the app.
 
 ## Test
 
