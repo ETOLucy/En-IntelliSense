@@ -29,6 +29,16 @@ async function fetchWithRetry(url, options) {
 }
 
 async function chatText(env, instructions, prompt, maxTokens = 300, model = env.OPENAI_MODEL) {
+  if (!env.OPENAI_API_KEY) {
+    if (!env.AI) throw new Error('No model provider is configured');
+    const workersModel = env.CLOUDFLARE_AI_MODEL || '@cf/meta/llama-3.1-8b-instruct-fp8';
+    const result = await env.AI.run(workersModel, {
+      messages: [{ role: 'system', content: instructions }, { role: 'user', content: prompt }],
+      max_tokens: maxTokens,
+      temperature: 0.25
+    });
+    return typeof result === 'string' ? result : String(result?.response || '');
+  }
   const response = await fetchWithRetry(`${apiBase(env)}/chat/completions`, {
     method: 'POST', headers: headers(env),
     body: JSON.stringify({ model, messages: [{ role: 'system', content: instructions }, { role: 'user', content: prompt }], max_tokens: maxTokens, stream: false })
@@ -111,8 +121,14 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
-    if (url.pathname === '/api/status') return json({ configured: Boolean(env.OPENAI_API_KEY), model: env.OPENAI_MODEL, autocomplete_model: env.OPENAI_AUTOCOMPLETE_MODEL });
-    if (!env.OPENAI_API_KEY) return json({ error: 'OPENAI_API_KEY is not configured' }, 503);
+    const workersAIModel = env.CLOUDFLARE_AI_MODEL || '@cf/meta/llama-3.1-8b-instruct-fp8';
+    const configured = Boolean(env.OPENAI_API_KEY || env.AI);
+    if (url.pathname === '/api/status') return json({
+      configured,
+      model: env.OPENAI_API_KEY ? env.OPENAI_MODEL : workersAIModel,
+      autocomplete_model: env.OPENAI_API_KEY ? env.OPENAI_AUTOCOMPLETE_MODEL : workersAIModel
+    });
+    if (!configured) return json({ error: 'No model provider is configured' }, 503);
     if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
     try {
       if (url.pathname === '/api/complete') return await complete(request, env, false);

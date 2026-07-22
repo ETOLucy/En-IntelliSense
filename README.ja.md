@@ -2,7 +2,9 @@
 
 文章全体の文脈を理解する英語ライティング支援ツールです。書き手の意図を推測し、単語・フレーズ・文を補完し、問題箇所を特定して修正案を提示します。
 
-ドキュメント: [English](README.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | **日本語**
+オンラインデモ: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+
+ドキュメント: [English](README.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | **日本語** | [Русский](README.ru.md)
 
 ## 機能
 
@@ -12,6 +14,12 @@
 - 原文の問題箇所をハイライトし、説明と修正案を表示してワンクリックで置換。
 - 件名と本文の推敲、翻訳、説明、簡略化。
 - Useful phrases は追記ではなく、選択範囲または現在の文を置換。
+- 手紙の完成後、宛先・件名・本文を引き継いで QQ Mail、163 Mail、Gmail、またはカスタム Web メールを開く。
+- 完成済み文書をローカルに保存し、編集可能なコピーとして開き直す。
+
+## メール連携デモ
+
+![完成したメールを Web メールへ引き継ぐ](docs/assets/demo-email.png)
 
 ## 設定と実行
 
@@ -26,11 +34,15 @@ python server.py
 
 ## Cloudflare へのデプロイ
 
+既定では Cloudflare Workers AI を使用するため、外部 API キーなしでデプロイできます。OpenAI 互換プロバイダーを使用する場合のみ Secret を追加します。
+
 ```powershell
 npx wrangler login
+npx wrangler deploy
+
+# 任意の外部プロバイダー
 npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
-npx wrangler deploy
 ```
 
 ## テスト
@@ -39,3 +51,7 @@ npx wrangler deploy
 python -m unittest discover -p "test_*.py"
 node test_completion.js
 ```
+
+## ライセンス
+
+[MIT](LICENSE)

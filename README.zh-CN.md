@@ -2,7 +2,9 @@
 
 面向英语学习者的上下文智能写作工具。它会结合整篇草稿推断用户想表达的意思，提供单词、短语和句子补全，并检查语法、清晰度、措辞、重复和语气问题。
 
-文档：[English](README.md) | **简体中文** | [Español](README.es.md) | [日本語](README.ja.md)
+在线体验：[en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+
+文档：[English](README.md) | **简体中文** | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
 
 ## Demo
 
@@ -14,6 +16,12 @@
 
 ![识别并修正中式英语逻辑](docs/assets/demo-chinese-logic.png)
 
+### 完成邮件并打开常用邮箱
+
+完成书信后，可以选择 QQ 邮箱、163 邮箱、Gmail 或自定义邮箱。系统会把收件人、主题和正文带入写信页面。
+
+![选择邮箱并导入已经完成的邮件](docs/assets/demo-email.png)
+
 ## 功能
 
 - 本地单词补全，以及模型驱动的短语和句子补全。
@@ -23,7 +31,8 @@
 - 标题润色、正文润色、中文翻译、表达解释和简单改写。
 - Useful phrases 会替换选中内容或光标所在句子，不会继续追加重复内容。
 - 支持书信、作文和消息格式，草稿保存在本地浏览器。
-- 完成书信后可选择 Gmail、Outlook、Yahoo 或系统默认邮箱，并自动导入收件人、主题和正文。
+- 完成书信后可选择 QQ 邮箱、163 邮箱、Gmail 或自定义邮箱，并带入收件人、主题和正文。
+- 已完成文档保存在本地 Finished 列表中，可重新创建编辑副本。
 
 ## 配置与运行
 
@@ -53,15 +62,21 @@ node test_completion.js
 
 ## Cloudflare 部署
 
-仓库包含 Worker 与静态资源配置。API Key 和兼容服务地址使用 Cloudflare Secret 保存，不会进入前端文件。
+仓库通过一个 Worker 同时提供前端和 API。默认使用 Cloudflare Workers AI，因此免费部署不要求外部 API Key。需要改用 OpenAI 兼容服务时，再通过 Secret 配置 `OPENAI_API_KEY` 和 `OPENAI_BASE_URL`。
 
 ```powershell
 npx wrangler login
+npx wrangler deploy
+
+# 可选：外部兼容模型服务
 npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
-npx wrangler deploy
 ```
 
 ## 友情链接
 
 - [LINUX DO - 新的理想型社区](https://linux.do/)
+
+## 开源协议
+
+[MIT](LICENSE)

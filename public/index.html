@@ -17,8 +17,8 @@
         <div class="draft-state"><span class="saved-dot"></span><span id="saveStatus">Draft saved</span></div>
         <div class="top-actions">
           <button class="share-button" id="shareButton" type="button" title="Copy a link to En-IntelliSense">Share</button>
+          <button class="coach-toggle" id="coachToggle" type="button" aria-controls="writingCoach" aria-expanded="true">Coach</button>
           <button class="icon-btn" id="themeButton" type="button" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
-          <button class="avatar" type="button" aria-label="Account menu">EN</button>
         </div>
       </header>
 
@@ -27,12 +27,12 @@
           <button class="new-letter" id="newDraftButton" type="button"><span aria-hidden="true">+</span> New draft</button>
           <nav class="draft-nav" aria-label="Documents">
             <p class="nav-label">WORKSPACE</p>
-            <button class="nav-item active" id="draftsNav" type="button"><span class="nav-symbol">□</span><span>Drafts</span><span class="count" id="draftCount">1</span></button>
-            <button class="nav-item" id="finishedNav" type="button"><span class="nav-symbol">✓</span><span>Finished</span><span class="count" id="finishedCount">0</span></button>
+            <button class="nav-item active" id="draftsNav" type="button"><span>Drafts</span><span class="count" id="draftCount">1</span></button>
+            <button class="nav-item" id="finishedNav" type="button"><span>Finished</span><span class="count" id="finishedCount">0</span></button>
           </nav>
 
           <div class="writing-settings">
-            <div class="section-title"><span>Writing settings</span><span aria-hidden="true">⚙</span></div>
+            <div class="section-title"><span>Writing settings</span></div>
             <label for="format">Format</label>
             <select id="format">
               <option value="letter">Letter or email</option>
@@ -67,7 +67,6 @@
             </select>
           </div>
 
-          <div class="streak"><span class="streak-icon">7</span><div><strong>7-day streak</strong><span>Keep your English flowing</span></div></div>
         </aside>
 
         <section class="workspace">
@@ -77,24 +76,24 @@
             <div class="more-menu-wrap">
               <button class="more-btn" id="moreButton" type="button" aria-label="More actions" title="More actions" aria-expanded="false" aria-controls="documentMenu">•••</button>
               <div class="document-menu hidden" id="documentMenu" role="menu">
-                <button type="button" role="menuitem" data-doc-action="review"><span>✓</span>Review now</button>
-                <button type="button" role="menuitem" data-doc-action="copy"><span>□</span>Copy draft</button>
-                <button type="button" role="menuitem" data-doc-action="download"><span>↓</span>Download .txt</button>
-                <button class="danger" type="button" role="menuitem" data-doc-action="clear"><span>×</span>Clear draft</button>
+                <button type="button" role="menuitem" data-doc-action="review">Review now</button>
+                <button type="button" role="menuitem" data-doc-action="copy">Copy draft</button>
+                <button type="button" role="menuitem" data-doc-action="download">Download .txt</button>
+                <button class="danger" type="button" role="menuitem" data-doc-action="clear">Clear draft</button>
               </div>
             </div>
           </div>
 
           <div class="address-fields" id="addressFields">
             <label><span>To</span><input id="recipient" type="email" value="emma@example.com" placeholder="recipient@example.com" aria-label="To, recipient email address" /></label>
-            <label class="subject-row"><span>Subject</span><input id="subject" type="text" value="Greetings from Shanghai" aria-label="Subject" /><button class="field-action" id="polishSubject" type="button">✦ Polish 润色</button></label>
+            <label class="subject-row"><span>Subject</span><input id="subject" type="text" value="Greetings from Shanghai" aria-label="Subject" /><button class="field-action" id="polishSubject" type="button">Polish 润色</button></label>
           </div>
 
           <div class="editor-tools">
             <span>Select text or place the cursor in a sentence</span>
-            <button id="polishText" type="button">✦ Polish 正文润色</button>
-            <button id="explainText" type="button">? Explain 解释</button>
-            <button id="simplifyText" type="button">Aa Simplify 简化</button>
+            <button id="polishText" type="button">Polish 正文润色</button>
+            <button id="explainText" type="button">Explain 解释</button>
+            <button id="simplifyText" type="button">Simplify 简化</button>
           </div>
 
           <div class="assist-result hidden" id="assistResult" aria-live="polite">
@@ -109,7 +108,7 @@
 It was so lovely to receive your last letter. I was happy to hear about your new apartment and the little garden you have started.
 
 Life here has been busy, but in a good way. Last weekend, I</textarea>
-            <div class="autocomplete-status hidden" id="autocompleteStatus" aria-live="polite"><span>✦</span> <span id="suggestionKind">Sentence</span> suggestion <kbd>Tab</kbd></div>
+            <div class="autocomplete-status hidden" id="autocompleteStatus" aria-live="polite"><span id="suggestionKind">Sentence</span> suggestion <kbd>Tab</kbd></div>
             <div class="model-thinking hidden" id="modelThinking"><span></span> Thinking</div>
             <button class="suggestion-bar hidden" id="suggestionBar" type="button"><span><b id="barKind">Suggestion</b><span id="barText"></span></span><kbd>Tab to accept</kbd></button>
           </div>
@@ -130,8 +129,8 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
           </section>
         </section>
 
-        <aside class="coach-panel">
-          <div class="coach-head"><div><span class="coach-icon">✦</span><div><strong>Writing coach</strong><span class="connection-state" id="connectionState"><i></i> Checking model</span></div></div><button class="icon-btn" id="closeCoach" type="button" aria-label="Close writing coach">×</button></div>
+        <aside class="coach-panel" id="writingCoach">
+          <div class="coach-head"><div class="coach-title"><strong>Writing coach</strong><span class="connection-state" id="connectionState"><i></i> Checking model</span></div><button class="icon-btn" id="closeCoach" type="button" aria-label="Close writing coach">×</button></div>
           <div class="coach-tabs" role="tablist"><button class="active" type="button" data-coach-tab="coach">Coach</button><button type="button" data-coach-tab="chat">Ask AI</button></div>
           <div id="coachView">
           <div class="score-block"><div class="score-label"><span>Writing flow</span><strong id="flowLabel">Good</strong></div><div class="score-bar"><span id="flowBar"></span></div><p id="flowNote">Your writing feels warm and easy to follow.</p></div>
@@ -145,7 +144,6 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
             <div class="section-title"><span>Useful phrases</span><button id="refreshPhrases" type="button" aria-label="Refresh phrases" title="Refresh phrases">↻</button></div>
             <div id="phraseList"></div>
           </div>
-          <div class="referral"><span class="referral-mark">↗</span><div><strong>Help a friend write</strong><p>Share this quiet writing space with another English learner.</p><button id="copyReferral" type="button">Copy invite link</button></div></div>
           </div>
           <div class="chat-view hidden" id="chatView">
             <div class="chat-messages" id="chatMessages"><div class="chat-message assistant">你可以用中文问我当前草稿里的表达、语气或语法。选中一段文字后提问，我会重点解释那一段。</div></div>

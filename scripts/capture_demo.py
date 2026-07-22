@@ -33,6 +33,13 @@ def evaluate(socket, expression):
     return result.get("result", {}).get("value")
 
 
+def capture(socket, name):
+    screenshot = cdp(socket, "Page.captureScreenshot", {"format": "png", "captureBeyondViewport": False})
+    output = ROOT / "docs" / "assets" / name
+    output.write_bytes(base64.b64decode(screenshot["data"]))
+    print(output)
+
+
 def main():
     profile = tempfile.mkdtemp(prefix="en-intellisense-demo-")
     process = subprocess.Popen([
@@ -54,6 +61,25 @@ def main():
             raise RuntimeError("Chrome debugging endpoint did not start")
 
         socket = websocket.create_connection(target["webSocketDebuggerUrl"], timeout=30)
+        letter = {
+            "format": "letter",
+            "title": "A letter to an old friend",
+            "text": (
+                "Hi Emma,\n\nIt was so lovely to receive your last letter. I was happy to hear about your new "
+                "apartment and the little garden you have started.\n\nLife here has been busy, but in a good way. "
+                "Last weekend, I went for a walk and thought of you."
+            ),
+            "recipient": "emma@example.com",
+            "subject": "Greetings from Shanghai",
+        }
+        evaluate(socket, f"localStorage.setItem('enwrite-draft', {json.dumps(json.dumps(letter))}); location.reload();")
+        time.sleep(2)
+        evaluate(socket, "clearTimeout(completionTimer); if (completionRequest) completionRequest.abort(); clearTimeout(reviewTimer); if (reviewRequest) reviewRequest.abort(); modelThinking.classList.add('hidden'); saveStatus.textContent = 'Draft saved'; showSuggestion('\\n\\nI would love to hear how the garden is growing.', 'sentence');")
+        capture(socket, "demo.png")
+        evaluate(socket, "document.querySelector('#finishButton').click();")
+        time.sleep(0.5)
+        capture(socket, "demo-email.png")
+
         draft = {
             "format": "essay",
             "title": "Why Learning English Matters",
@@ -77,11 +103,10 @@ def main():
             status = evaluate(socket, "document.querySelector('#reviewStatus').textContent") or "unknown"
             raise RuntimeError(f"Review did not render issues: {status}")
         time.sleep(1)
-        screenshot = cdp(socket, "Page.captureScreenshot", {"format": "png", "captureBeyondViewport": False})
-        output = ROOT / "docs" / "assets" / "demo-chinese-logic.png"
-        output.write_bytes(base64.b64decode(screenshot["data"]))
+        evaluate(socket, "modelThinking.classList.add('hidden'); clearSuggestion(); autocompleteStatus.style.display = 'none'; suggestionBar.classList.add('hidden'); saveStatus.textContent = 'Draft saved';")
+        time.sleep(0.3)
+        capture(socket, "demo-chinese-logic.png")
         socket.close()
-        print(output)
     finally:
         process.terminate()
         try:

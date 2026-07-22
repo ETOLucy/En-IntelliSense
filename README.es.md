@@ -2,7 +2,9 @@
 
 Asistente de escritura en inglés que comprende el contexto completo. Infiere la intención, completa palabras/frases/oraciones, detecta problemas y propone correcciones localizadas.
 
-Documentación: [English](README.md) | [简体中文](README.zh-CN.md) | **Español** | [日本語](README.ja.md)
+Demo en línea: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+
+Documentación: [English](README.md) | [简体中文](README.zh-CN.md) | **Español** | [日本語](README.ja.md) | [Русский](README.ru.md)
 
 ## Funciones
 
@@ -12,6 +14,12 @@ Documentación: [English](README.md) | [简体中文](README.zh-CN.md) | **Espa�
 - Resaltado exacto, explicación en chino y sustitución con un clic.
 - Pulido del asunto y del texto, traducción, explicación y simplificación.
 - Las frases útiles sustituyen la selección o la oración actual; no se añaden al final.
+- Al terminar una carta, abre QQ Mail, 163 Mail, Gmail o un correo web personalizado con destinatario, asunto y cuerpo preparados.
+- Conserva los documentos terminados localmente y permite volver a editarlos como una copia.
+
+## Demostración de correo
+
+![Elegir un proveedor y transferir el correo terminado](docs/assets/demo-email.png)
 
 ## Configuración
 
@@ -26,11 +34,15 @@ Abre `http://127.0.0.1:8000`.
 
 ## Despliegue en Cloudflare
 
+Cloudflare Workers AI funciona como proveedor predeterminado y no requiere una clave externa. Los secretos son opcionales para usar otro proveedor compatible con OpenAI.
+
 ```powershell
 npx wrangler login
+npx wrangler deploy
+
+# Proveedor externo opcional
 npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
-npx wrangler deploy
 ```
 
 ## Pruebas
@@ -39,3 +51,7 @@ npx wrangler deploy
 python -m unittest discover -p "test_*.py"
 node test_completion.js
 ```
+
+## Licencia
+
+[MIT](LICENSE)

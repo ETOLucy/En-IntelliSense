@@ -696,7 +696,17 @@ $('#finishButton').addEventListener('click', () => {
   }
 });
 $('#themeButton').addEventListener('click', () => document.body.classList.toggle('dark'));
-$('#closeCoach').addEventListener('click', () => $('.coach-panel').classList.remove('open'));
+
+function setCoachOpen(open) {
+  const panel = $('#writingCoach');
+  panel.classList.toggle('closed', !open);
+  panel.classList.toggle('open', open);
+  document.body.classList.toggle('coach-closed', !open);
+  $('#coachToggle').setAttribute('aria-expanded', String(open));
+}
+
+$('#closeCoach').addEventListener('click', () => setCoachOpen(false));
+$('#coachToggle').addEventListener('click', () => setCoachOpen($('#writingCoach').classList.contains('closed')));
 document.querySelectorAll('#title, #recipient, #subject').forEach(input => input.addEventListener('input', saveDraft));
 
 async function copyInvite() {
@@ -705,7 +715,6 @@ async function copyInvite() {
   catch { notify('Invite link: ' + link); }
 }
 $('#shareButton').addEventListener('click', copyInvite);
-$('#copyReferral').addEventListener('click', copyInvite);
 suggestionBar.addEventListener('click', acceptSuggestion);
 $('#polishSubject').addEventListener('click', () => requestAssist('polish_subject'));
 $('#polishText').addEventListener('click', () => requestAssist('polish_text'));
@@ -761,3 +770,4 @@ editor.setSelectionRange(editor.value.length, editor.value.length);
 renderMirror();
 updateStats(); renderPhrases(); scheduleCompletion(); checkModel();
 updateDocumentCounts();
+setCoachOpen(window.innerWidth > 1050);

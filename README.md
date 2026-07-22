@@ -2,7 +2,9 @@
 
 Context-aware English writing assistance for learners. En-IntelliSense infers the writer's intent from the whole draft, provides word/phrase/sentence completion, reviews problems in context, highlights exact source text, and offers one-click repairs with bilingual explanations.
 
-Docs: **English** | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [日本語](README.ja.md)
+Live demo: [en-intellisense.etolucy.workers.dev](https://en-intellisense.etolucy.workers.dev)
+
+Docs: **English** | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
 
 ## Demo
 
@@ -14,6 +16,12 @@ The learner writes an essay using direct Chinese logic. En-IntelliSense infers t
 
 ![Context-aware review correcting Chinese-style English](docs/assets/demo-chinese-logic.png)
 
+### Finish in your webmail
+
+For letters and emails, the finished draft carries the recipient, subject, and body into QQ Mail, 163 Mail, Gmail, or a custom webmail compose URL.
+
+![Choose a webmail provider and carry over the finished email](docs/assets/demo-email.png)
+
 ## Features
 
 - Local word completion and model-powered phrase/sentence completion.
@@ -24,7 +32,8 @@ The learner writes an essay using direct Chinese logic. En-IntelliSense infers t
 - Translation, explanation, simplification, and contextual bilingual chat.
 - Useful phrases replace the selection or current sentence instead of appending duplicate text.
 - Letter, essay, and message formats with local draft persistence.
-- Finish a letter by choosing Gmail, Outlook, Yahoo, or the default mail app; recipient, subject, and body are imported automatically.
+- Finish a letter in QQ Mail, 163 Mail, Gmail, or a custom webmail compose URL with recipient, subject, and body carried over.
+- Keep completed documents in a local Finished archive and reopen any item as an editable copy.
 
 ## Configure
 
@@ -60,15 +69,21 @@ node test_completion.js
 
 ## Cloudflare
 
-The repository includes a Cloudflare Worker configuration for serving the frontend and API from one deployment. Configure Worker secrets before deployment; see the localized docs for the same workflow.
+The repository serves the frontend and API from one Worker. Cloudflare Workers AI is the default backend, so a free deployment works without an external API key. To use an OpenAI-compatible provider instead, add `OPENAI_API_KEY` and `OPENAI_BASE_URL` as Worker secrets.
 
 ```powershell
 npx wrangler login
+npx wrangler deploy
+
+# Optional external provider
 npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put OPENAI_BASE_URL
-npx wrangler deploy
 ```
 
 ## Friendly Links
 
 - [LINUX DO - A new kind of community](https://linux.do/)
+
+## License
+
+[MIT](LICENSE)
