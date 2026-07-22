@@ -27,8 +27,8 @@
           <button class="new-letter" id="newDraftButton" type="button"><span aria-hidden="true">+</span> New draft</button>
           <nav class="draft-nav" aria-label="Documents">
             <p class="nav-label">WORKSPACE</p>
-            <button class="nav-item active" type="button"><span class="nav-symbol">□</span><span>Drafts</span><span class="count">1</span></button>
-            <button class="nav-item" type="button"><span class="nav-symbol">✓</span><span>Finished</span></button>
+            <button class="nav-item active" id="draftsNav" type="button"><span class="nav-symbol">□</span><span>Drafts</span><span class="count" id="draftCount">1</span></button>
+            <button class="nav-item" id="finishedNav" type="button"><span class="nav-symbol">✓</span><span>Finished</span><span class="count" id="finishedCount">0</span></button>
           </nav>
 
           <div class="writing-settings">
@@ -71,6 +71,7 @@
         </aside>
 
         <section class="workspace">
+          <div class="compose-view" id="composeView">
           <div class="letter-heading">
             <div><span class="eyebrow" id="documentType">DRAFT LETTER</span><input class="title-input" id="title" value="A letter to an old friend" aria-label="Document title" /></div>
             <div class="more-menu-wrap">
@@ -118,6 +119,15 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
             <span class="shortcut"><kbd>Tab</kbd> accept <kbd>Esc</kbd> dismiss</span>
             <button class="send-button" id="finishButton" type="button">Finish draft <span aria-hidden="true">→</span></button>
           </div>
+          </div>
+
+          <section class="archive-view hidden" id="finishedView" aria-labelledby="finishedViewTitle">
+            <header class="archive-heading">
+              <div><span class="eyebrow">DOCUMENT ARCHIVE</span><h1 id="finishedViewTitle">Finished documents</h1></div>
+              <button class="archive-new" id="archiveNewDraft" type="button"><span aria-hidden="true">+</span> New draft</button>
+            </header>
+            <div class="finished-list" id="finishedList"></div>
+          </section>
         </section>
 
         <aside class="coach-panel">

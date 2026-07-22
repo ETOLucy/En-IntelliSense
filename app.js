@@ -9,6 +9,7 @@ const suggestionBar = $('#suggestionBar');
 const wordCount = $('#wordCount');
 const saveStatus = $('#saveStatus');
 const toast = $('#toast');
+const FINISHED_KEY = 'enwrite-finished';
 
 const content = {
   letter: {
@@ -290,6 +291,103 @@ function emailDraft() {
   return { to: modalAddress || $('#recipient').value.trim(), subject: $('#subject').value.trim(), body: editor.value };
 }
 
+function finishedDocuments() {
+  try {
+    const documents = JSON.parse(localStorage.getItem(FINISHED_KEY) || '[]');
+    return Array.isArray(documents) ? documents : [];
+  } catch {
+    return [];
+  }
+}
+
+function currentDocument() {
+  return {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    format: $('#format').value,
+    title: $('#title').value.trim() || 'Untitled document',
+    recipient: $('#recipient').value.trim(),
+    subject: $('#subject').value.trim(),
+    text: editor.value,
+    finishedAt: new Date().toISOString()
+  };
+}
+
+function updateDocumentCounts() {
+  $('#draftCount').textContent = '1';
+  $('#finishedCount').textContent = String(finishedDocuments().length);
+}
+
+function showDocumentView(view) {
+  const showingFinished = view === 'finished';
+  $('#composeView').classList.toggle('hidden', showingFinished);
+  $('#finishedView').classList.toggle('hidden', !showingFinished);
+  $('#draftsNav').classList.toggle('active', !showingFinished);
+  $('#finishedNav').classList.toggle('active', showingFinished);
+  if (showingFinished) renderFinishedDocuments();
+}
+
+function formatFinishedDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'Recently finished';
+  return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+}
+
+function renderFinishedDocuments() {
+  const list = $('#finishedList');
+  const documents = finishedDocuments();
+  list.textContent = '';
+  updateDocumentCounts();
+  if (!documents.length) {
+    const empty = document.createElement('div'); empty.className = 'archive-empty';
+    const title = document.createElement('strong'); title.textContent = 'Nothing finished yet';
+    const note = document.createElement('span'); note.textContent = 'Complete a letter, essay, or message and it will appear here.';
+    empty.append(title, note); list.appendChild(empty); return;
+  }
+  documents.forEach(documentRecord => {
+    const item = document.createElement('article'); item.className = 'finished-item'; item.dataset.finishedId = documentRecord.id;
+    const copy = document.createElement('div'); copy.className = 'finished-copy';
+    const title = document.createElement('strong'); title.textContent = documentRecord.title || 'Untitled document';
+    const meta = document.createElement('div'); meta.className = 'finished-meta';
+    const words = (documentRecord.text || '').trim().split(/\s+/).filter(Boolean).length;
+    [documentRecord.format || 'document', formatFinishedDate(documentRecord.finishedAt), `${words} words`].forEach(value => {
+      const detail = document.createElement('span'); detail.textContent = value; meta.appendChild(detail);
+    });
+    copy.append(title, meta);
+    const actions = document.createElement('div'); actions.className = 'finished-actions';
+    const edit = document.createElement('button'); edit.type = 'button'; edit.textContent = 'Edit copy'; edit.dataset.finishedAction = 'edit';
+    const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = 'Delete'; remove.className = 'delete-finished'; remove.dataset.finishedAction = 'delete';
+    actions.append(edit, remove); item.append(copy, actions); list.appendChild(item);
+  });
+}
+
+function archiveCurrentDocument() {
+  const documents = finishedDocuments();
+  documents.unshift(currentDocument());
+  localStorage.setItem(FINISHED_KEY, JSON.stringify(documents.slice(0, 50)));
+  updateDocumentCounts();
+}
+
+function loadFinishedCopy(id) {
+  const documentRecord = finishedDocuments().find(item => item.id === id);
+  if (!documentRecord) return;
+  const format = content[documentRecord.format] ? documentRecord.format : 'letter';
+  $('#format').value = format; setFormat(format, false);
+  $('#title').value = documentRecord.title || content[format].title;
+  $('#recipient').value = documentRecord.recipient || '';
+  $('#subject').value = documentRecord.subject || '';
+  editor.value = documentRecord.text || '';
+  editor.setSelectionRange(editor.value.length, editor.value.length);
+  renderMirror(); updateStats(); saveDraft(); showDocumentView('drafts'); editor.focus();
+  notify('Finished document copied to drafts');
+}
+
+function deleteFinishedDocument(id) {
+  if (!window.confirm('Delete this finished document? This cannot be undone.')) return;
+  const documents = finishedDocuments().filter(item => item.id !== id);
+  localStorage.setItem(FINISHED_KEY, JSON.stringify(documents));
+  renderFinishedDocuments(); notify('Finished document deleted');
+}
+
 function openEmailModal() {
   const draft = emailDraft();
   $('#emailRecipientInput').value = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.to) ? draft.to : '';
@@ -318,6 +416,7 @@ function openEmailProvider(provider) {
   emailInput.setCustomValidity('');
   $('#recipient').value = draft.to;
   saveDraft();
+  archiveCurrentDocument();
   const url = EnWriteCompletion.buildEmailComposeUrl(provider, draft);
   if (provider === 'default') window.location.href = url;
   else window.open(url, '_blank', 'noopener,noreferrer');
@@ -546,12 +645,25 @@ document.querySelectorAll('[data-completion]').forEach(button => button.addEvent
 $('#format').addEventListener('change', event => setFormat(event.target.value));
 $('#relationship').addEventListener('change', scheduleCompletion);
 $('#tone').addEventListener('change', scheduleCompletion);
-$('#newDraftButton').addEventListener('click', () => setFormat($('#format').value));
+$('#newDraftButton').addEventListener('click', () => { showDocumentView('drafts'); setFormat($('#format').value); });
+$('#archiveNewDraft').addEventListener('click', () => { showDocumentView('drafts'); setFormat($('#format').value); });
+$('#draftsNav').addEventListener('click', () => showDocumentView('drafts'));
+$('#finishedNav').addEventListener('click', () => showDocumentView('finished'));
+$('#finishedList').addEventListener('click', event => {
+  const action = event.target.closest('[data-finished-action]');
+  if (!action) return;
+  const item = action.closest('[data-finished-id]');
+  if (action.dataset.finishedAction === 'edit') loadFinishedCopy(item.dataset.finishedId);
+  else deleteFinishedDocument(item.dataset.finishedId);
+});
 $('#refreshPhrases').addEventListener('click', () => { phraseOffset = (phraseOffset + 1) % 3; renderPhrases(); notify('Phrase ideas refreshed'); });
 $('#reviewDraft').addEventListener('click', () => reviewDraft(true));
 $('#finishButton').addEventListener('click', () => {
   if ($('#format').value === 'letter') openEmailModal();
-  else notify(`${content[$('#format').value].finish} is ready`);
+  else {
+    archiveCurrentDocument(); showDocumentView('finished');
+    notify(`${content[$('#format').value].finish} saved to Finished`);
+  }
 });
 $('#themeButton').addEventListener('click', () => document.body.classList.toggle('dark'));
 $('#closeCoach').addEventListener('click', () => $('.coach-panel').classList.remove('open'));
@@ -613,3 +725,4 @@ if (saved) {
 editor.setSelectionRange(editor.value.length, editor.value.length);
 renderMirror();
 updateStats(); renderPhrases(); scheduleCompletion(); checkModel();
+updateDocumentCounts();
