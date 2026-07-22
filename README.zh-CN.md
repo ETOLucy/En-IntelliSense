@@ -20,10 +20,10 @@
     <a href="https://github.com/ETOLucy/En-IntelliSense">GitHub 仓库</a>
   </p>
   <p>
-    <a href="https://en-intellisense-85d4szue.edgeone.cool/"><img src="https://img.shields.io/badge/demo-EdgeOne-1f6feb?style=flat-square" alt="EdgeOne 在线演示" /></a>
-    <img src="https://img.shields.io/badge/AI-Cloudflare%20Workers-f38020?style=flat-square" alt="Cloudflare Workers AI" />
-    <img src="https://img.shields.io/badge/storage-local--first-28644d?style=flat-square" alt="本地优先存储" />
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-bd7b28?style=flat-square" alt="MIT 协议" /></a>
+    <a href="https://en-intellisense-85d4szue.edgeone.cool/"><img src="https://img.shields.io/badge/demo-EdgeOne-111111?style=flat-square" alt="EdgeOne 在线演示" /></a>
+    <img src="https://img.shields.io/badge/AI-Workers%20AI-111111?style=flat-square" alt="Cloudflare Workers AI" />
+    <img src="https://img.shields.io/badge/storage-local--first-111111?style=flat-square" alt="本地优先存储" />
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT 协议" /></a>
   </p>
 </div>
 
