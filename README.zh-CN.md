@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="docs/assets/en-intellisense-mark.svg" width="128" alt="En-IntelliSense 标志" />
-  <h1>En-IntelliSense</h1>
+  <img src="docs/assets/en-intellisense-hero.svg" width="860" alt="En-IntelliSense 上下文英语写作智能工具" />
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>面向英语学习者的上下文智能补全、审查与润色工具。</p>
   <p>
@@ -15,15 +14,17 @@
     <a href="README.ru.md">Русский</a>
   </p>
   <p>
-    <a href="https://en-intellisense-85d4szue.edgeone.cool/">在线演示</a>
+    <a href="#demo">查看效果</a>
+    &nbsp;&middot;&nbsp;
+    <a href="#配置与运行">本地运行</a>
     &nbsp;&middot;&nbsp;
     <a href="https://github.com/ETOLucy/En-IntelliSense">GitHub 仓库</a>
   </p>
   <p>
-    <a href="https://en-intellisense-85d4szue.edgeone.cool/"><img src="https://img.shields.io/badge/demo-EdgeOne-111111?style=flat-square" alt="EdgeOne 在线演示" /></a>
-    <img src="https://img.shields.io/badge/AI-Workers%20AI-111111?style=flat-square" alt="Cloudflare Workers AI" />
-    <img src="https://img.shields.io/badge/storage-local--first-111111?style=flat-square" alt="本地优先存储" />
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT 协议" /></a>
+    <img src="https://img.shields.io/badge/补全-单词%20%7C%20短语%20%7C%20句子-1f6f5b?style=flat-square" alt="单词、短语和句子补全" />
+    <img src="https://img.shields.io/badge/AI-Workers%20AI-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers AI" />
+    <img src="https://img.shields.io/badge/存储-本地优先-3a7ca5?style=flat-square" alt="本地优先存储" />
+    <a href="LICENSE"><img src="https://img.shields.io/badge/协议-MIT-c65d3b?style=flat-square" alt="MIT 协议" /></a>
   </p>
 </div>
 
@@ -110,11 +111,11 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## EdgeOne Pages 部署
 
-在线演示已部署到 EdgeOne Pages：[en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)。如果直接访问返回 `401 Authorization Required`，说明预设域名仍开启访问保护；对外分享前需要在 EdgeOne 控制台中关闭访问保护。不要提交或分享含有 `eo_token` 的临时链接。
+EdgeOne 的预设 `.edgeone.cool` 域名需要带有 `eo_token` 和 `eo_time` 的限时签名链接，因此直接打开裸域名会返回 `401 Authorization Required`。本文档不会把它当作稳定演示地址发布。不要提交或公开预设域名的签名链接。
 
 自行部署时，在 EdgeOne Pages 中导入本 GitHub 仓库，生产分支选择 `main`，构建命令留空。仓库内的 `edgeone.json` 会发布 `public/`，并部署 `node-functions/` 下的 Node Functions。函数会把 `/api/*` 转发到 Cloudflare Worker，因此不需要在 EdgeOne 中保存模型 API Key。
 
-绑定自定义域名可以获得更稳定、易识别的地址；要使用中国大陆节点加速，该自定义域名还需要完成 ICP 备案。EdgeOne 的 AI 请求会转发到 Cloudflare Worker，因此演示站使用上文说明的模型和共享额度。
+如需稳定公开的 EdgeOne 地址，请进入 **EdgeOne Pages > en-intellisense > Settings > Custom Domains**，添加子域名，按页面提示配置 CNAME，并等待状态变为 `Pass`。要使用中国大陆节点加速，该自定义域名还需要完成 ICP 备案。EdgeOne 的 AI 请求会转发到 Cloudflare Worker，因此演示站使用上文说明的模型和共享额度。
 
 ## 友情链接
 

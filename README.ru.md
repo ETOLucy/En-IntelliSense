@@ -1,8 +1,8 @@
-# En-IntelliSense
+<div align="center">
+  <img src="docs/assets/en-intellisense-hero.svg" width="860" alt="En-IntelliSense - контекстный помощник для английского письма" />
+</div>
 
 Контекстный помощник для написания текстов на английском языке. En-IntelliSense определяет намерение автора по всему черновику, дополняет слова, фразы и предложения, находит проблемы в тексте и предлагает точечные исправления.
-
-Онлайн-демо: [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)
 
 Документация: [English](README.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [日本語](README.ja.md) | **Русский**
 
@@ -61,7 +61,7 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## Развертывание в EdgeOne Pages
 
-Демо развернуто по адресу [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/). Если сервер возвращает `401 Authorization Required`, отключите защиту доступа в консоли EdgeOne перед публикацией. Не публикуйте и не добавляйте в Git временные ссылки с параметром `eo_token`. Для ускорения в материковом Китае на собственном домене требуется регистрация ICP.
+Предустановленный домен EdgeOne требует временную подписанную ссылку с параметрами `eo_token` и `eo_time`; адрес `.edgeone.cool` без них возвращает `401 Authorization Required`. Для стабильного публичного адреса добавьте собственный поддомен в **EdgeOne Pages > Settings > Custom Domains**, настройте предложенную CNAME-запись и дождитесь статуса `Pass`. Не публикуйте и не добавляйте в Git временные подписанные ссылки. Для ускорения в материковом Китае собственному домену требуется регистрация ICP.
 
 ## Тесты
 

@@ -1,8 +1,8 @@
-# En-IntelliSense
+<div align="center">
+  <img src="docs/assets/en-intellisense-hero.svg" width="860" alt="En-IntelliSense - 文脈対応の英語ライティング支援" />
+</div>
 
 文章全体の文脈を理解する英語ライティング支援ツールです。書き手の意図を推測し、単語・フレーズ・文を補完し、問題箇所を特定して修正案を提示します。
-
-オンラインデモ: [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)
 
 ドキュメント: [English](README.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | **日本語** | [Русский](README.ru.md)
 
@@ -53,7 +53,7 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## EdgeOne Pages へのデプロイ
 
-デモは [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/) にデプロイされています。`401 Authorization Required` が返る場合は、公開前に EdgeOne コンソールでアクセス保護を無効にしてください。`eo_token` を含む一時 URL は共有またはコミットしないでください。カスタムドメインで中国本土向けアクセラレーションを利用するには ICP 登録が必要です。
+EdgeOne のプリセットドメインは `eo_token` と `eo_time` を含む期限付き署名 URL を必要とするため、パラメーターなしの `.edgeone.cool` アドレスは `401 Authorization Required` を返します。安定した公開 URL を用意するには、**EdgeOne Pages > Settings > Custom Domains** でカスタムサブドメインを追加し、表示された CNAME を設定して、状態が `Pass` になるまで待ちます。期限付き署名 URL は共有または Git にコミットしないでください。中国本土向けアクセラレーションには、カスタムドメインの ICP 登録が必要です。
 
 ## テスト
 

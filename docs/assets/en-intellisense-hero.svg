@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260" role="img" aria-labelledby="title desc">
+  <title id="title">En-IntelliSense</title>
+  <desc id="desc">Context-aware English writing intelligence</desc>
+  <rect width="960" height="260" fill="#103b32"/>
+  <rect width="12" height="260" fill="#ef8354"/>
+  <text x="72" y="112" fill="#f4f1e8" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700">En-</text>
+  <text x="188" y="112" fill="#f4f1e8" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="700">IntelliSense</text>
+  <rect x="72" y="136" width="116" height="8" fill="#ef8354"/>
+  <rect x="188" y="136" width="570" height="8" fill="#70c1b3"/>
+  <text x="72" y="184" fill="#f4f1e8" font-family="Arial, Helvetica, sans-serif" font-size="20">Understand the thought. Complete the English.</text>
+  <text x="72" y="220" fill="#70c1b3" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700">COMPLETE  ·  REVIEW  ·  REFINE</text>
+</svg>

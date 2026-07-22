@@ -1,8 +1,8 @@
-# En-IntelliSense
+<div align="center">
+  <img src="docs/assets/en-intellisense-hero.svg" width="860" alt="En-IntelliSense - asistencia contextual para escribir en inglés" />
+</div>
 
 Asistente de escritura en inglés que comprende el contexto completo. Infiere la intención, completa palabras/frases/oraciones, detecta problemas y propone correcciones localizadas.
-
-Demo en línea: [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)
 
 Documentación: [English](README.md) | [简体中文](README.zh-CN.md) | **Español** | [日本語](README.ja.md) | [Русский](README.ru.md)
 
@@ -53,7 +53,7 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## Despliegue en EdgeOne Pages
 
-La demo está desplegada en [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/). Si devuelve `401 Authorization Required`, desactiva la protección de acceso en la consola de EdgeOne antes de compartirla públicamente. No compartas ni guardes en Git enlaces temporales que contengan `eo_token`. La aceleración en China continental con un dominio personalizado requiere el registro ICP correspondiente.
+El dominio predeterminado de EdgeOne requiere un enlace temporal firmado con `eo_token` y `eo_time`; abrir la dirección `.edgeone.cool` sin esos parámetros devuelve `401 Authorization Required`. Para obtener una dirección pública estable, vincula un dominio personalizado en **EdgeOne Pages > Settings > Custom Domains**, configura el CNAME indicado y espera a que el estado sea `Pass`. No compartas ni guardes en Git enlaces firmados temporales. La aceleración en China continental requiere el registro ICP del dominio personalizado.
 
 ## Pruebas
 

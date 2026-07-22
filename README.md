@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="docs/assets/en-intellisense-mark.svg" width="128" alt="En-IntelliSense logo" />
-  <h1>En-IntelliSense</h1>
+  <img src="docs/assets/en-intellisense-hero.svg" width="860" alt="En-IntelliSense - context-aware English writing intelligence" />
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>Context-aware English completion, review, and rewriting for learners.</p>
   <p>
@@ -15,15 +14,17 @@
     <a href="README.ru.md">Русский</a>
   </p>
   <p>
-    <a href="https://en-intellisense-85d4szue.edgeone.cool/">Live Demo</a>
+    <a href="#demo">See it in action</a>
+    &nbsp;&middot;&nbsp;
+    <a href="#run">Run locally</a>
     &nbsp;&middot;&nbsp;
     <a href="https://github.com/ETOLucy/En-IntelliSense">GitHub Repository</a>
   </p>
   <p>
-    <a href="https://en-intellisense-85d4szue.edgeone.cool/"><img src="https://img.shields.io/badge/demo-EdgeOne-111111?style=flat-square" alt="EdgeOne live demo" /></a>
-    <img src="https://img.shields.io/badge/AI-Workers%20AI-111111?style=flat-square" alt="Cloudflare Workers AI" />
-    <img src="https://img.shields.io/badge/storage-local--first-111111?style=flat-square" alt="Local-first storage" />
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT license" /></a>
+    <img src="https://img.shields.io/badge/completion-word%20%7C%20phrase%20%7C%20sentence-1f6f5b?style=flat-square" alt="Word, phrase, and sentence completion" />
+    <img src="https://img.shields.io/badge/AI-Workers%20AI-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers AI" />
+    <img src="https://img.shields.io/badge/storage-local--first-3a7ca5?style=flat-square" alt="Local-first storage" />
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-c65d3b?style=flat-square" alt="MIT license" /></a>
   </p>
 </div>
 
@@ -117,11 +118,11 @@ npx wrangler secret put OPENAI_BASE_URL
 
 ## EdgeOne Pages
 
-The live demo is deployed on EdgeOne Pages at [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/). If a direct visit returns `401 Authorization Required`, access protection is still enabled for the preset domain; disable it in the EdgeOne console before sharing the demo publicly. Do not commit or share temporary URLs containing `eo_token`.
+The EdgeOne preset domain requires an expiring URL containing `eo_token` and `eo_time`; opening the bare `.edgeone.cool` address therefore returns `401 Authorization Required`. It is not published here as a stable demo address. Do not commit or publish signed preset-domain URLs.
 
 To deploy your own copy, import this GitHub repository into EdgeOne Pages, use `main` as the production branch, and leave the build command empty. The checked-in `edgeone.json` publishes `public/` and deploys the Node Functions under `node-functions/`. Those functions forward `/api/*` to the Cloudflare Worker, so no model API key is stored in EdgeOne.
 
-A custom domain can provide a more stable branded address. Mainland China acceleration requires that custom domain to have a valid ICP filing. EdgeOne forwards AI requests to the Cloudflare Worker, so the demo uses the model and shared quota described above.
+For a stable public EdgeOne address, open **EdgeOne Pages > en-intellisense > Settings > Custom Domains**, add a subdomain, configure the CNAME shown by EdgeOne, and wait for its status to become `Pass`. Mainland China acceleration requires that custom domain to have a valid ICP filing. EdgeOne forwards AI requests to the Cloudflare Worker, so the demo uses the model and shared quota described above.
 
 ## Friendly Links
 
