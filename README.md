@@ -8,6 +8,12 @@ Docs: **English** | [简体中文](README.zh-CN.md) | [Español](README.es.md) |
 
 ![En-IntelliSense writing workspace](docs/assets/demo.png)
 
+### From Chinese-style English to natural writing
+
+The learner writes an essay using direct Chinese logic. En-IntelliSense infers the intended argument, highlights five exact source problems, explains each issue in Chinese, and provides one-click natural replacements without rewriting the learner's entire voice.
+
+![Context-aware review correcting Chinese-style English](docs/assets/demo-chinese-logic.png)
+
 ## Features
 
 - Local word completion and model-powered phrase/sentence completion.
