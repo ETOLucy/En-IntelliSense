@@ -1,10 +1,35 @@
-# En-IntelliSense
+<div align="center">
+  <img src="docs/assets/en-intellisense-mark.svg" width="128" alt="En-IntelliSense 标志" />
+  <h1>En-IntelliSense</h1>
+  <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
+  <p>面向英语学习者的上下文智能补全、审查与润色工具。</p>
+  <p>
+    <strong>简体中文</strong>
+    &nbsp;&middot;&nbsp;
+    <a href="README.md">English</a>
+    &nbsp;&middot;&nbsp;
+    <a href="README.es.md">Español</a>
+    &nbsp;&middot;&nbsp;
+    <a href="README.ja.md">日本語</a>
+    &nbsp;&middot;&nbsp;
+    <a href="README.ru.md">Русский</a>
+  </p>
+  <p>
+    <a href="https://en-intellisense-85d4szue.edgeone.cool/">在线演示</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://github.com/ETOLucy/En-IntelliSense">GitHub 仓库</a>
+  </p>
+  <p>
+    <a href="https://en-intellisense-85d4szue.edgeone.cool/"><img src="https://img.shields.io/badge/demo-EdgeOne-1f6feb?style=flat-square" alt="EdgeOne 在线演示" /></a>
+    <img src="https://img.shields.io/badge/AI-Cloudflare%20Workers-f38020?style=flat-square" alt="Cloudflare Workers AI" />
+    <img src="https://img.shields.io/badge/storage-local--first-28644d?style=flat-square" alt="本地优先存储" />
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-bd7b28?style=flat-square" alt="MIT 协议" /></a>
+  </p>
+</div>
 
-面向英语学习者的上下文智能写作工具。它会结合整篇草稿推断用户想表达的意思，提供单词、短语和句子补全，并检查语法、清晰度、措辞、重复和语气问题。
+---
 
-在线演示：[en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)
-
-文档：[English](README.md) | **简体中文** | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
+En-IntelliSense 会先结合整篇草稿理解用户真正想表达的意思，再给出下一步建议。它将单词、短语和句子补全，与上下文审查、原文问题标记、双语解释和一键修缮整合在同一个写作界面中。
 
 ## Demo
 

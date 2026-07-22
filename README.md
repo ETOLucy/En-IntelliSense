@@ -1,10 +1,35 @@
-# En-IntelliSense
+<div align="center">
+  <img src="docs/assets/en-intellisense-mark.svg" width="128" alt="En-IntelliSense logo" />
+  <h1>En-IntelliSense</h1>
+  <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
+  <p>Context-aware English completion, review, and rewriting for learners.</p>
+  <p>
+    <strong>English</strong>
+    &nbsp;&middot;&nbsp;
+    <a href="README.zh-CN.md">简体中文</a>
+    &nbsp;&middot;&nbsp;
+    <a href="README.es.md">Español</a>
+    &nbsp;&middot;&nbsp;
+    <a href="README.ja.md">日本語</a>
+    &nbsp;&middot;&nbsp;
+    <a href="README.ru.md">Русский</a>
+  </p>
+  <p>
+    <a href="https://en-intellisense-85d4szue.edgeone.cool/">Live Demo</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://github.com/ETOLucy/En-IntelliSense">GitHub Repository</a>
+  </p>
+  <p>
+    <a href="https://en-intellisense-85d4szue.edgeone.cool/"><img src="https://img.shields.io/badge/demo-EdgeOne-1f6feb?style=flat-square" alt="EdgeOne live demo" /></a>
+    <img src="https://img.shields.io/badge/AI-Cloudflare%20Workers-f38020?style=flat-square" alt="Cloudflare Workers AI" />
+    <img src="https://img.shields.io/badge/storage-local--first-28644d?style=flat-square" alt="Local-first storage" />
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-bd7b28?style=flat-square" alt="MIT license" /></a>
+  </p>
+</div>
 
-Context-aware English writing assistance for learners. En-IntelliSense infers the writer's intent from the whole draft, provides word/phrase/sentence completion, reviews problems in context, highlights exact source text, and offers one-click repairs with bilingual explanations.
+---
 
-Live demo: [en-intellisense-85d4szue.edgeone.cool](https://en-intellisense-85d4szue.edgeone.cool/)
-
-Docs: **English** | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
+En-IntelliSense understands the intent behind the whole draft before it suggests the next word. It combines word, phrase, and sentence completion with contextual review, exact issue highlighting, bilingual explanations, and one-click repairs.
 
 ## Demo
 
