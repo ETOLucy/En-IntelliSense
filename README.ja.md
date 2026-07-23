@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/en-intellisense-logo.svg" width="140" alt="En-IntelliSense ロゴ" />
+  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg"><img src="docs/assets/en-intellisense-logo.svg" width="340" alt="En-IntelliSense ロゴ" /></picture>
   <h1>En-IntelliSense</h1>
 </div>
 

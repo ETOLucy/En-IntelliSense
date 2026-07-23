@@ -47,6 +47,7 @@ let reviewIssues = [];
 let currentIntent = '';
 let reviewTimer;
 let reviewRequest;
+let desktopApp = false;
 
 function words() {
   const matches = editor.value.trim().match(/\b[\w'-]+\b/g);
@@ -165,14 +166,88 @@ async function checkModel() {
   try {
     const response = await fetch('/api/status', { cache: 'no-store' });
     const data = await response.json();
+    desktopApp = Boolean(data.desktop);
+    $('#settingsButton').classList.toggle('hidden', !desktopApp);
     modelConfigured = Boolean(data.configured);
     $('#connectionState').className = `connection-state ${modelConfigured ? 'online' : 'offline'}`;
     $('#connectionState').innerHTML = `<i></i> ${modelConfigured ? `${data.autocomplete_model || data.model} autocomplete` : 'Add API key for AI'}`;
     if (modelConfigured) { scheduleCompletion(); scheduleReview(); }
+    else if (desktopApp && !sessionStorage.getItem('enwrite-settings-dismissed')) openModelSettings();
   } catch {
     modelConfigured = false;
     $('#connectionState').className = 'connection-state offline';
     $('#connectionState').innerHTML = '<i></i> Start server for AI';
+  }
+}
+
+function modelConfigPayload() {
+  return {
+    base_url: $('#modelBaseUrl').value.trim(),
+    api_key: $('#modelApiKey').value.trim(),
+    model: $('#modelName').value.trim(),
+    autocomplete_model: $('#autocompleteModel').value.trim(),
+    api_style: $('#modelApiStyle').value
+  };
+}
+
+function setSettingsStatus(message, kind = '') {
+  const status = $('#settingsStatus');
+  status.textContent = message;
+  status.className = `settings-status ${kind}`;
+}
+
+async function loadModelSettings() {
+  const response = await fetch('/api/config', { cache: 'no-store' });
+  if (!response.ok) throw new Error('Could not load model settings');
+  const data = await response.json();
+  $('#modelBaseUrl').value = data.base_url || 'https://api.openai.com';
+  $('#modelName').value = data.model || 'gpt-4.1-mini';
+  $('#autocompleteModel').value = data.autocomplete_model || data.model || 'gpt-4.1-mini';
+  $('#modelApiStyle').value = data.api_style || 'chat';
+  $('#providerPreset').value = $('#modelBaseUrl').value === 'https://api.openai.com' ? 'openai' : 'custom';
+  $('#modelApiKey').value = '';
+  $('#modelApiKey').placeholder = data.api_key_set ? `Saved (${data.api_key_hint})` : 'Enter your API key';
+  setSettingsStatus('');
+}
+
+async function openModelSettings() {
+  $('#settingsModal').classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  try { await loadModelSettings(); }
+  catch (error) { setSettingsStatus(error.message, 'error'); }
+  $('#modelBaseUrl').focus();
+}
+
+function closeModelSettings() {
+  $('#settingsModal').classList.add('hidden');
+  sessionStorage.setItem('enwrite-settings-dismissed', '1');
+  if ($('#emailModal').classList.contains('hidden')) document.body.classList.remove('modal-open');
+}
+
+async function submitModelConfig(path) {
+  const isTest = path.endsWith('/test');
+  const button = isTest ? $('#testModelConnection') : $('#settingsForm button[type="submit"]');
+  button.disabled = true;
+  setSettingsStatus(isTest ? 'Testing connection...' : 'Saving settings...');
+  try {
+    const response = await fetch(path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(modelConfigPayload())
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Request failed');
+    setSettingsStatus(isTest ? data.message : 'Settings saved.', 'success');
+    if (!isTest) {
+      modelConfigured = Boolean(data.configured);
+      completionCache.clear();
+      await checkModel();
+      setTimeout(closeModelSettings, 500);
+    }
+  } catch (error) {
+    setSettingsStatus(error.message, 'error');
+  } finally {
+    button.disabled = false;
   }
 }
 
@@ -710,6 +785,29 @@ $('#finishButton').addEventListener('click', () => {
   }
 });
 $('#themeButton').addEventListener('click', () => document.body.classList.toggle('dark'));
+$('#settingsButton').addEventListener('click', openModelSettings);
+$('#closeSettings').addEventListener('click', closeModelSettings);
+$('#settingsBackdrop').addEventListener('click', closeModelSettings);
+$('#providerPreset').addEventListener('change', event => {
+  if (event.target.value === 'openai') $('#modelBaseUrl').value = 'https://api.openai.com';
+});
+$('#modelBaseUrl').addEventListener('input', event => {
+  $('#providerPreset').value = event.target.value.trim().replace(/\/$/, '') === 'https://api.openai.com' ? 'openai' : 'custom';
+});
+$('#toggleApiKey').addEventListener('click', () => {
+  const input = $('#modelApiKey');
+  const visible = input.type === 'text';
+  input.type = visible ? 'password' : 'text';
+  $('#toggleApiKey').textContent = visible ? 'Show' : 'Hide';
+  $('#toggleApiKey').setAttribute('aria-label', visible ? 'Show API key' : 'Hide API key');
+});
+$('#testModelConnection').addEventListener('click', () => {
+  if ($('#settingsForm').reportValidity()) submitModelConfig('/api/config/test');
+});
+$('#settingsForm').addEventListener('submit', event => {
+  event.preventDefault();
+  submitModelConfig('/api/config');
+});
 
 function setCoachOpen(open) {
   const panel = $('#writingCoach');
@@ -757,6 +855,7 @@ document.addEventListener('click', event => {
 });
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !$('#emailModal').classList.contains('hidden')) closeEmailModal();
+  if (event.key === 'Escape' && !$('#settingsModal').classList.contains('hidden')) closeModelSettings();
   if (event.key === 'Escape' && !$('#documentMenu').classList.contains('hidden')) { closeDocumentMenu(); $('#moreButton').focus(); }
 });
 document.querySelectorAll('[data-coach-tab]').forEach(button => button.addEventListener('click', () => {

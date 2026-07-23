@@ -2,8 +2,13 @@ import json
 import os
 import sys
 import time
+import ctypes
+from base64 import b64decode, b64encode
+from ctypes import POINTER, Structure, byref, c_char, c_void_p, cast, string_at
+from ctypes.wintypes import DWORD
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import urlparse
 
 import requests
 
@@ -11,8 +16,146 @@ import requests
 SOURCE_ROOT = Path(__file__).resolve().parent
 ROOT = Path(getattr(sys, "_MEIPASS", SOURCE_ROOT))
 CONFIG_ROOT = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else SOURCE_ROOT
+USER_CONFIG_ROOT = Path(os.getenv("APPDATA", CONFIG_ROOT)) / "En-IntelliSense"
+USER_CONFIG_PATH = USER_CONFIG_ROOT / "config.json"
 HOST = os.getenv("ENWRITE_HOST", "127.0.0.1")
 PORT = int(os.getenv("ENWRITE_PORT", "8000"))
+MODEL_CONFIG_KEYS = {
+    "base_url": "OPENAI_BASE_URL",
+    "model": "OPENAI_MODEL",
+    "autocomplete_model": "OPENAI_AUTOCOMPLETE_MODEL",
+    "api_style": "OPENAI_API_STYLE",
+}
+
+
+class DataBlob(Structure):
+    _fields_ = [("size", DWORD), ("data", POINTER(c_char))]
+
+
+def _blob(data=b""):
+    buffer = (c_char * len(data)).from_buffer_copy(data) if data else None
+    return DataBlob(len(data), cast(buffer, POINTER(c_char))), buffer
+
+
+def protect_secret(secret):
+    if not secret:
+        return ""
+    if os.name != "nt":
+        return b64encode(secret.encode("utf-8")).decode("ascii")
+    source, source_buffer = _blob(secret.encode("utf-8"))
+    result = DataBlob()
+    if not ctypes.windll.crypt32.CryptProtectData(byref(source), None, None, None, None, 0, byref(result)):
+        raise OSError("Windows could not protect the API key")
+    try:
+        return b64encode(string_at(result.data, result.size)).decode("ascii")
+    finally:
+        ctypes.windll.kernel32.LocalFree(cast(result.data, c_void_p))
+
+
+def unprotect_secret(protected):
+    if not protected:
+        return ""
+    raw = b64decode(protected)
+    if os.name != "nt":
+        return raw.decode("utf-8")
+    source, source_buffer = _blob(raw)
+    result = DataBlob()
+    if not ctypes.windll.crypt32.CryptUnprotectData(byref(source), None, None, None, None, 0, byref(result)):
+        raise OSError("Windows could not read the saved API key")
+    try:
+        return string_at(result.data, result.size).decode("utf-8")
+    finally:
+        ctypes.windll.kernel32.LocalFree(cast(result.data, c_void_p))
+
+
+def read_user_config():
+    if not USER_CONFIG_PATH.is_file():
+        return {}
+    try:
+        data = json.loads(USER_CONFIG_PATH.read_text(encoding="utf-8"))
+        if data.get("api_key_protected"):
+            data["api_key"] = unprotect_secret(data["api_key_protected"])
+        return data
+    except (OSError, ValueError, TypeError):
+        return {}
+
+
+def apply_user_config():
+    data = read_user_config()
+    if data.get("api_key"):
+        os.environ["OPENAI_API_KEY"] = data["api_key"]
+    for field, key in MODEL_CONFIG_KEYS.items():
+        value = data.get(field)
+        if value:
+            os.environ[key] = str(value)
+
+
+def public_config():
+    key = os.getenv("OPENAI_API_KEY", "")
+    return {
+        "configured": bool(key),
+        "api_key_set": bool(key),
+        "api_key_hint": f"{key[:3]}...{key[-4:]}" if len(key) >= 8 else ("Saved" if key else ""),
+        "base_url": os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE") or "https://api.openai.com",
+        "model": os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
+        "autocomplete_model": os.getenv("OPENAI_AUTOCOMPLETE_MODEL", "gpt-4.1-mini"),
+        "api_style": os.getenv("OPENAI_API_STYLE", "chat"),
+    }
+
+
+def desktop_mode():
+    return bool(getattr(sys, "frozen", False) or os.getenv("ENWRITE_DESKTOP") == "1")
+
+
+def validate_model_config(data):
+    base_url = str(data.get("base_url", "")).strip().rstrip("/")
+    parsed = urlparse(base_url)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise ValueError("Enter a valid provider URL")
+    if parsed.scheme != "https" and parsed.hostname not in {"localhost", "127.0.0.1", "::1"}:
+        raise ValueError("The provider URL must use HTTPS")
+    model = str(data.get("model", "")).strip()
+    autocomplete_model = str(data.get("autocomplete_model", "")).strip()
+    if not model or len(model) > 160 or not autocomplete_model or len(autocomplete_model) > 160:
+        raise ValueError("Enter valid model names")
+    api_style = str(data.get("api_style", "chat")).lower()
+    if api_style not in {"chat", "responses"}:
+        raise ValueError("API type must be chat or responses")
+    api_key = str(data.get("api_key", "")).strip()
+    if len(api_key) > 1000:
+        raise ValueError("API key is too long")
+    return {
+        "api_key": api_key,
+        "base_url": base_url,
+        "model": model,
+        "autocomplete_model": autocomplete_model,
+        "api_style": api_style,
+    }
+
+
+def save_user_config(data):
+    current = read_user_config()
+    config = validate_model_config(data)
+    api_key = config.pop("api_key") or current.get("api_key", "")
+    if data.get("clear_api_key"):
+        api_key = ""
+    stored = {
+        **config,
+        "api_key_protected": protect_secret(api_key),
+    }
+    USER_CONFIG_ROOT.mkdir(parents=True, exist_ok=True)
+    temporary = USER_CONFIG_PATH.with_suffix(".tmp")
+    temporary.write_text(json.dumps(stored, indent=2), encoding="utf-8")
+    temporary.replace(USER_CONFIG_PATH)
+    if api_key:
+        os.environ["OPENAI_API_KEY"] = api_key
+    else:
+        os.environ.pop("OPENAI_API_KEY", None)
+    os.environ["OPENAI_BASE_URL"] = config["base_url"]
+    os.environ["OPENAI_MODEL"] = config["model"]
+    os.environ["OPENAI_AUTOCOMPLETE_MODEL"] = config["autocomplete_model"]
+    os.environ["OPENAI_API_STYLE"] = config["api_style"]
+    return public_config()
 
 
 def load_dotenv():
@@ -47,6 +190,7 @@ def normalize_completion_text(text):
 
 
 load_dotenv()
+apply_user_config()
 
 
 class EnWriteHandler(SimpleHTTPRequestHandler):
@@ -76,11 +220,33 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
                 "configured": bool(os.getenv("OPENAI_API_KEY")),
                 "model": os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
                 "autocomplete_model": os.getenv("OPENAI_AUTOCOMPLETE_MODEL", "gpt-5.4-mini"),
+                "desktop": desktop_mode(),
             })
+            return
+        if self.path == "/api/config":
+            if not desktop_mode():
+                self.send_json(404, {"error": "Not found"})
+                return
+            self.send_json(200, public_config())
             return
         super().do_GET()
 
     def do_POST(self):
+        if self.path in {"/api/config", "/api/config/test"}:
+            if not desktop_mode():
+                self.send_json(404, {"error": "Not found"})
+                return
+            try:
+                request_data = self.read_json_body(10_000)
+                if self.path == "/api/config":
+                    self.send_json(200, save_user_config(request_data))
+                else:
+                    self.send_json(200, self.test_model_config(request_data))
+            except ValueError as error:
+                self.send_json(400, {"error": str(error)})
+            except requests.RequestException as error:
+                self.send_json(502, {"error": f"Connection failed: {error}"})
+            return
         if self.path not in {"/api/complete", "/api/complete-stream", "/api/assist", "/api/chat", "/api/review"}:
             self.send_json(404, {"error": "Not found"})
             return
@@ -91,10 +257,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             return
 
         try:
-            length = int(self.headers.get("Content-Length", "0"))
-            if length <= 0 or length > 20_000:
-                raise ValueError("Invalid request size")
-            request_data = json.loads(self.rfile.read(length))
+            request_data = self.read_json_body(20_000)
             if self.path == "/api/review":
                 result = self.model_review(request_data)
                 self.send_json(200, result)
@@ -127,6 +290,33 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             self.send_json(502, {"error": "Model connection was interrupted after automatic retries. Please try again."})
         except Exception as error:
             self.send_json(500, {"error": f"Completion failed: {error}"})
+
+    def read_json_body(self, maximum):
+        length = int(self.headers.get("Content-Length", "0"))
+        if length <= 0 or length > maximum:
+            raise ValueError("Invalid request size")
+        return json.loads(self.rfile.read(length))
+
+    def test_model_config(self, request_data):
+        config = validate_model_config(request_data)
+        api_key = config["api_key"] or read_user_config().get("api_key") or os.getenv("OPENAI_API_KEY", "")
+        if not api_key:
+            raise ValueError("Enter an API key before testing")
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+        if config["api_style"] == "responses":
+            url = responses_url(config["base_url"])
+            payload = {"model": config["model"], "input": "Reply with OK.", "max_output_tokens": 16}
+        else:
+            url = responses_url(config["base_url"]).removesuffix("/responses") + "/chat/completions"
+            payload = {
+                "model": config["model"],
+                "messages": [{"role": "user", "content": "Reply with OK."}],
+                "max_tokens": 8,
+                "stream": False,
+            }
+        response = requests.post(url, headers=headers, json=payload, timeout=20)
+        response.raise_for_status()
+        return {"ok": True, "message": f"Connected to {config['model']}"}
 
     def model_review(self, request_data):
         text = str(request_data.get("text", "")).strip()[:7000]

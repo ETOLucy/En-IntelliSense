@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/en-intellisense-logo.svg" width="140" alt="En-IntelliSense Logo" />
+  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg"><img src="docs/assets/en-intellisense-logo.svg" width="340" alt="En-IntelliSense Logo" /></picture>
   <h1>En-IntelliSense</h1>
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>面向英语学习者的上下文智能补全、审查与润色工具。</p>
@@ -98,9 +98,9 @@ python server.py
 
 ## Windows 桌面版
 
-普通使用时，只需从 [GitHub 最新版本](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载 `En-IntelliSense.exe` 并双击打开，不需要终端、Python 或任何构建命令。
+普通使用时，从 [GitHub 最新版本](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载 `En-IntelliSense-Setup.exe`。安装程序会创建开始菜单快捷方式，并可选择创建桌面快捷方式；不需要终端、Python 或任何构建命令。不希望安装时，也可以下载 `En-IntelliSense-Portable.zip`。
 
-> **签名状态：** 当前 `v1.0.1` 尚未签名，可能被 Windows Smart App Control 阻止，现阶段主要用于本地测试。项目已申请 SignPath Foundation，审核通过后将发布可公开验证的签名版本。
+> **签名状态：** 没有配置签名证书时，安装包仍可生成和使用，但 Windows 可能显示“未知发布者”或 SmartScreen 警告。构建脚本支持稍后为主程序和安装包添加签名及可信时间戳。
 
 下面的命令只供修改源码后需要重新生成 EXE 的开发者使用：
 
@@ -108,9 +108,11 @@ python server.py
 powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
 ```
 
-产物位于 `dist/En-IntelliSense.exe`。它会把本地 Python 服务和前端一起打包，启动时自动选择空闲的回环端口，并在原生 WebView2 窗口中打开工作区。运行打包后的 EXE 不要求用户另外安装 Python；当前 Windows 10/11 通常已自带所需的 Microsoft Edge WebView2 Runtime。
+安装版产物为 `dist/En-IntelliSense-Setup.exe`，便携版为 `dist/En-IntelliSense-Portable.zip`。本地没有安装 Inno Setup 6 时，脚本仍会构建便携版并跳过安装包。应用会把本地 Python 服务和前端一起打包，启动时自动选择空闲的回环端口，并在原生 WebView2 窗口中打开工作区。运行成品不要求用户另外安装 Python；当前 Windows 10/11 通常已自带所需的 Microsoft Edge WebView2 Runtime。
 
-API Key 和维护者个人模型资源都不会被写进 EXE。桌面版会依次读取系统用户环境变量、EXE 同目录的 `.env`、以及 `%APPDATA%\En-IntelliSense\.env`。下载 `En-IntelliSense.env.example` 后将其重命名为 `.env`，填写自己的模型服务配置，并重新启动应用。
+API Key 和维护者个人模型资源都不会被写进程序。桌面版首次启动会打开 Model settings，用户可以填写 OpenAI 或兼容服务的地址、API Key、模型名称和 API 类型，并在保存前测试连接。API Key 使用 Windows DPAPI 为当前 Windows 账户加密，配置保存在 `%APPDATA%\En-IntelliSense\config.json`，保存后立即生效。环境变量和 `.env` 仍保留为开发者兼容入口。
+
+以后取得 PFX 代码签名证书时，可设置 `WINDOWS_CERTIFICATE_PATH`、`WINDOWS_CERTIFICATE_PASSWORD` 和可选的 `WINDOWS_TIMESTAMP_URL` 后运行同一个构建命令。GitHub Actions 对应使用 `WINDOWS_CERTIFICATE_BASE64` 与 `WINDOWS_CERTIFICATE_PASSWORD` 仓库 Secret。
 
 ## 测试
 

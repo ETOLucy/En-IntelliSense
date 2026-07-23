@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/en-intellisense-logo.svg" width="140" alt="En-IntelliSense logo" />
+  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg"><img src="docs/assets/en-intellisense-logo.svg" width="340" alt="En-IntelliSense logo" /></picture>
   <h1>En-IntelliSense</h1>
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>Context-aware English completion, review, and rewriting for learners.</p>
@@ -107,9 +107,9 @@ Open `http://127.0.0.1:8000`.
 
 ## Windows desktop app
 
-For normal use, download `En-IntelliSense.exe` from the [latest GitHub release](https://github.com/ETOLucy/En-IntelliSense/releases/latest) and double-click it. No terminal, Python installation, or build command is required.
+For normal use, download `En-IntelliSense-Setup.exe` from the [latest GitHub release](https://github.com/ETOLucy/En-IntelliSense/releases/latest). The installer creates a Start menu shortcut and can optionally create a desktop shortcut. `En-IntelliSense-Portable.zip` remains available for users who do not want to install it.
 
-> **Signing status:** `v1.0.1` is currently unsigned and may be blocked by Windows Smart App Control. It is intended for local testing. The project has applied to SignPath Foundation; signed public releases will follow after approval.
+> **Signing status:** The installer can be built and used without a certificate, but Windows may show an unknown-publisher or SmartScreen warning. The build supports adding a trusted timestamped signature to both the application and installer later.
 
 The following command is only for developers who changed the source and need to rebuild the EXE:
 
@@ -117,9 +117,11 @@ The following command is only for developers who changed the source and need to 
 powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
 ```
 
-The result is `dist/En-IntelliSense.exe`. It bundles the local Python service and frontend, chooses an available loopback port automatically, and opens the workspace in a native WebView2 window. Python is not required on the computer running the finished EXE; Microsoft Edge WebView2 Runtime is required and is already included with current Windows 10/11 installations.
+The installer is written to `dist/En-IntelliSense-Setup.exe`; the portable build is `dist/En-IntelliSense-Portable.zip`. If Inno Setup 6 is not installed locally, the script still builds the portable ZIP and skips the installer. The app bundles the local Python service and frontend, chooses an available loopback port automatically, and opens the workspace in a native WebView2 window. Python is not required on the target computer; Microsoft Edge WebView2 Runtime is required and is already included with current Windows 10/11 installations.
 
-API keys and maintainer-owned model resources are never embedded in the executable. The desktop app reads model settings from user environment variables, a `.env` file beside the EXE, or `%APPDATA%\En-IntelliSense\.env` in that order. Download `En-IntelliSense.env.example`, rename it to `.env`, enter your own provider settings, and restart the app.
+API keys and maintainer-owned model resources are never embedded in the executable. On first launch, Model settings accepts an OpenAI or compatible provider URL, API key, model names, and API type, with a connection test before saving. The key is protected for the current Windows account with Windows DPAPI, stored in `%APPDATA%\En-IntelliSense\config.json`, and applied immediately. Environment variables and `.env` remain supported for development.
+
+To sign later, set `WINDOWS_CERTIFICATE_PATH`, `WINDOWS_CERTIFICATE_PASSWORD`, and optionally `WINDOWS_TIMESTAMP_URL` before running the same build command. GitHub Actions uses the `WINDOWS_CERTIFICATE_BASE64` and `WINDOWS_CERTIFICATE_PASSWORD` repository secrets.
 
 ## Test
 

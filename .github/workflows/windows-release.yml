@@ -22,9 +22,17 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-build.txt
 
-      - name: Build Windows executable
+      - name: Install Inno Setup
         shell: pwsh
-        run: .\scripts\build_windows.ps1
+        run: choco install innosetup --no-progress -y
+
+      - name: Build Windows release
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+          WINDOWS_TIMESTAMP_URL: https://timestamp.digicert.com
+        run: .\scripts\build_windows.ps1 -Version "${{ github.ref_name }}" -RequireInstaller
 
       - name: Publish GitHub release
         shell: pwsh
@@ -32,7 +40,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "${{ github.ref_name }}" `
-            "dist/En-IntelliSense.exe#En-IntelliSense.exe" `
-            "dist/En-IntelliSense.env.example#Model configuration example" `
+            "dist/En-IntelliSense-Setup.exe#Windows installer" `
+            "dist/En-IntelliSense-Portable.zip#Portable version" `
+            "dist/SHA256SUMS.txt#SHA-256 checksums" `
             --title "En-IntelliSense ${{ github.ref_name }}" `
             --generate-notes

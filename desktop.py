@@ -4,6 +4,8 @@ from http.server import ThreadingHTTPServer
 
 import webview
 
+os.environ.setdefault("ENWRITE_DESKTOP", "1")
+
 from server import EnWriteHandler
 
 

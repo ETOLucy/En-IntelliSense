@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 96" role="img" aria-labelledby="title desc">
+  <title id="title">En-IntelliSense</title>
+  <desc id="desc">En-IntelliSense wordmark for dark backgrounds.</desc>
+  <rect x="4" y="4" width="88" height="88" rx="20" fill="#F7FAF8"/>
+  <path d="M30 27v42M30 27h33M30 48h24M30 69h33" fill="none" stroke="#173F35" stroke-width="9" stroke-linecap="round"/>
+  <path d="M67 33c1.7 7.8 5.2 11.3 13 15-7.8 1.7-11.3 5.2-13 13-1.7-7.8-5.2-11.3-13-13 7.8-1.7 11.3-5.2 13-15Z" fill="#C98A1F"/>
+  <circle cx="55" cy="36" r="3.5" fill="#D85A49"/>
+  <text x="112" y="60" fill="#F7FAF8" font-family="Segoe UI,Arial,sans-serif" font-size="38" font-weight="700">En-IntelliSense</text>
+</svg>

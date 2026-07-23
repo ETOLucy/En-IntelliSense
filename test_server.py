@@ -1,5 +1,8 @@
 import os
+import json
+import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 import server
@@ -105,6 +108,52 @@ class CompletionTests(unittest.TestCase):
         self.assertIs(result, response)
         self.assertEqual(post.call_count, 2)
         sleep.assert_called_once()
+
+
+class ModelConfigTests(unittest.TestCase):
+    def test_rejects_insecure_remote_provider_url(self):
+        with self.assertRaisesRegex(ValueError, "HTTPS"):
+            server.validate_model_config({
+                "base_url": "http://example.com/v1",
+                "model": "chat-model",
+                "autocomplete_model": "fast-model",
+                "api_style": "chat",
+            })
+
+    def test_saves_protected_key_and_applies_config(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(server, "USER_CONFIG_ROOT", root), patch.object(server, "USER_CONFIG_PATH", root / "config.json"), patch.object(server, "protect_secret", return_value="protected-value"):
+                with patch.dict(os.environ, {}, clear=True):
+                    result = server.save_user_config({
+                        "base_url": "https://provider.example/v1",
+                        "api_key": "private-key",
+                        "model": "chat-model",
+                        "autocomplete_model": "fast-model",
+                        "api_style": "responses",
+                    })
+                    stored = json.loads((root / "config.json").read_text(encoding="utf-8"))
+                    applied_model = os.environ["OPENAI_MODEL"]
+        self.assertNotIn("private-key", json.dumps(stored))
+        self.assertEqual(stored["api_key_protected"], "protected-value")
+        self.assertTrue(result["configured"])
+        self.assertEqual(applied_model, "chat-model")
+
+    @patch("server.requests.post")
+    def test_connection_test_uses_entered_settings(self, post):
+        response = Mock()
+        response.raise_for_status.return_value = None
+        post.return_value = response
+        result = object.__new__(server.EnWriteHandler).test_model_config({
+            "base_url": "https://provider.example/v1",
+            "api_key": "test-key",
+            "model": "chat-model",
+            "autocomplete_model": "fast-model",
+            "api_style": "chat",
+        })
+        self.assertTrue(result["ok"])
+        self.assertEqual(post.call_args.args[0], "https://provider.example/v1/chat/completions")
+        self.assertEqual(post.call_args.kwargs["json"]["model"], "chat-model")
 
 
 if __name__ == "__main__":

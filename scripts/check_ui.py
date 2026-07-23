@@ -48,8 +48,19 @@ try:
     if not target:
         raise RuntimeError("Application tab did not open")
     socket = websocket.create_connection(target["webSocketDebuggerUrl"], timeout=20)
-    evaluate(socket, 1, "localStorage.removeItem('enwrite-draft'); localStorage.removeItem('enwrite-finished'); location.reload();")
-    time.sleep(2)
+    evaluate(socket, 1, "localStorage.removeItem('enwrite-draft'); localStorage.removeItem('enwrite-finished');")
+    time.sleep(1)
+    if not evaluate(socket, 101, "!document.querySelector('#settingsModal').classList.contains('hidden') && document.querySelector('#modelBaseUrl').required && document.querySelector('#modelName').required && document.querySelector('#autocompleteModel').required && document.querySelector('#modelApiKey').type === 'password'"):
+        raise RuntimeError("First-run model settings did not open with the required fields")
+    settings_screenshot = command(socket, 102, "Page.captureScreenshot", {"format": "png"})
+    (root / "settings-ui-check.png").write_bytes(base64.b64decode(settings_screenshot["data"]))
+    command(socket, 103, "Emulation.setDeviceMetricsOverride", {"width": 390, "height": 844, "deviceScaleFactor": 1, "mobile": True})
+    if not evaluate(socket, 104, "(() => { const box = document.querySelector('.settings-dialog').getBoundingClientRect(); return box.left >= 0 && box.right <= innerWidth && box.top >= 0 && box.bottom <= innerHeight; })()"):
+        raise RuntimeError("Model settings overflow the mobile viewport")
+    command(socket, 105, "Emulation.clearDeviceMetricsOverride")
+    evaluate(socket, 106, "document.querySelector('#closeSettings').click();")
+    if not evaluate(socket, 107, "document.querySelector('#settingsModal').classList.contains('hidden')"):
+        raise RuntimeError("Model settings did not close")
     evaluate(socket, 2, "document.querySelector('#closeCoach').click();")
     if not evaluate(socket, 3, "document.querySelector('#writingCoach').classList.contains('closed') && document.body.classList.contains('coach-closed') && document.querySelector('#coachToggle').getAttribute('aria-expanded') === 'false'"):
         raise RuntimeError("Writing coach did not close")
