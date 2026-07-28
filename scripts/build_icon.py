@@ -69,6 +69,18 @@ def build_app_icon():
         sizes=[(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)],
     )
 
+def build_store_assets():
+    source = Image.open(ASSET_DIR / "app-icon.png").convert("RGBA")
+    targets = {
+        "StoreLogo.png": (50, 50),
+        "Square44x44Logo.png": (44, 44),
+        "Square150x150Logo.png": (150, 150),
+    }
+    store_dir = ASSET_DIR / "store"
+    store_dir.mkdir(parents=True, exist_ok=True)
+    for name, size in targets.items():
+        source.resize(size, Image.Resampling.LANCZOS).save(store_dir / name, optimize=True)
+
 
 def build_social_preview():
     width, height = 1280, 640
@@ -96,6 +108,7 @@ def main():
     ASSET_DIR.mkdir(exist_ok=True)
     DOCS_ASSET_DIR.mkdir(parents=True, exist_ok=True)
     build_app_icon()
+    build_store_assets()
     build_social_preview()
 
 

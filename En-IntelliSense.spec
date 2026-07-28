@@ -9,7 +9,6 @@ datas = [
     (str(root / "completion.js"), "."),
     (str(root / "logo.svg"), "."),
 ]
-
 a = Analysis(
     [str(root / "desktop.py")],
     pathex=[str(root)],

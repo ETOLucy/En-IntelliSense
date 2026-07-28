@@ -85,6 +85,21 @@ function New-PortableArchive {
 
 if (-not (Test-Path -LiteralPath $python)) {
     python -m venv $venvRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "Could not create the build virtual environment."
+    }
+}
+
+$savedErrorActionPreference = $ErrorActionPreference
+$ErrorActionPreference = "SilentlyContinue"
+& $python -m pip --version *> $null
+$pipStatus = $LASTEXITCODE
+$ErrorActionPreference = $savedErrorActionPreference
+if ($pipStatus -ne 0) {
+    & $python -m ensurepip --upgrade
+    if ($LASTEXITCODE -ne 0) {
+        throw "The build virtual environment is missing pip and could not repair it."
+    }
 }
 
 Push-Location $projectRoot
@@ -99,8 +114,17 @@ try {
     }
 
     & $python -m pip install --disable-pip-version-check -r (Join-Path $projectRoot "requirements-build.txt")
+    if ($LASTEXITCODE -ne 0) {
+        throw "Could not install build dependencies."
+    }
     & $python (Join-Path $projectRoot "scripts\build_icon.py")
+    if ($LASTEXITCODE -ne 0) {
+        throw "Icon generation failed."
+    }
     & $python -m PyInstaller --noconfirm --clean (Join-Path $projectRoot "En-IntelliSense.spec")
+    if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $appExe)) {
+        throw "PyInstaller did not produce the Windows application."
+    }
 
     Invoke-CodeSign $appExe
 

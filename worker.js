@@ -1,4 +1,32 @@
-const jsonHeaders = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+const securityHeaders = {
+  'x-content-type-options': 'nosniff',
+  'referrer-policy': 'no-referrer',
+  'permissions-policy': 'camera=(), microphone=(), geolocation=()',
+  'cross-origin-resource-policy': 'same-origin',
+};
+const jsonHeaders = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...securityHeaders };
+
+function compareVersions(left, right) {
+  const parts = value => String(value || '').split('.').slice(0, 4).map(part => Number.parseInt(part, 10) || 0);
+  const a = parts(left);
+  const b = parts(right);
+  for (let index = 0; index < 4; index += 1) {
+    if ((a[index] || 0) !== (b[index] || 0)) return (a[index] || 0) - (b[index] || 0);
+  }
+  return 0;
+}
+
+function obsoleteDesktopClient(request, env) {
+  const minimum = String(env.MIN_WINDOWS_CLIENT_VERSION || '').trim();
+  if (!minimum) return null;
+  const match = (request.headers.get('x-enwrite-client') || '').match(/^windows-desktop\/(\d+(?:\.\d+){0,3})$/);
+  if (!match || compareVersions(match[1], minimum) >= 0) return null;
+  return json({
+    error: 'This version is no longer supported. Update En-IntelliSense from Microsoft Store.',
+    code: 'upgrade_required',
+    minimum_version: minimum,
+  }, 426);
+}
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: jsonHeaders });
@@ -15,11 +43,18 @@ async function serveAsset(request, env) {
     headers.set('cache-control', 'no-cache');
   }
   headers.set('x-content-type-options', 'nosniff');
+  headers.set('referrer-policy', 'no-referrer');
+  headers.set('permissions-policy', 'camera=(), microphone=(), geolocation=()');
+  headers.set('cross-origin-resource-policy', 'same-origin');
+  if (pathname.endsWith('.html') || pathname === '/') {
+    headers.set('content-security-policy', "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
+  }
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
 
 function apiBase(env) {
-  const base = (env.OPENAI_BASE_URL || 'https://api.openai.com').replace(/\/$/, '');
+  if (!env.OPENAI_BASE_URL || env.OPENAI_BASE_URL.includes('example.com')) throw new Error('Model endpoint is not configured');
+  const base = env.OPENAI_BASE_URL.replace(/\/$/, '');
   return base.endsWith('/v1') ? base : `${base}/v1`;
 }
 
@@ -45,7 +80,8 @@ async function fetchWithRetry(url, options) {
 async function chatText(env, instructions, prompt, maxTokens = 300, model = env.OPENAI_MODEL) {
   if (!env.OPENAI_API_KEY) {
     if (!env.AI) throw new Error('No model provider is configured');
-    const workersModel = env.CLOUDFLARE_AI_MODEL || '@cf/meta/llama-3.1-8b-instruct-fp8';
+    const workersModel = env.CLOUDFLARE_AI_MODEL;
+    if (!workersModel || workersModel.startsWith('example-')) throw new Error('Workers AI model is not configured');
     const result = await env.AI.run(workersModel, {
       messages: [{ role: 'system', content: instructions }, { role: 'user', content: prompt }],
       max_tokens: maxTokens,
@@ -80,10 +116,15 @@ function normalizeCompletion(text, source, mode) {
     if (fragment && candidate.toLowerCase().startsWith(fragment.toLowerCase())) {
       return candidate.slice(fragment.length);
     }
-    return candidate;
+    return ['i', 'a'].includes(fragment.toLowerCase()) ? '' : candidate;
   }
   if (mode !== 'word' && source && !/\s$/.test(source) && /^[A-Za-z0-9]/.test(output)) output = ` ${output}`;
   return output;
+}
+
+function explanationLanguage(data) {
+  const supported = new Set(['Chinese', 'English', 'Spanish', 'Japanese', 'Korean', 'French', 'German', 'Portuguese', 'Arabic', 'Hindi', 'Russian']);
+  return supported.has(data.language) ? data.language : 'English';
 }
 
 async function complete(request, env, plain = false) {
@@ -97,9 +138,10 @@ async function complete(request, env, plain = false) {
 
 async function review(request, env) {
   const data = await request.json();
+  const language = explanationLanguage(data);
   const text = String(data.text || '').trim().slice(0, 7000);
   if (!text) return json({ error: 'Draft cannot be empty' }, 400);
-  const instructions = 'Review English writing for a Chinese learner. Infer the communicative intent from the whole draft. Identify only useful grammar, clarity, wording, repetition, or tone issues. Return JSON only: {"intent":"concise Chinese sentence","issues":[{"quote":"exact source substring","replacement":"improved English","message":"concise Chinese reason","category":"grammar|clarity|wording|repetition|tone","severity":"warning|suggestion"}]}. At most 5 non-overlapping issues; every quote must exactly match the draft.';
+  const instructions = `Review English writing for a learner. Infer the communicative intent from the whole draft. Identify only useful grammar, clarity, wording, repetition, or tone issues. Return JSON only: {"intent":"concise ${language} sentence","issues":[{"quote":"exact source substring","replacement":"improved English","message":"concise ${language} reason","category":"grammar|clarity|wording|repetition|tone","severity":"warning|suggestion"}]}. At most 5 non-overlapping issues; every quote must exactly match the draft.`;
   const prompt = `Format: ${data.format || 'letter'}\nAudience: ${data.audience || 'general'}\nTone: ${data.tone || 'natural'}\nLevel: ${data.level || 'natural'}\nDraft:\n${text}`;
   const result = parseModelJson(await chatText(env, instructions, prompt, 700), { intent: '', issues: [] });
   result.intent ||= '';
@@ -109,18 +151,19 @@ async function review(request, env) {
 
 async function assist(request, env) {
   const data = await request.json();
+  const language = explanationLanguage(data);
   const text = String(data.text || '').trim().slice(0, 6000);
   if (!text) return json({ error: 'Text cannot be empty' }, 400);
   let instructions;
   let prompt;
   if (data.action === 'polish_subject') {
-    instructions = 'Help a Chinese learner write a natural English subject. Return JSON only: {"suggestions":[{"text":"...","meaning":"Chinese meaning","tone":"short Chinese tone note"}]}. Give exactly 3 subjects under 8 words. Every suggestion must differ meaningfully from the current subject while preserving intent.';
+    instructions = `Help a learner write a natural English subject. Return JSON only: {"suggestions":[{"text":"...","meaning":"${language} meaning","tone":"short ${language} tone note"}]}. Give exactly 3 subjects under 8 words. Every suggestion must differ meaningfully from the current subject while preserving intent.`;
     prompt = `Current subject: ${text}\nDraft context: ${String(data.context || '').slice(-3000)}`;
   } else if (data.action === 'polish_text') {
-    instructions = `Polish English for a Chinese learner at ${data.level || 'natural'} level. Return JSON only: {"suggestions":[{"text":"...","meaning":"Chinese meaning","tone":"Chinese difference note"}]}. Give exactly 3 alternatives: simple, natural, and expressive. Preserve meaning.`;
+    instructions = `Polish English for a learner at ${data.level || 'natural'} level. Return JSON only: {"suggestions":[{"text":"...","meaning":"${language} meaning","tone":"${language} difference note"}]}. Give exactly 3 alternatives: simple, natural, and expressive. Preserve meaning.`;
     prompt = `Text: ${text}\nContext: ${String(data.context || '').slice(-3000)}`;
   } else if (['explain', 'simplify'].includes(data.action)) {
-    instructions = `Act as a patient bilingual tutor for a ${data.level || 'natural'} learner. Return JSON only with translation (natural Chinese), explanation (concise Chinese usage/tone), and simpler (clear English rewrite preserving meaning).`;
+    instructions = `Act as a patient English tutor for a ${data.level || 'natural'} learner. Return JSON only with translation (natural ${language}), explanation (concise ${language} usage/tone), and simpler (clear English rewrite preserving meaning).`;
     prompt = `Explain and simplify:\n${text}`;
   } else return json({ error: 'Invalid assist action' }, 400);
   const fallback = { translation: '', explanation: '', simpler: text, suggestions: [] };
@@ -131,29 +174,35 @@ async function assist(request, env) {
 
 async function chat(request, env) {
   const data = await request.json();
+  const language = explanationLanguage(data);
   const message = String(data.message || '').trim().slice(0, 2000);
   if (!message) return json({ error: 'Message cannot be empty' }, 400);
   const history = (Array.isArray(data.history) ? data.history : []).slice(-8).map(item => `${item.role || 'user'}: ${String(item.content || '').slice(0, 1000)}`).join('\n');
   const prompt = `Current draft:\n${String(data.context || '').slice(-5000)}\n\nSelected text:\n${String(data.selection || '').slice(0, 2000) || '(none)'}\n\nRecent conversation:\n${history || '(none)'}\n\nLearner: ${message}`;
-  const instructions = 'You are En-IntelliSense, a bilingual English writing tutor. Reply primarily in concise Chinese with useful English examples. Explain tone and nuance plainly and give immediately usable writing.';
+  const instructions = `You are En-IntelliSense, an English writing tutor. Reply primarily in concise ${language} with useful English examples. Explain tone and nuance plainly and give immediately usable writing.`;
   return json({ reply: (await chatText(env, instructions, prompt, 500)).trim() });
 }
 
-export { normalizeCompletion };
+export { compareVersions, normalizeCompletion, obsoleteDesktopClient };
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (!url.pathname.startsWith('/api/')) return serveAsset(request, env);
-    const workersAIModel = env.CLOUDFLARE_AI_MODEL || '@cf/meta/llama-3.1-8b-instruct-fp8';
-    const configured = Boolean(env.OPENAI_API_KEY || env.AI);
+    const workersAIModel = env.CLOUDFLARE_AI_MODEL || '';
+    const configured = Boolean(
+      (env.OPENAI_API_KEY && env.OPENAI_BASE_URL && !env.OPENAI_BASE_URL.includes('example.com')
+        && env.OPENAI_MODEL && !env.OPENAI_MODEL.startsWith('example-'))
+      || (env.AI && workersAIModel && !workersAIModel.startsWith('example-'))
+    );
     if (url.pathname === '/api/status') return json({
       configured,
-      model: env.OPENAI_API_KEY ? env.OPENAI_MODEL : workersAIModel,
-      autocomplete_model: env.OPENAI_API_KEY ? env.OPENAI_AUTOCOMPLETE_MODEL : workersAIModel
+      provider_mode: 'hosted'
     });
     if (!configured) return json({ error: 'No model provider is configured' }, 503);
     if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
+    const upgrade = obsoleteDesktopClient(request, env);
+    if (upgrade) return upgrade;
     try {
       if (url.pathname === '/api/complete') return await complete(request, env, false);
       if (url.pathname === '/api/complete-stream') return await complete(request, env, true);
@@ -162,7 +211,10 @@ export default {
       if (url.pathname === '/api/chat') return await chat(request, env);
       return json({ error: 'Not found' }, 404);
     } catch (error) {
-      return json({ error: error.message || 'Request failed' }, 502);
+      return json({
+        error: error.message || 'Request failed',
+        code: 'upstream_error',
+      }, 502);
     }
   }
 };

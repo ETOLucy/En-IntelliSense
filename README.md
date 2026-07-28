@@ -1,23 +1,18 @@
 <div align="center">
-  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg"><img src="docs/assets/en-intellisense-logo.svg" width="340" alt="En-IntelliSense logo" /></picture>
-  <h1>En-IntelliSense</h1>
+  <img src="docs/assets/logo-mark.svg" width="104" alt="En-IntelliSense logo mark" />
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>Context-aware English completion, review, and rewriting for learners.</p>
   <p>
     <strong>English</strong>
     &nbsp;&middot;&nbsp;
     <a href="README.zh-CN.md">简体中文</a>
-    &nbsp;&middot;&nbsp;
-    <a href="README.es.md">Español</a>
-    &nbsp;&middot;&nbsp;
-    <a href="README.ja.md">日本語</a>
-    &nbsp;&middot;&nbsp;
-    <a href="README.ru.md">Русский</a>
   </p>
   <p>
     <a href="#demo">See it in action</a>
     &nbsp;&middot;&nbsp;
-    <a href="https://github.com/ETOLucy/En-IntelliSense/releases/latest">Download Windows EXE</a>
+    <a href="#download">Download</a>
+    &nbsp;&middot;&nbsp;
+    <a href="docs/USER_GUIDE.md">User Guide</a>
     &nbsp;&middot;&nbsp;
     <a href="#run">Run locally</a>
     &nbsp;&middot;&nbsp;
@@ -35,25 +30,40 @@
 
 En-IntelliSense understands the intent behind the whole draft before it suggests the next word. It combines word, phrase, and sentence completion with contextual review, exact issue highlighting, bilingual explanations, and one-click repairs.
 
+<a id="download"></a>
+
+## Download
+
+<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="360" alt="Download from the Microsoft Store" />
+
+**Microsoft Store:** Coming soon. The link will be enabled after certification.
+
+- **GitHub Releases**
+
+  Download the latest installer or portable build from [GitHub Releases](https://github.com/ETOLucy/En-IntelliSense/releases/latest).
+
+New users can follow the [User Guide](docs/USER_GUIDE.md) for setup and everyday writing.
+
 ## Demo
 
 ![En-IntelliSense writing workspace](docs/assets/demo.png)
 
-### From Chinese-style English to natural writing
+### Interface language
 
-The learner writes an essay using direct Chinese logic. En-IntelliSense infers the intended argument, highlights five exact source problems, explains each issue in Chinese, and provides one-click natural replacements without rewriting the learner's entire voice.
+Choose from the 11 interface languages currently included in the app, or follow the Windows language.
 
-![Context-aware review correcting Chinese-style English](docs/assets/demo-chinese-logic.png)
+![En-IntelliSense interface language selection](docs/assets/demo-language.png)
 
-### Finish in your webmail
+### Bring your own AI service
 
-For letters and emails, the finished draft carries the recipient, subject, and body into QQ Mail, 163 Mail, Gmail, or a custom webmail compose URL. QQ Mail and 163 Mail also copy the complete email automatically as a fallback if login removes compose parameters.
+Connect a compatible model endpoint with your own API key and model ID. The key stays on the Windows device and is protected with Windows encryption.
 
-![Choose a webmail provider and carry over the finished email](docs/assets/demo-email.png)
+![En-IntelliSense AI service configuration](docs/assets/demo-ai-service.png)
 
 ## Features
 
 - Local word completion and model-powered phrase/sentence completion.
+- Open, edit, and atomically save UTF-8 `.txt` and Markdown files in the Windows app while keeping the full writing coach available.
 - Whole-draft intent inference passed into subsequent completions.
 - Automatic and manual writing review for grammar, clarity, wording, repetition, and tone.
 - Exact issue highlighting, source location, Chinese explanation, and one-click replacement.
@@ -61,7 +71,7 @@ For letters and emails, the finished draft carries the recipient, subject, and b
 - Translation, explanation, simplification, and contextual bilingual chat.
 - Useful phrases replace the selection or current sentence instead of appending duplicate text.
 - Letter, essay, and message formats with local draft persistence.
-- Finish a letter in QQ Mail, 163 Mail, Gmail, or a custom webmail compose URL with recipient, subject, and body carried over.
+- Copy a complete email and open the operating system's default email application through the standard `mailto:` handler.
 - Keep completed documents in a local Finished archive and reopen any item as an editable copy.
 
 <a id="model-quota-and-privacy"></a>
@@ -72,7 +82,7 @@ En-IntelliSense does not include a language model, shared API key, or free AI cr
 
 Without an API key, the app still opens and supports local word completion, drafts, finished documents, and email handoff. The coach displays `Add API key for AI`; model-powered phrase/sentence completion, review, polish, and chat remain unavailable until configuration is added.
 
-In this architecture, multi-user isolation relies on browser-local storage rather than server-side accounts. Drafts, finished documents, and custom webmail settings are stored only in the browser's `localStorage`; the application has no server-side draft database. Visitors using different devices, browsers, or browser profiles cannot see one another's local drafts. People sharing the same browser profile also share that profile's site storage, so use separate browser profiles on a shared computer or clear the site's local data afterward.
+Drafts and finished documents remain in the current Windows user's local app profile; the application does not yet have a server-side account or draft database. Paid subscriptions are not included in the first release.
 
 AI-powered actions send the relevant draft text to the provider selected by the user. The application does not persist those requests, and API responses use `Cache-Control: no-store`; review the provider's privacy terms before processing confidential or sensitive writing. A desktop `.env` file is local plaintext: keep it private, never commit it, and never paste an API key into a GitHub issue.
 
@@ -84,15 +94,18 @@ Copy `.env.example` to `.env` and enter credentials from your own provider:
 
 ```dotenv
 OPENAI_API_KEY=your_own_api_key
-OPENAI_BASE_URL=https://api.openai.com
-OPENAI_MODEL=gpt-4.1-mini
-OPENAI_AUTOCOMPLETE_MODEL=gpt-4.1-mini
+OPENAI_BASE_URL=https://api.example.com
+OPENAI_MODEL=example-model
 OPENAI_API_STYLE=chat
 ```
 
-Use model names supported by the selected provider. `OPENAI_MODEL` handles tutoring and review; `OPENAI_AUTOCOMPLETE_MODEL` may use a faster model for inline completion. Compatible providers may use a different `OPENAI_BASE_URL`.
+Use a model name supported by the selected provider. The same model handles completion, tutoring, review, rewriting, and chat. Operators may later set the optional `OPENAI_AUTOCOMPLETE_MODEL` override after validating a faster model in production.
 
 Never commit `.env` or place an API key in browser-side JavaScript.
+
+Source code and schema are public; customer data and production credentials are not. See [Open-source and private-data boundaries](docs/OPEN_SOURCE_BOUNDARIES.md) and run `npm run privacy` before committing or pushing.
+
+Read the [Privacy Policy](PRIVACY.md) for details about local storage, third-party model processing, file access, retention, and deletion.
 
 ## Run
 
@@ -119,13 +132,14 @@ powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
 
 The installer is written to `dist/En-IntelliSense-Setup.exe`; the portable build is `dist/En-IntelliSense-Portable.zip`. If Inno Setup 6 is not installed locally, the script still builds the portable ZIP and skips the installer. The app bundles the local Python service and frontend, chooses an available loopback port automatically, and opens the workspace in a native WebView2 window. Python is not required on the target computer; Microsoft Edge WebView2 Runtime is required and is already included with current Windows 10/11 installations.
 
-API keys and maintainer-owned model resources are never embedded in the executable. On first launch, Model settings accepts an OpenAI or compatible provider URL, API key, model names, and API type, with a connection test before saving. The key is protected for the current Windows account with Windows DPAPI, stored in `%APPDATA%\En-IntelliSense\config.json`, and applied immediately. Environment variables and `.env` remain supported for development.
+API keys and maintainer-owned model resources are never embedded in the executable. The first release accepts a compatible provider URL, the user's API key, one model ID, and API type, with a connection test before saving. The key is protected for the current Windows account with Windows DPAPI, stored in `%APPDATA%\En-IntelliSense\config.json`, and applied immediately. Paid hosted plans are not included in the first release. Environment variables and `.env` remain supported for development.
 
 To sign later, set `WINDOWS_CERTIFICATE_PATH`, `WINDOWS_CERTIFICATE_PASSWORD`, and optionally `WINDOWS_TIMESTAMP_URL` before running the same build command. GitHub Actions uses the `WINDOWS_CERTIFICATE_BASE64` and `WINDOWS_CERTIFICATE_PASSWORD` repository secrets.
 
 ## Test
 
 ```powershell
+npm run privacy
 python -m unittest discover -p "test_*.py"
 npm test
 ```
@@ -137,23 +151,6 @@ npm test
 - Click a review item to select its exact source text, then press **Apply 修改** to replace it.
 - Select text, or place the cursor in a sentence, before using Polish, Explain, or Simplify.
 - Clicking a Useful phrase replaces the selection/current sentence.
-
-## Cloudflare
-
-The repository serves the frontend and API from one Worker. Cloudflare Workers AI is the default backend, so a free deployment works without an external API key. To use an OpenAI-compatible provider instead, add `OPENAI_API_KEY` and `OPENAI_BASE_URL` as Worker secrets.
-
-```powershell
-npx wrangler login
-npx wrangler deploy
-
-# Optional external provider
-npx wrangler secret put OPENAI_API_KEY
-npx wrangler secret put OPENAI_BASE_URL
-```
-
-## EdgeOne Pages
-
-To deploy your own copy, import this GitHub repository into EdgeOne Pages, use `main` as the production branch, and leave the build command empty. The checked-in `edgeone.json` publishes `public/` and deploys the Node Functions under `node-functions/`. Those functions forward `/api/*` to the Cloudflare Worker, so no model API key is stored in EdgeOne.
 
 ## Friendly Links
 

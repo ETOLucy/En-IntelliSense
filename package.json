@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "node test_completion.js && node test_worker.mjs && node test_edgeone_proxy.mjs"
+    "debug": "powershell -ExecutionPolicy Bypass -File ./scripts/start_debug.ps1",
+    "test": "node test_completion.js && node test_worker.mjs && node test_edgeone_proxy.mjs && node test_i18n.mjs",
+    "privacy": "powershell -ExecutionPolicy Bypass -File ./scripts/check_privacy.ps1"
   }
 }

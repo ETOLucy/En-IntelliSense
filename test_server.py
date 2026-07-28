@@ -2,6 +2,7 @@ import os
 import json
 import tempfile
 import unittest
+from base64 import urlsafe_b64encode
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -38,7 +39,12 @@ class CompletionTests(unittest.TestCase):
         response.raise_for_status.return_value = None
         response.json.return_value = {"output": [{"content": [{"type": "output_text", "text": "This helps us understand other perspectives."}]}]}
         post.return_value = response
-        with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key", "OPENAI_API_STYLE": "responses"}):
+        with patch.dict(os.environ, {
+            "OPENAI_API_KEY": "test-key",
+            "OPENAI_BASE_URL": "https://api.example.com/v1",
+            "OPENAI_AUTOCOMPLETE_MODEL": "example-fast-model",
+            "OPENAI_API_STYLE": "responses",
+        }):
             result = self.make_handler().model_completion({}, "Learning a language matters.", "sentence")
         self.assertEqual(result, " This helps us understand other perspectives.")
 
@@ -49,7 +55,12 @@ class CompletionTests(unittest.TestCase):
         successful.raise_for_status.return_value = None
         successful.json.return_value = {"choices": [{"message": {"content": "onderful"}}]}
         post.side_effect = [failed, successful]
-        with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key", "OPENAI_API_STYLE": "responses"}):
+        with patch.dict(os.environ, {
+            "OPENAI_API_KEY": "test-key",
+            "OPENAI_BASE_URL": "https://api.example.com/v1",
+            "OPENAI_AUTOCOMPLETE_MODEL": "example-fast-model",
+            "OPENAI_API_STYLE": "responses",
+        }):
             result = self.make_handler().model_completion({}, "That was w", "word")
         self.assertEqual(result, "onderful")
         self.assertTrue(post.call_args_list[1].args[0].endswith("/chat/completions"))
@@ -154,6 +165,51 @@ class ModelConfigTests(unittest.TestCase):
         self.assertTrue(result["ok"])
         self.assertEqual(post.call_args.args[0], "https://provider.example/v1/chat/completions")
         self.assertEqual(post.call_args.kwargs["json"]["model"], "chat-model")
+
+    def test_first_release_rejects_subscription_mode(self):
+        with self.assertRaisesRegex(ValueError, "only your own API key"):
+            server.validate_model_config({"provider_mode": "hosted"})
+
+
+class StorageIsolationTests(unittest.TestCase):
+    def test_local_profiles_have_different_stable_scopes(self):
+        with patch.object(server, "read_user_config", return_value={"device_id": "device-a"}):
+            first = server.storage_scope()
+            self.assertEqual(first, server.storage_scope())
+        with patch.object(server, "read_user_config", return_value={"device_id": "device-b"}):
+            second = server.storage_scope()
+        self.assertNotEqual(first, second)
+
+    def test_byok_scope_does_not_expose_windows_username(self):
+        with patch.dict(os.environ, {
+            "ENWRITE_PROVIDER_MODE": "byok",
+            "USERDOMAIN": "EXAMPLE",
+            "USERNAME": "private-user",
+        }, clear=True), patch.object(server, "read_user_config", return_value={}):
+            scope = server.storage_scope()
+        self.assertRegex(scope, r"^[0-9a-f]{24}$")
+        self.assertNotIn("private-user", scope)
+
+
+class LocalRequestSecurityTests(unittest.TestCase):
+    def handler_with_headers(self, headers):
+        handler = object.__new__(server.EnWriteHandler)
+        handler.headers = headers
+        return handler
+
+    def test_accepts_loopback_host_and_origin(self):
+        handler = self.handler_with_headers({
+            "Host": "127.0.0.1:8000",
+            "Origin": "http://127.0.0.1:8000",
+        })
+        self.assertTrue(handler.trusted_local_request())
+
+    def test_rejects_non_loopback_host_or_origin(self):
+        self.assertFalse(self.handler_with_headers({"Host": "example.com"}).trusted_local_request())
+        self.assertFalse(self.handler_with_headers({
+            "Host": "127.0.0.1:8000",
+            "Origin": "https://example.com",
+        }).trusted_local_request())
 
 
 if __name__ == "__main__":

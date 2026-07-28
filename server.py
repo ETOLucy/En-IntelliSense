@@ -1,8 +1,11 @@
 import json
 import os
+import secrets
 import sys
 import time
 import ctypes
+import hashlib
+import re
 from base64 import b64decode, b64encode
 from ctypes import POINTER, Structure, byref, c_char, c_void_p, cast, string_at
 from ctypes.wintypes import DWORD
@@ -26,6 +29,7 @@ MODEL_CONFIG_KEYS = {
     "autocomplete_model": "OPENAI_AUTOCOMPLETE_MODEL",
     "api_style": "OPENAI_API_STYLE",
 }
+AI_PATHS = {"/api/complete", "/api/complete-stream", "/api/assist", "/api/chat", "/api/review"}
 
 
 class DataBlob(Structure):
@@ -79,6 +83,26 @@ def read_user_config():
     except (OSError, ValueError, TypeError):
         return {}
 
+def remove_legacy_subscription_config():
+    if not USER_CONFIG_PATH.is_file():
+        return
+    try:
+        data = json.loads(USER_CONFIG_PATH.read_text(encoding="utf-8"))
+        changed = False
+        for key in ("subscription_token_protected", "subscription_token", "service_url"):
+            if key in data:
+                data.pop(key)
+                changed = True
+        if data.get("provider_mode") != "byok":
+            data["provider_mode"] = "byok"
+            changed = True
+        if changed:
+            temporary = USER_CONFIG_PATH.with_suffix(".tmp")
+            temporary.write_text(json.dumps(data, indent=2), encoding="utf-8")
+            temporary.replace(USER_CONFIG_PATH)
+    except (OSError, ValueError, TypeError):
+        return
+
 
 def apply_user_config():
     data = read_user_config()
@@ -92,15 +116,22 @@ def apply_user_config():
 
 def public_config():
     key = os.getenv("OPENAI_API_KEY", "")
+    saved = read_user_config()
     return {
         "configured": bool(key),
+        "provider_mode": "byok",
         "api_key_set": bool(key),
-        "api_key_hint": f"{key[:3]}...{key[-4:]}" if len(key) >= 8 else ("Saved" if key else ""),
-        "base_url": os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE") or "https://api.openai.com",
-        "model": os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
-        "autocomplete_model": os.getenv("OPENAI_AUTOCOMPLETE_MODEL", "gpt-4.1-mini"),
+        "saved_base_url": saved.get("base_url", "") if saved.get("provider_mode") == "byok" else "",
+        "saved_model": saved.get("model", "") if saved.get("provider_mode") == "byok" else "",
+        "saved_autocomplete_model": saved.get("autocomplete_model", "") if saved.get("provider_mode") == "byok" else "",
         "api_style": os.getenv("OPENAI_API_STYLE", "chat"),
     }
+
+def storage_scope():
+    config = read_user_config()
+    identity = config.get("device_id") or f"{os.getenv('USERDOMAIN', '')}\\{os.getenv('USERNAME', 'local')}"
+    digest = hashlib.sha256(f"byok:{identity}".encode("utf-8")).hexdigest()
+    return digest[:24]
 
 
 def desktop_mode():
@@ -108,16 +139,19 @@ def desktop_mode():
 
 
 def validate_model_config(data):
+    provider_mode = str(data.get("provider_mode", "byok")).lower()
+    if provider_mode != "byok":
+        raise ValueError("This version supports only your own API key")
     base_url = str(data.get("base_url", "")).strip().rstrip("/")
+    model = str(data.get("model", "")).strip()
+    autocomplete_model = str(data.get("autocomplete_model", "")).strip() or model
     parsed = urlparse(base_url)
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:
         raise ValueError("Enter a valid provider URL")
     if parsed.scheme != "https" and parsed.hostname not in {"localhost", "127.0.0.1", "::1"}:
         raise ValueError("The provider URL must use HTTPS")
-    model = str(data.get("model", "")).strip()
-    autocomplete_model = str(data.get("autocomplete_model", "")).strip()
-    if not model or len(model) > 160 or not autocomplete_model or len(autocomplete_model) > 160:
-        raise ValueError("Enter valid model names")
+    if not model or len(model) > 160:
+        raise ValueError("Enter a valid model name")
     api_style = str(data.get("api_style", "chat")).lower()
     if api_style not in {"chat", "responses"}:
         raise ValueError("API type must be chat or responses")
@@ -125,6 +159,7 @@ def validate_model_config(data):
     if len(api_key) > 1000:
         raise ValueError("API key is too long")
     return {
+        "provider_mode": provider_mode,
         "api_key": api_key,
         "base_url": base_url,
         "model": model,
@@ -142,6 +177,7 @@ def save_user_config(data):
     stored = {
         **config,
         "api_key_protected": protect_secret(api_key),
+        "device_id": current.get("device_id") or secrets.token_urlsafe(24),
     }
     USER_CONFIG_ROOT.mkdir(parents=True, exist_ok=True)
     temporary = USER_CONFIG_PATH.with_suffix(".tmp")
@@ -189,7 +225,13 @@ def normalize_completion_text(text):
     return text.translate(str.maketrans({"’": "'", "‘": "'", "“": '"', "”": '"', "–": "-", "—": "-", "…": "..."}))
 
 
+def explanation_language(data):
+    supported = {"Chinese", "English", "Spanish", "Japanese", "Korean", "French", "German", "Portuguese", "Arabic", "Hindi", "Russian"}
+    return data.get("language") if data.get("language") in supported else "English"
+
+
 load_dotenv()
+remove_legacy_subscription_config()
 apply_user_config()
 
 
@@ -201,7 +243,28 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
 
     def end_headers(self):
         self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Security-Policy", "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
+        self.send_header("Referrer-Policy", "no-referrer")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
         super().end_headers()
+
+    def trusted_local_request(self):
+        host = self.headers.get("Host", "")
+        hostname = host.rsplit(":", 1)[0].strip("[]").lower()
+        if hostname not in {"127.0.0.1", "localhost", "::1"}:
+            return False
+        origin = self.headers.get("Origin")
+        if not origin:
+            return True
+        parsed = urlparse(origin)
+        return parsed.scheme in {"http", "https"} and parsed.hostname in {"127.0.0.1", "localhost", "::1"}
+
+    def reject_untrusted_request(self):
+        if self.trusted_local_request():
+            return False
+        self.send_json(403, {"error": "Local request required"})
+        return True
 
     def send_json(self, status, payload):
         body = json.dumps(payload).encode("utf-8")
@@ -215,11 +278,13 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             return
 
     def do_GET(self):
+        if self.reject_untrusted_request():
+            return
         if self.path == "/api/status":
             self.send_json(200, {
                 "configured": bool(os.getenv("OPENAI_API_KEY")),
-                "model": os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
-                "autocomplete_model": os.getenv("OPENAI_AUTOCOMPLETE_MODEL", "gpt-5.4-mini"),
+                "provider_mode": "byok",
+                "storage_scope": storage_scope(),
                 "desktop": desktop_mode(),
             })
             return
@@ -232,6 +297,8 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_POST(self):
+        if self.reject_untrusted_request():
+            return
         if self.path in {"/api/config", "/api/config/test"}:
             if not desktop_mode():
                 self.send_json(404, {"error": "Not found"})
@@ -247,7 +314,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             except requests.RequestException as error:
                 self.send_json(502, {"error": f"Connection failed: {error}"})
             return
-        if self.path not in {"/api/complete", "/api/complete-stream", "/api/assist", "/api/chat", "/api/review"}:
+        if self.path not in AI_PATHS:
             self.send_json(404, {"error": "Not found"})
             return
 
@@ -320,6 +387,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
 
     def model_review(self, request_data):
         text = str(request_data.get("text", "")).strip()[:7000]
+        language = explanation_language(request_data)
         level = request_data.get("level", "natural")
         writing_format = request_data.get("format", "letter")
         audience = request_data.get("audience", "general reader")
@@ -327,12 +395,12 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         if not text:
             raise ValueError("Draft cannot be empty")
         instructions = (
-            "You review English writing for a Chinese learner. Infer the writer's communicative intent from the whole draft, then identify only real, useful issues: "
+            "You review English writing for a learner. Infer the writer's communicative intent from the whole draft, then identify only real, useful issues: "
             "grammar, awkward collocation, repetition, unclear meaning, or tone mismatch. Do not overcorrect acceptable personal style. "
             "Return valid JSON only: {\"intent\":\"one concise Chinese sentence\",\"issues\":[{\"quote\":\"exact substring copied from draft\","
             "\"replacement\":\"improved English\",\"message\":\"concise Chinese explanation\",\"category\":\"grammar|clarity|wording|repetition|tone\",\"severity\":\"warning|suggestion\"}]}. "
             "Return at most 5 non-overlapping issues. Every quote must exactly match the draft."
-        )
+        ).replace("Chinese", language)
         prompt = f"Format: {writing_format}\nAudience: {audience}\nDesired tone: {tone}\nLearner level: {level}\nDraft:\n{text}"
         output = self.chat_text(instructions, prompt, 700)
         cleaned = output.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
@@ -358,15 +426,16 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         history = request_data.get("history", [])[-8:]
         if not message:
             raise ValueError("Message cannot be empty")
+        language = explanation_language(request_data)
         transcript = "\n".join(
             f"{item.get('role', 'user')}: {str(item.get('content', ''))[:1000]}"
             for item in history if isinstance(item, dict)
         )
         instructions = (
-            "You are En-IntelliSense's bilingual English writing tutor. Help a Chinese learner understand and improve their own writing. "
+            "You are En-IntelliSense's English writing tutor. Help a learner understand and improve their own writing. "
             "Reply primarily in concise Chinese, keeping English examples where useful. Explain tone and nuance plainly, adapt to the learner, "
             "and never replace their whole draft unless asked. When suggesting English, give an immediately usable version."
-        )
+        ).replace("Chinese", language)
         prompt = f"Current draft:\n{context}\n\nSelected text:\n{selection or '(none)'}\n\nRecent conversation:\n{transcript or '(none)'}\n\nLearner: {message}"
         return self.chat_text(instructions, prompt, 500).strip()
 
@@ -375,11 +444,12 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         text = str(request_data.get("text", "")).strip()[:6000]
         context = str(request_data.get("context", ""))[-3000:]
         level = request_data.get("level", "natural")
+        language = explanation_language(request_data)
         if action == "polish_subject":
             if not text:
                 raise ValueError("Add a subject first")
             instructions = (
-                "You help a Chinese learner write a friendly English letter subject. "
+                "You help a learner write a friendly English letter subject. "
                 "Return valid JSON only: {\"suggestions\":[{\"text\":\"...\",\"meaning\":\"Chinese meaning\",\"tone\":\"short Chinese tone note\"}]}. "
                 "Give exactly 3 natural subjects, each under 8 words. Every suggestion must differ meaningfully from the current subject. "
                 "Preserve the user's intended meaning and avoid marketing language."
@@ -389,7 +459,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             if not text:
                 raise ValueError("Select or place the cursor in some text first")
             instructions = (
-                "You help a Chinese learner polish one piece of English writing. Return valid JSON only: "
+                "You help a learner polish one piece of English writing. Return valid JSON only: "
                 "{\"suggestions\":[{\"text\":\"...\",\"meaning\":\"Chinese meaning\",\"tone\":\"short Chinese note about tone and difference\"}]}. "
                 "Give exactly 3 alternatives: clear and simple, natural and friendly, and slightly more expressive. Preserve the original meaning. "
                 f"Keep every version appropriate for a {level} English learner and do not make it unnecessarily difficult."
@@ -399,7 +469,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             if not text:
                 raise ValueError("Select or place the cursor in some text first")
             instructions = (
-                "You are a patient bilingual English writing tutor for a Chinese learner. Return valid JSON only with keys "
+                "You are a patient English writing tutor for a learner. Return valid JSON only with keys "
                 "translation, explanation, simpler. translation is an accurate natural Chinese translation. explanation is concise Chinese explaining "
                 "the useful phrase, tone, or grammar. simpler is a clear English rewrite that keeps the original meaning. "
                 f"The learner's target level is {level}."
@@ -408,6 +478,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         else:
             raise ValueError("Invalid assist action")
 
+        instructions = instructions.replace("Chinese", language)
         output = self.chat_text(instructions, prompt, 350)
         cleaned = output.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
         try:
@@ -418,10 +489,13 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         return result
 
     def chat_text(self, instructions, prompt, max_tokens=120):
-        base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE") or "https://api.openai.com"
+        base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE")
+        model = os.getenv("OPENAI_MODEL")
+        if not base_url or not model:
+            raise RuntimeError("Model endpoint is not configured")
         chat_url = responses_url(base_url).removesuffix("/responses") + "/chat/completions"
         response = self.model_post(chat_url, json={
-            "model": os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
+            "model": model,
             "messages": [{"role": "system", "content": instructions}, {"role": "user", "content": prompt}],
             "max_tokens": max_tokens,
             "stream": False,
@@ -462,13 +536,16 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             f"Use {level} English, a {tone} tone, and suit a {writing_format} for a {audience}. "
             f"Infer what the writer is trying to say from the entire text and continue that intent coherently. Known intent: {intent or 'infer it yourself'}."
         )
+        autocomplete_model = os.getenv("OPENAI_AUTOCOMPLETE_MODEL") or os.getenv("OPENAI_MODEL")
+        base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE")
+        if not base_url or not autocomplete_model:
+            raise RuntimeError("Autocomplete model is not configured")
         responses_payload = {
-            "model": os.getenv("OPENAI_AUTOCOMPLETE_MODEL", "gpt-5.4-mini"),
+            "model": autocomplete_model,
             "instructions": instructions,
             "input": f"Text to continue:\n{text}",
             "max_output_tokens": 60,
         }
-        base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE") or "https://api.openai.com"
         headers = self.model_headers()
         api_style = os.getenv("OPENAI_API_STYLE", "chat").lower()
         response = self.model_post(responses_url(base_url), json=responses_payload, timeout=20, headers=headers) if api_style == "responses" else None
@@ -483,7 +560,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         else:
             chat_url = responses_url(base_url).removesuffix("/responses") + "/chat/completions"
             response = self.model_post(chat_url, json={
-                "model": os.getenv("OPENAI_AUTOCOMPLETE_MODEL", "gpt-5.4-mini"),
+                "model": autocomplete_model,
                 "messages": [
                     {"role": "system", "content": instructions},
                     {"role": "user", "content": f"Text to continue:\n{text}"},
@@ -496,6 +573,16 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         output = normalize_completion_text(output.strip().strip('"').replace("\n", " "))
         if not output:
             raise RuntimeError("Model returned an empty completion")
+        if mode == "word":
+            candidate_match = re.match(r"[A-Za-z'-]+", output)
+            fragment_match = re.search(r"[A-Za-z'-]+$", text)
+            candidate = candidate_match.group(0) if candidate_match else ""
+            fragment = fragment_match.group(0) if fragment_match else ""
+            if not fragment:
+                return ""
+            if candidate.lower().startswith(fragment.lower()):
+                return candidate[len(fragment):]
+            return "" if fragment.lower() in {"i", "a"} else candidate
         if mode != "word" and text and not text[-1].isspace() and output and output[0].isalnum():
             output = " " + output
         return output
@@ -514,10 +601,13 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             f"Use {level} English, a {tone} tone, and suit a {writing_format} for a {audience}. "
             f"Infer the writer's intention from the full text and continue coherently. Known intent: {intent or 'infer it yourself'}."
         )
-        base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE") or "https://api.openai.com"
+        base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE")
+        autocomplete_model = os.getenv("OPENAI_AUTOCOMPLETE_MODEL") or os.getenv("OPENAI_MODEL")
+        if not base_url or not autocomplete_model:
+            raise RuntimeError("Autocomplete model is not configured")
         chat_url = responses_url(base_url).removesuffix("/responses") + "/chat/completions"
         response = self.model_post(chat_url, json={
-            "model": os.getenv("OPENAI_AUTOCOMPLETE_MODEL", "gpt-5.4-mini"),
+            "model": autocomplete_model,
             "messages": [{"role": "system", "content": instructions}, {"role": "user", "content": f"Text to continue:\n{text}"}],
             "max_tokens": 60,
             "stream": True,

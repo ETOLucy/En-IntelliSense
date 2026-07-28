@@ -16,53 +16,69 @@
         <div class="top-actions">
           <button class="share-button" id="shareButton" type="button" title="Copy a link to En-IntelliSense">Share</button>
           <button class="coach-toggle" id="coachToggle" type="button" aria-controls="writingCoach" aria-expanded="true">Coach</button>
-          <button class="icon-btn hidden" id="settingsButton" type="button" aria-label="Model settings" title="Model settings">&#9881;</button>
+          <button class="icon-btn" id="preferencesButton" type="button" aria-label="Language and region" title="Language and region">&#127760;</button>
+          <button class="icon-btn hidden" id="settingsButton" type="button" aria-label="Plans and AI service" title="Plans and AI service">&#9881;</button>
           <button class="icon-btn" id="themeButton" type="button" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
         </div>
       </header>
 
       <main>
         <aside class="left-panel">
-          <button class="new-letter" id="newDraftButton" type="button"><span aria-hidden="true">+</span> New draft</button>
+          <button class="new-letter" id="newDraftButton" type="button"><span aria-hidden="true">+</span> <span data-i18n="new_draft">New draft</span></button>
           <nav class="draft-nav" aria-label="Documents">
-            <p class="nav-label">WORKSPACE</p>
-            <button class="nav-item active" id="draftsNav" type="button"><span>Drafts</span><span class="count" id="draftCount">1</span></button>
-            <button class="nav-item" id="finishedNav" type="button"><span>Finished</span><span class="count" id="finishedCount">0</span></button>
+            <p class="nav-label" data-i18n="workspace">WORKSPACE</p>
+            <button class="nav-item active" id="draftsNav" type="button"><span data-i18n="drafts">Drafts</span><span class="count" id="draftCount">1</span></button>
+            <button class="nav-item" id="finishedNav" type="button"><span data-i18n="finished">Finished</span><span class="count" id="finishedCount">0</span></button>
           </nav>
 
           <div class="writing-settings">
-            <div class="section-title"><span>Writing settings</span></div>
-            <label for="format">Format</label>
+            <div class="section-title"><span data-i18n="writing_settings">Writing settings</span></div>
+            <label for="format" data-i18n="format">Format</label>
             <select id="format">
-              <option value="letter">Letter or email</option>
-              <option value="essay">School essay</option>
-              <option value="message">Message</option>
+              <option value="letter" data-i18n="format_letter">Letter or email</option>
+              <option value="essay" data-i18n="format_essay">Essay</option>
+              <option value="message" data-i18n="format_message">Short message</option>
             </select>
-            <label for="relationship">Audience</label>
+            <label for="relationship" data-i18n="audience">Audience</label>
             <select id="relationship">
-              <option value="friend">A friend</option>
-              <option value="teacher">A teacher</option>
-              <option value="colleague">A colleague</option>
-              <option value="general">General reader</option>
+              <option value="friend" data-i18n="audience_friend">A friend</option>
+              <option value="teacher" data-i18n="audience_teacher">A teacher</option>
+              <option value="colleague" data-i18n="audience_colleague">A colleague</option>
+              <option value="general" data-i18n="audience_general">General reader</option>
             </select>
-            <label>My English</label>
+            <label data-i18n="my_english">My English</label>
             <div class="segmented" id="level" role="group" aria-label="English level">
-              <button type="button" data-level="simple">Simple</button>
-              <button type="button" class="selected" data-level="natural">Natural</button>
-              <button type="button" data-level="advanced">Advanced</button>
+              <button type="button" data-level="simple" data-i18n="level_simple">Simple</button>
+              <button type="button" class="selected" data-level="natural" data-i18n="level_natural">Natural</button>
+              <button type="button" data-level="advanced" data-i18n="level_advanced">Advanced</button>
             </div>
-            <label>Completion</label>
+            <label for="explanationLanguage" data-i18n="explanations">Explanations</label>
+            <select id="explanationLanguage">
+              <option value="Chinese">中文</option>
+              <option value="English">English</option>
+              <option value="Spanish">Español</option>
+              <option value="Japanese">日本語</option>
+              <option value="Korean">한국어</option>
+              <option value="French">Français</option>
+              <option value="German">Deutsch</option>
+              <option value="Portuguese">Português</option>
+              <option value="Arabic">العربية</option>
+              <option value="Hindi">हिन्दी</option>
+              <option value="Russian">Русский</option>
+            </select>
+            <label data-i18n="completion">Completion</label>
             <div class="segmented completion-level" id="completionMode" role="group" aria-label="Completion level">
-              <button type="button" class="selected" data-completion="auto">Auto</button>
-              <button type="button" data-completion="word">Word</button>
-              <button type="button" data-completion="phrase">Phrase</button>
-              <button type="button" data-completion="sentence">Sentence</button>
+              <button type="button" class="selected" data-completion="auto" data-i18n="completion_auto">Auto</button>
+              <button type="button" data-completion="word" data-i18n="completion_word">Word</button>
+              <button type="button" data-completion="phrase" data-i18n="completion_phrase">Phrase</button>
+              <button type="button" data-completion="sentence" data-i18n="completion_sentence">Sentence</button>
             </div>
-            <label for="tone">Tone</label>
+            <label for="tone" data-i18n="tone">Tone</label>
             <select id="tone">
-              <option value="warm">Warm and friendly</option>
-              <option value="clear">Clear and direct</option>
-              <option value="formal">Polite and formal</option>
+              <option value="warm" data-i18n="tone_warm">Warm and friendly</option>
+              <option value="professional" data-i18n="tone_professional">Professional</option>
+              <option value="casual" data-i18n="tone_casual">Casual</option>
+              <option value="confident" data-i18n="tone_confident">Confident</option>
             </select>
           </div>
 
@@ -75,6 +91,9 @@
             <div class="more-menu-wrap">
               <button class="more-btn" id="moreButton" type="button" aria-label="More actions" title="More actions" aria-expanded="false" aria-controls="documentMenu">•••</button>
               <div class="document-menu hidden" id="documentMenu" role="menu">
+                <button class="hidden" type="button" role="menuitem" data-doc-action="open" data-desktop-file>Open file</button>
+                <button class="hidden" type="button" role="menuitem" data-doc-action="save" data-desktop-file>Save</button>
+                <button class="hidden" type="button" role="menuitem" data-doc-action="save-as" data-desktop-file>Save as</button>
                 <button type="button" role="menuitem" data-doc-action="review">Review now</button>
                 <button type="button" role="menuitem" data-doc-action="copy">Copy draft</button>
                 <button type="button" role="menuitem" data-doc-action="download">Download .txt</button>
@@ -122,36 +141,36 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
           <section class="archive-view hidden" id="finishedView" aria-labelledby="finishedViewTitle">
             <header class="archive-heading">
               <div><span class="eyebrow">DOCUMENT ARCHIVE</span><h1 id="finishedViewTitle">Finished documents</h1></div>
-              <button class="archive-new" id="archiveNewDraft" type="button"><span aria-hidden="true">+</span> New draft</button>
+              <button class="archive-new" id="archiveNewDraft" type="button"><span aria-hidden="true">+</span> <span data-i18n="new_draft">New draft</span></button>
             </header>
             <div class="finished-list" id="finishedList"></div>
           </section>
         </section>
 
         <aside class="coach-panel" id="writingCoach">
-          <div class="coach-head"><div class="coach-title"><strong>Writing coach</strong><span class="connection-state" id="connectionState"><i></i> Checking model</span></div><button class="icon-btn" id="closeCoach" type="button" aria-label="Close writing coach">×</button></div>
-          <div class="coach-tabs" role="tablist"><button class="active" type="button" data-coach-tab="coach">Coach</button><button type="button" data-coach-tab="chat">Ask AI</button></div>
+          <div class="coach-head"><div class="coach-title"><strong data-i18n="writing_coach">Writing coach</strong><span class="connection-state" id="connectionState"><i></i> Checking model</span></div><button class="icon-btn" id="closeCoach" type="button" aria-label="Close writing coach">×</button></div>
+          <div class="coach-tabs" role="tablist"><button class="active" type="button" data-coach-tab="coach" data-i18n="coach">Coach</button><button type="button" data-coach-tab="chat" data-i18n="ask_ai">Ask AI</button></div>
           <div id="coachView">
-          <div class="score-block"><div class="score-label"><span>Writing flow</span><strong id="flowLabel">Good</strong></div><div class="score-bar"><span id="flowBar"></span></div><p id="flowNote">Your writing feels warm and easy to follow.</p></div>
+          <div class="score-block"><div class="score-label"><span data-i18n="writing_flow">Writing flow</span><strong id="flowLabel">Good</strong></div><div class="score-bar"><span id="flowBar"></span></div><p id="flowNote">Your writing feels clear and easy to follow.</p></div>
           <div class="insights">
-            <div class="review-heading"><p class="nav-label">LIVE REVIEW <span id="reviewCount"></span></p><button id="reviewDraft" type="button">Review</button></div>
-            <p class="review-status" id="reviewStatus">Pause after writing and the coach will review the draft.</p>
+            <div class="review-heading"><p class="nav-label"><span data-i18n="live_review">LIVE REVIEW</span> <span id="reviewCount"></span></p><button id="reviewDraft" type="button" data-i18n="review">Review</button></div>
+            <p class="review-status" id="reviewStatus" data-i18n="review_wait">Pause after writing and the coach will review the draft.</p>
             <p class="intent-note hidden" id="intentNote"></p>
-            <div id="issueList"><div class="insight"><span class="insight-mark green">✓</span><span><strong>No issues yet</strong><small>Keep writing and the coach will review your draft.</small></span></div></div>
+            <div id="issueList"><div class="insight"><span class="insight-mark green">✓</span><span><strong data-i18n="no_issues_yet">No issues yet</strong><small data-i18n="no_issues_yet_note">Keep writing and the coach will review your draft.</small></span></div></div>
           </div>
           <div class="phrase-bank">
-            <div class="section-title"><span>Useful phrases</span><button id="refreshPhrases" type="button" aria-label="Refresh phrases" title="Refresh phrases">↻</button></div>
+            <div class="section-title"><span data-i18n="useful_phrases">Useful phrases</span><button id="refreshPhrases" type="button" aria-label="Refresh phrases" title="Refresh phrases">↻</button></div>
             <div id="phraseList"></div>
           </div>
           </div>
           <div class="chat-view hidden" id="chatView">
-            <div class="chat-messages" id="chatMessages"><div class="chat-message assistant">你可以用中文问我当前草稿里的表达、语气或语法。选中一段文字后提问，我会重点解释那一段。</div></div>
+            <div class="chat-messages" id="chatMessages"><div class="chat-message assistant">Ask about wording, tone, or grammar in your draft. Select text first when you want a focused explanation.</div></div>
             <div class="chat-prompts">
-              <button type="button" data-chat-prompt="这句话是什么意思？请用简单中文解释。">解释选中内容</button>
+              <button type="button" data-chat-prompt="What does the selected text mean? Explain it simply.">Explain selection</button>
               <button type="button" data-chat-prompt="请把选中的内容改得更自然，但不要太难。">自然一点</button>
               <button type="button" data-chat-prompt="请指出当前草稿里最需要修改的一处，并解释原因。">检查草稿</button>
             </div>
-            <form class="chat-form" id="chatForm"><textarea id="chatInput" rows="3" placeholder="用中文或英文提问..." aria-label="Ask the writing coach"></textarea><button type="submit">Send</button></form>
+            <form class="chat-form" id="chatForm"><textarea id="chatInput" rows="3" placeholder="Ask in any language..." aria-label="Ask the writing coach"></textarea><button type="submit">Send</button></form>
           </div>
         </aside>
       </main>
@@ -161,55 +180,72 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
       <section class="email-dialog">
         <div class="email-dialog-head"><div><span>READY TO SEND</span><h2 id="emailModalTitle">Open in your email</h2></div><button id="closeEmailModal" type="button" aria-label="Close">×</button></div>
         <div class="email-summary"><label for="emailRecipientInput">To / 收件人</label><input id="emailRecipientInput" type="email" placeholder="recipient@example.com" autocomplete="email" required aria-describedby="recipientHelp" /><span>Subject</span><strong id="emailSummarySubject">No subject</strong></div>
-        <p class="email-import-note" id="recipientHelp"><strong>To</strong> is the address of the person who will receive this email. The recipient, subject, and letter body will be carried into the compose window. QQ Mail and 163 Mail also copy the complete draft as a backup.</p>
-        <div class="email-provider-grid">
-          <button type="button" data-email-provider="qq"><i class="provider-mark qq">QQ</i><span><strong>QQ Mail</strong><small>Open QQ 邮箱写信</small></span></button>
-          <button type="button" data-email-provider="netease"><i class="provider-mark netease">163</i><span><strong>163 Mail</strong><small>Open 163 邮箱写信</small></span></button>
-          <button type="button" data-email-provider="gmail"><i class="provider-mark gmail">G</i><span><strong>Gmail</strong><small>Open a pre-filled draft</small></span></button>
-          <button type="button" data-email-provider="custom" aria-expanded="false" aria-controls="customProviderPanel"><i class="provider-mark custom">+</i><span><strong>Custom</strong><small>Use another webmail</small></span></button>
-        </div>
-        <div class="custom-provider-panel hidden" id="customProviderPanel">
-          <label for="customProviderUrl">Compose URL template</label>
-          <input id="customProviderUrl" type="url" placeholder="https://mail.example.com/compose?to={to}&subject={subject}&body={body}" autocomplete="url" />
-          <button id="openCustomProvider" type="button">Open custom webmail</button>
-        </div>
+        <p class="email-import-note" id="recipientHelp">The complete message is copied before the system email app opens, so it can be pasted if the app does not accept a long body.</p>
+        <button id="openDefaultEmail" type="button">Open default email app</button>
         <button class="copy-email" id="copyEmailDraft" type="button">Copy complete email</button>
       </section>
     </div>
-    <div class="settings-modal hidden" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
-      <button class="modal-backdrop" id="settingsBackdrop" type="button" aria-label="Close model settings"></button>
-      <section class="settings-dialog">
+    <div class="settings-modal hidden" id="preferencesModal" role="dialog" aria-modal="true" aria-labelledby="preferencesTitle">
+      <button class="modal-backdrop" id="preferencesBackdrop" type="button" aria-label="Close language and region settings"></button>
+      <section class="settings-dialog preferences-dialog">
         <div class="settings-head">
-          <div><span>AI PROVIDER</span><h2 id="settingsModalTitle">Model settings</h2></div>
-          <button id="closeSettings" type="button" aria-label="Close model settings">&times;</button>
+          <div><span data-i18n="app_preferences">APP PREFERENCES</span><h2 id="preferencesTitle" data-i18n="language_region">Language and region</h2></div>
+          <button id="closePreferences" type="button" aria-label="Close language and region settings">&times;</button>
+        </div>
+        <form id="preferencesForm">
+          <label for="uiLanguage" data-i18n="ui_language">Interface language</label>
+          <select id="uiLanguage">
+            <option value="auto" data-i18n="system_default">System default</option>
+            <option value="zh-CN">简体中文</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="pt-BR">Português (Brasil)</option>
+            <option value="ar">العربية</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ru">Русский</option>
+          </select>
+          <small data-i18n="language_available">Only languages with reviewed interface translations are listed.</small>
+          <p class="settings-status" id="languageStatus" aria-live="polite"></p>
+          <div class="settings-actions">
+            <button class="primary" type="submit" data-i18n="save">Save</button>
+          </div>
+        </form>
+      </section>
+    </div>
+    <div class="settings-modal hidden" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+      <button class="modal-backdrop" id="settingsBackdrop" type="button" aria-label="Close plans and AI service"></button>
+      <section class="settings-dialog plan-dialog">
+        <div class="settings-head">
+          <div><span>EN-INTELLISENSE</span><h2 id="settingsModalTitle" data-i18n="ai_service">AI service</h2></div>
+          <button id="closeSettings" type="button" aria-label="Close plans and AI service">&times;</button>
         </div>
         <form id="settingsForm">
-          <label for="providerPreset">Provider</label>
-          <select id="providerPreset">
-            <option value="openai">OpenAI</option>
-            <option value="custom">OpenAI-compatible provider</option>
-          </select>
-          <label for="modelBaseUrl">API base URL</label>
-          <input id="modelBaseUrl" type="url" required autocomplete="url" value="https://api.openai.com" />
-          <label for="modelApiKey">API key</label>
-          <div class="secret-field">
-            <input id="modelApiKey" type="password" autocomplete="off" placeholder="Enter your API key" />
-            <button id="toggleApiKey" type="button" aria-label="Show API key" title="Show API key">Show</button>
+          <div id="byokProviderFields" class="settings-mode-panel">
+            <p class="developer-note" data-i18n="free_description">Use your own compatible model service and API key. En-IntelliSense does not charge for model usage.</p>
+            <label for="modelBaseUrl" data-i18n="api_endpoint">API endpoint</label>
+            <input id="modelBaseUrl" type="url" autocomplete="off" placeholder="https://api.example.com" />
+            <label for="modelApiKey" data-i18n="api_key">API key</label>
+            <div class="secret-field">
+              <input id="modelApiKey" type="password" autocomplete="off" placeholder="example-api-key" />
+              <button id="toggleApiKey" type="button" aria-label="Show API key" title="Show API key" data-i18n="show">Show</button>
+            </div>
+            <small id="apiKeyHelp" data-i18n="api_key_help">Your API key stays on this computer and is protected by Windows encryption. It is never uploaded to En-IntelliSense servers.</small>
+            <label for="modelName" data-i18n="main_model">Model ID</label>
+            <input id="modelName" placeholder="example-model" />
+            <label for="modelApiStyle" data-i18n="api_protocol">Compatible API protocol</label>
+            <select id="modelApiStyle">
+              <option value="chat">Chat Completions</option>
+              <option value="responses">Responses</option>
+            </select>
           </div>
-          <small id="apiKeyHelp">The key is encrypted for your Windows account and stays on this computer.</small>
-          <div class="settings-grid">
-            <div><label for="modelName">Review and chat model</label><input id="modelName" required value="gpt-4.1-mini" /></div>
-            <div><label for="autocompleteModel">Autocomplete model</label><input id="autocompleteModel" required value="gpt-4.1-mini" /></div>
-          </div>
-          <label for="modelApiStyle">API type</label>
-          <select id="modelApiStyle">
-            <option value="chat">Chat Completions</option>
-            <option value="responses">Responses</option>
-          </select>
           <p class="settings-status" id="settingsStatus" aria-live="polite"></p>
           <div class="settings-actions">
-            <button class="secondary" id="testModelConnection" type="button">Test connection</button>
-            <button class="primary" type="submit">Save settings</button>
+            <button class="secondary" id="testModelConnection" type="button" data-i18n="test_connection">Test connection</button>
+            <button class="primary" type="submit" data-i18n="save_ai">Save AI service</button>
           </div>
         </form>
       </section>

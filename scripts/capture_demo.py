@@ -1,5 +1,6 @@
 import base64
 import json
+import socket as net_socket
 import subprocess
 import tempfile
 import time
@@ -10,15 +11,25 @@ import websocket
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CHROME = Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe")
-PORT = 9223
+BROWSER_CANDIDATES = (
+    Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"),
+    Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe"),
+)
+with net_socket.socket() as port_probe:
+    port_probe.bind(("127.0.0.1", 0))
+    PORT = port_probe.getsockname()[1]
 
 
 def cdp(socket, method, params=None, command_id=[0]):
     command_id[0] += 1
     request_id = command_id[0]
     socket.send(json.dumps({"id": request_id, "method": method, "params": params or {}}))
+    deadline = time.monotonic() + 15
     while True:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise RuntimeError(f"Browser command timed out: {method}")
+        socket.settimeout(remaining)
         message = json.loads(socket.recv())
         if message.get("id") == request_id:
             if "error" in message:
@@ -41,9 +52,13 @@ def capture(socket, name):
 
 
 def main():
+    browser_executable = next((path for path in BROWSER_CANDIDATES if path.exists()), None)
+    if browser_executable is None:
+        raise RuntimeError("Microsoft Edge or Google Chrome is required to capture demos")
     profile = tempfile.mkdtemp(prefix="en-intellisense-demo-")
     process = subprocess.Popen([
-        str(CHROME), "--headless=new", "--disable-gpu", "--hide-scrollbars",
+        str(browser_executable), "--headless=new", "--disable-gpu", "--hide-scrollbars",
+        "--no-proxy-server",
         "--remote-allow-origins=*", f"--remote-debugging-port={PORT}",
         f"--user-data-dir={profile}", "--window-size=1440,1000",
         "http://127.0.0.1:8000",
@@ -60,7 +75,11 @@ def main():
         else:
             raise RuntimeError("Chrome debugging endpoint did not start")
 
-        socket = websocket.create_connection(target["webSocketDebuggerUrl"], timeout=30)
+        socket = websocket.create_connection(
+            target["webSocketDebuggerUrl"],
+            timeout=30,
+            http_no_proxy=["localhost", "127.0.0.1"],
+        )
         letter = {
             "format": "letter",
             "title": "A letter to an old friend",
@@ -72,13 +91,11 @@ def main():
             "recipient": "emma@example.com",
             "subject": "Greetings from Shanghai",
         }
-        evaluate(socket, f"localStorage.setItem('enwrite-draft', {json.dumps(json.dumps(letter))}); location.reload();")
+        evaluate(socket, f"storageSet('draft', {json.dumps(json.dumps(letter))})")
+        cdp(socket, "Page.reload")
         time.sleep(2)
         evaluate(socket, "clearTimeout(completionTimer); if (completionRequest) completionRequest.abort(); clearTimeout(reviewTimer); if (reviewRequest) reviewRequest.abort(); modelThinking.classList.add('hidden'); saveStatus.textContent = 'Draft saved'; showSuggestion('\\n\\nI would love to hear how the garden is growing.', 'sentence');")
         capture(socket, "demo.png")
-        evaluate(socket, "document.querySelector('#finishButton').click();")
-        time.sleep(0.5)
-        capture(socket, "demo-email.png")
 
         draft = {
             "format": "essay",
@@ -91,7 +108,8 @@ def main():
             "recipient": "",
             "subject": "",
         }
-        evaluate(socket, f"localStorage.setItem('enwrite-draft', {json.dumps(json.dumps(draft))}); location.reload();")
+        evaluate(socket, f"storageSet('draft', {json.dumps(json.dumps(draft))})")
+        cdp(socket, "Page.reload")
         time.sleep(2)
         evaluate(socket, "clearTimeout(completionTimer); if (completionRequest) completionRequest.abort(); clearTimeout(reviewTimer); if (reviewRequest) reviewRequest.abort(); reviewDraft(true);")
         for _ in range(60):

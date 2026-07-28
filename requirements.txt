@@ -1,1 +1,2 @@
 requests>=2.31,<3
+pywebview>=5.4,<7

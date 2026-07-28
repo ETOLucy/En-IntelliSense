@@ -1,23 +1,18 @@
 <div align="center">
-  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg"><img src="docs/assets/en-intellisense-logo.svg" width="340" alt="En-IntelliSense Logo" /></picture>
-  <h1>En-IntelliSense</h1>
+  <img src="docs/assets/logo-mark.svg" width="104" alt="En-IntelliSense Logo Mark" />
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>面向英语学习者的上下文智能补全、审查与润色工具。</p>
   <p>
     <strong>简体中文</strong>
     &nbsp;&middot;&nbsp;
     <a href="README.md">English</a>
-    &nbsp;&middot;&nbsp;
-    <a href="README.es.md">Español</a>
-    &nbsp;&middot;&nbsp;
-    <a href="README.ja.md">日本語</a>
-    &nbsp;&middot;&nbsp;
-    <a href="README.ru.md">Русский</a>
   </p>
   <p>
     <a href="#demo">查看效果</a>
     &nbsp;&middot;&nbsp;
-    <a href="https://github.com/ETOLucy/En-IntelliSense/releases/latest">下载 Windows EXE</a>
+    <a href="#下载">下载</a>
+    &nbsp;&middot;&nbsp;
+    <a href="docs/USER_GUIDE.zh-CN.md">使用指南</a>
     &nbsp;&middot;&nbsp;
     <a href="#配置与运行">本地运行</a>
     &nbsp;&middot;&nbsp;
@@ -35,21 +30,33 @@
 
 En-IntelliSense 会先结合整篇草稿理解用户真正想表达的意思，再给出下一步建议。它将单词、短语和句子补全，与上下文审查、原文问题标记、双语解释和一键修缮整合在同一个写作界面中。
 
+## 下载
+
+<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="360" alt="从 Microsoft Store 下载" />
+
+**Microsoft Store：** 即将上线。通过微软认证后启用商店链接。
+
+- **GitHub Releases**
+
+  从 [GitHub Releases](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载最新安装版或便携版。
+
+第一次使用可以查看[使用指南](docs/USER_GUIDE.zh-CN.md)，完成模型配置并了解主要写作功能。
+
 ## Demo
 
 ![En-IntelliSense 英语写作工作区](docs/assets/demo.png)
 
-### 从中式英语到自然表达
+### 界面语言
 
-学习者先按照中文逻辑直接写作文。En-IntelliSense 会推断文章真正想表达的观点，在原文中精确标出 5 处问题，用中文解释原因，并提供可以一键应用的自然改写，而不是粗暴地重写整篇文章。
+可以使用应用目前提供的 11 种界面语言，也可以跟随 Windows 系统语言。
 
-![识别并修正中式英语逻辑](docs/assets/demo-chinese-logic.png)
+![En-IntelliSense 界面语言选择](docs/assets/demo-language.png)
 
-### 完成邮件并打开常用邮箱
+### 接入自己的 AI 服务
 
-完成书信后，可以选择 QQ 邮箱、163 邮箱、Gmail 或自定义邮箱。系统会把收件人、主题和正文带入写信页面；QQ 邮箱和 163 邮箱还会自动复制完整邮件，以便登录跳转丢失参数时直接粘贴。
+填写兼容模型的 API 接口地址、自己的 API Key 和模型 ID。API Key 仅保存在 Windows 设备上，并由 Windows 加密保护。
 
-![选择邮箱并导入已经完成的邮件](docs/assets/demo-email.png)
+![En-IntelliSense AI 服务配置](docs/assets/demo-ai-service.png)
 
 ## 功能
 
@@ -60,7 +67,7 @@ En-IntelliSense 会先结合整篇草稿理解用户真正想表达的意思，�
 - 标题润色、正文润色、中文翻译、表达解释和简单改写。
 - Useful phrases 会替换选中内容或光标所在句子，不会继续追加重复内容。
 - 支持书信、作文和消息格式，草稿保存在本地浏览器。
-- 完成书信后可选择 QQ 邮箱、163 邮箱、Gmail 或自定义邮箱，并带入收件人、主题和正文；QQ/163 同时自动复制完整邮件作为兜底。
+- 完成书信后复制完整邮件，并打开系统默认邮件应用。
 - 已完成文档保存在本地 Finished 列表中，可重新创建编辑副本。
 
 ## AI 模型、费用与隐私
@@ -69,9 +76,11 @@ En-IntelliSense 不包含语言模型、共享 API Key 或免费 AI 额度。AI 
 
 没有配置 API Key 时，应用仍可打开，本地单词补全、草稿、Finished 文档和邮件跳转均可使用；右侧会显示 `Add API key for AI`。模型驱动的补全、审查、润色和聊天会保持不可用，直到用户完成配置。
 
-“多用户隔离”在这个架构里依靠浏览器本地存储，而不是创建服务端账户。草稿、Finished 文档和自定义邮箱设置只保存在当前浏览器的 `localStorage` 中，项目没有服务端草稿数据库。不同设备、浏览器或浏览器用户配置之间互相隔离，其他在线访问者看不到你的本地草稿。如果多人共用同一个浏览器用户配置，他们也会共用该站点的本地数据；共用电脑时请使用独立浏览器配置，或使用后清除该站点数据。
+第一版的草稿和 Finished 文档保存在当前 Windows 用户的本地应用数据中，项目尚未提供应用账户或服务端草稿数据库，也不支持跨设备同步。第一版不提供付费订阅，只允许用户配置自己的 API Key。
 
 使用 AI 功能时，相关正文会发送给用户自行选择的模型服务。应用本身不会持久化这些请求，API 响应也设置了 `Cache-Control: no-store`；处理机密或敏感内容前，请确认提供商的隐私条款。桌面版 `.env` 是本地明文文件，请妥善保管，不要提交到 Git，也不要把 API Key 粘贴到 GitHub Issue。
+
+有关本地存储、第三方模型处理、文件访问、数据保留和删除方式，请阅读[隐私政策](PRIVACY.zh-CN.md)。
 
 自行部署 Cloudflare 版本时可以使用 Workers AI，并消耗部署者自己的 Cloudflare 账户额度。该额度不包含在 Windows EXE 中，也不会使用或共享维护者的个人模型资源。
 
@@ -81,13 +90,12 @@ En-IntelliSense 不包含语言模型、共享 API Key 或免费 AI 额度。AI 
 
 ```dotenv
 OPENAI_API_KEY=your_own_api_key
-OPENAI_BASE_URL=https://api.openai.com
-OPENAI_MODEL=gpt-4.1-mini
-OPENAI_AUTOCOMPLETE_MODEL=gpt-4.1-mini
+OPENAI_BASE_URL=https://api.example.com
+OPENAI_MODEL=example-model
 OPENAI_API_STYLE=chat
 ```
 
-模型名称必须是所选提供商实际支持的名称。`OPENAI_MODEL` 用于辅导和审查，`OPENAI_AUTOCOMPLETE_MODEL` 可配置速度更快的补全模型；兼容提供商可以使用不同的 `OPENAI_BASE_URL`。
+模型名称必须是所选提供商实际支持的名称。自动补全、润色、审查与聊天默认使用同一个 `OPENAI_MODEL`；只有经过生产验证后，才需要可选的 `OPENAI_AUTOCOMPLETE_MODEL` 覆盖项。
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -128,23 +136,6 @@ npm test
 - 点击问题可定位原文，点击 Apply 修改可直接替换。
 - 使用 Polish、Explain、Simplify 前可选中文字；未选择时自动使用光标所在句子。
 - 点击 Useful phrases 会替换当前句子。
-
-## Cloudflare 部署
-
-仓库通过一个 Worker 同时提供前端和 API。默认使用 Cloudflare Workers AI，因此免费部署不要求外部 API Key。需要改用 OpenAI 兼容服务时，再通过 Secret 配置 `OPENAI_API_KEY` 和 `OPENAI_BASE_URL`。
-
-```powershell
-npx wrangler login
-npx wrangler deploy
-
-# 可选：外部兼容模型服务
-npx wrangler secret put OPENAI_API_KEY
-npx wrangler secret put OPENAI_BASE_URL
-```
-
-## EdgeOne Pages 部署
-
-自行部署时，在 EdgeOne Pages 中导入本 GitHub 仓库，生产分支选择 `main`，构建命令留空。仓库内的 `edgeone.json` 会发布 `public/`，并部署 `node-functions/` 下的 Node Functions。函数会把 `/api/*` 转发到 Cloudflare Worker，因此不需要在 EdgeOne 中保存模型 API Key。
 
 ## 友情链接
 
