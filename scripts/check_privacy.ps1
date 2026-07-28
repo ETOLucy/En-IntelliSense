@@ -59,7 +59,7 @@ try {
         throw "Privacy scan failed. Remove or replace these tracked values:`n$summary"
     }
 
-    $history = git log --all -p -- .
+    $history = git log --all -p -- . ":(exclude)scripts/check_privacy.ps1"
     if ($LASTEXITCODE -ne 0) {
         throw "Could not inspect Git history."
     }
