@@ -1,6 +1,6 @@
 {
   "name": "writemelo",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "scripts": {
     "debug": "powershell -ExecutionPolicy Bypass -File ./scripts/start_debug.ps1",

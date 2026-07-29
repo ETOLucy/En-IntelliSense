@@ -32,7 +32,9 @@ jobs:
           WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
           WINDOWS_TIMESTAMP_URL: https://timestamp.digicert.com
-        run: .\scripts\build_windows.ps1 -Version "${{ github.ref_name }}" -RequireInstaller
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart("v")
+          .\scripts\build_windows.ps1 -Version $version -RequireInstaller
 
       - name: Publish GitHub release
         shell: pwsh
