@@ -77,7 +77,7 @@ function New-PortableArchive {
             if ($attempt -eq 5) {
                 throw
             }
-            Write-Warning "Portable archive attempt $attempt failed; retrying after Windows releases build files."
+            Write-Warning "Portable archive attempt $attempt failed: $($_.Exception.Message)"
             Start-Sleep -Seconds 2
         }
     }

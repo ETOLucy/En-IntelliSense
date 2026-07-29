@@ -80,7 +80,7 @@ Connect a compatible model endpoint with your own API key and model ID. The key 
 
 ## AI model, cost, and privacy
 
-WriteMelo does not include a language model, shared API key, or free AI credit. AI completion, review, rewriting, and chat require each user to configure their own OpenAI-compatible model provider. Any fees, rate limits, retention rules, and privacy terms belong to that provider; the project does not provide or endorse unofficial relay services.
+WriteMelo does not include a language model, shared API key, or free AI credit. AI completion, review, rewriting, and chat require each user to configure a model service that exposes a compatible Chat Completions or Responses endpoint. Any fees, rate limits, retention rules, and privacy terms belong to that provider; the project does not provide or endorse unofficial relay services.
 
 Without an API key, the app still opens and supports local word completion, drafts, finished documents, and email handoff. The coach displays `Add API key for AI`; model-powered phrase/sentence completion, review, polish, and chat remain unavailable until configuration is added.
 
@@ -95,13 +95,13 @@ Self-hosted Cloudflare deployments can use Workers AI and consume the deploying 
 Copy `.env.example` to `.env` and enter credentials from your own provider:
 
 ```dotenv
-OPENAI_API_KEY=your_own_api_key
-OPENAI_BASE_URL=https://api.example.com
-OPENAI_MODEL=example-model
-OPENAI_API_STYLE=chat
+MODEL_API_KEY=your_own_api_key
+MODEL_BASE_URL=https://api.example.com
+MODEL_ID=example-model
+MODEL_API_STYLE=chat
 ```
 
-Use a model name supported by the selected provider. The same model handles completion, tutoring, review, rewriting, and chat. Operators may later set the optional `OPENAI_AUTOCOMPLETE_MODEL` override after validating a faster model in production.
+Use a model ID supported by the selected service. The same model handles completion, tutoring, review, rewriting, and chat. Operators may later set the optional `MODEL_AUTOCOMPLETE_ID` override after validating a faster model in production.
 
 Never commit `.env` or place an API key in browser-side JavaScript.
 

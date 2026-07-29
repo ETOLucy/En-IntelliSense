@@ -75,7 +75,7 @@ WriteMelo 会先结合整篇草稿理解用户真正想表达的意思，再给�
 
 ## AI 模型、费用与隐私
 
-WriteMelo 不包含语言模型、共享 API Key 或免费 AI 额度。AI 短语/句子补全、审查、润色和聊天功能需要每位用户配置自己的 OpenAI 兼容模型服务。费用、限速、数据保留规则和隐私条款均由用户选择的提供商决定；本项目不提供或推荐来源不明的中转站。
+WriteMelo 不包含语言模型、共享 API Key 或免费 AI 额度。AI 短语/句子补全、审查、润色和聊天功能需要每位用户配置提供兼容 Chat Completions 或 Responses 接口的模型服务。费用、限速、数据保留规则和隐私条款均由用户选择的提供商决定；本项目不提供或推荐来源不明的中转站。
 
 没有配置 API Key 时，应用仍可打开，本地单词补全、草稿、Finished 文档和邮件跳转均可使用；右侧会显示 `Add API key for AI`。模型驱动的补全、审查、润色和聊天会保持不可用，直到用户完成配置。
 
@@ -92,13 +92,13 @@ WriteMelo 不包含语言模型、共享 API Key 或免费 AI 额度。AI 短语
 复制 `.env.example` 为 `.env`，填写用户自己的模型服务：
 
 ```dotenv
-OPENAI_API_KEY=your_own_api_key
-OPENAI_BASE_URL=https://api.example.com
-OPENAI_MODEL=example-model
-OPENAI_API_STYLE=chat
+MODEL_API_KEY=your_own_api_key
+MODEL_BASE_URL=https://api.example.com
+MODEL_ID=example-model
+MODEL_API_STYLE=chat
 ```
 
-模型名称必须是所选提供商实际支持的名称。自动补全、润色、审查与聊天默认使用同一个 `OPENAI_MODEL`；只有经过生产验证后，才需要可选的 `OPENAI_AUTOCOMPLETE_MODEL` 覆盖项。
+模型 ID 必须是所选服务实际支持的值。自动补全、润色、审查与聊天默认使用同一个 `MODEL_ID`；只有经过生产验证后，才需要可选的 `MODEL_AUTOCOMPLETE_ID` 覆盖项。
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -121,7 +121,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
 
 安装版产物为 `dist/WriteMelo-Setup.exe`，便携版为 `dist/WriteMelo-Portable.zip`。本地没有安装 Inno Setup 6 时，脚本仍会构建便携版并跳过安装包。应用会把本地 Python 服务和前端一起打包，启动时自动选择空闲的回环端口，并在原生 WebView2 窗口中打开工作区。运行成品不要求用户另外安装 Python；当前 Windows 10/11 通常已自带所需的 Microsoft Edge WebView2 Runtime。
 
-API Key 和维护者个人模型资源都不会被写进程序。桌面版首次启动会打开 Model settings，用户可以填写 OpenAI 或兼容服务的地址、API Key、模型名称和 API 类型，并在保存前测试连接。API Key 使用 Windows DPAPI 为当前 Windows 账户加密，配置保存在 `%APPDATA%\WriteMelo\config.json`，保存后立即生效。环境变量和 `.env` 仍保留为开发者兼容入口。
+API Key 和维护者个人模型资源都不会被写进程序。桌面版首次启动会打开 Model settings，用户可以填写兼容模型服务的地址、API Key、模型 ID 和 API 类型，并在保存前测试连接。API Key 使用 Windows DPAPI 为当前 Windows 账户加密，配置保存在 `%APPDATA%\WriteMelo\config.json`，保存后立即生效。环境变量和 `.env` 仍保留为开发者兼容入口。
 
 以后取得 PFX 代码签名证书时，可设置 `WINDOWS_CERTIFICATE_PATH`、`WINDOWS_CERTIFICATE_PASSWORD` 和可选的 `WINDOWS_TIMESTAMP_URL` 后运行同一个构建命令。GitHub Actions 对应使用 `WINDOWS_CERTIFICATE_BASE64` 与 `WINDOWS_CERTIFICATE_PASSWORD` 仓库 Secret。
 

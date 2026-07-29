@@ -29,6 +29,13 @@ MODEL_CONFIG_KEYS = {
     "autocomplete_model": "OPENAI_AUTOCOMPLETE_MODEL",
     "api_style": "OPENAI_API_STYLE",
 }
+PUBLIC_MODEL_ENV = {
+    "MODEL_API_KEY": "OPENAI_API_KEY",
+    "MODEL_BASE_URL": "OPENAI_BASE_URL",
+    "MODEL_ID": "OPENAI_MODEL",
+    "MODEL_AUTOCOMPLETE_ID": "OPENAI_AUTOCOMPLETE_MODEL",
+    "MODEL_API_STYLE": "OPENAI_API_STYLE",
+}
 AI_PATHS = {"/api/complete", "/api/complete-stream", "/api/assist", "/api/chat", "/api/review"}
 
 
@@ -212,6 +219,13 @@ def load_dotenv():
         os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
 
+def apply_public_model_env():
+    """Prefer provider-neutral names while retaining legacy environment compatibility."""
+    for public_key, legacy_key in PUBLIC_MODEL_ENV.items():
+        if os.getenv(public_key):
+            os.environ[legacy_key] = os.environ[public_key]
+
+
 def responses_url(base_url):
     base = base_url.rstrip("/")
     if base.endswith("/responses"):
@@ -231,6 +245,7 @@ def explanation_language(data):
 
 
 load_dotenv()
+apply_public_model_env()
 remove_legacy_subscription_config()
 apply_user_config()
 
