@@ -109,6 +109,8 @@ class CompletionTests(unittest.TestCase):
         self.assertEqual(result["intent"], "ask about a friend")
         self.assertEqual(len(result["issues"]), 1)
         self.assertEqual(result["issues"][0]["replacement"], "I really like it")
+        instructions = post.call_args.kwargs["json"]["messages"][0]["content"]
+        self.assertIn("Write every intent and message value in English", instructions)
 
     @patch("server.time.sleep")
     @patch("server.requests.post")

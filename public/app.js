@@ -83,6 +83,22 @@ const HELP_I18N = {
   ru: { api_key_help: 'Ключ API хранится только на этом компьютере и защищён шифрованием Windows. Он не отправляется на серверы WriteMelo.' }
 };
 
+const REVIEW_I18N = {
+  en: { polish_subject: 'Polish subject', polish_text: 'Polish text', explain: 'Explain', simplify: 'Simplify', reviewing: 'Reviewing context and wording...', improvements_found: '{count} possible improvements found.', one_improvement_found: '1 possible improvement found.', no_problems_found: 'No clear problems found.', intent_label: 'Writing intent', apply: 'Apply', grammar: 'Grammar', clarity: 'Clarity', wording: 'Wording', repetition: 'Repetition', tone_category: 'Tone', suggestion_applied: 'Suggestion applied' },
+  zh: { polish_subject: '润色主题', polish_text: '润色正文', explain: '解释', simplify: '简化', reviewing: '正在检查语境和表达……', improvements_found: '发现 {count} 处可改进内容。', one_improvement_found: '发现 1 处可改进内容。', no_problems_found: '未发现明显问题。', intent_label: '写作意图', apply: '修改', grammar: '语法', clarity: '清晰度', wording: '用词', repetition: '重复', tone_category: '语气', suggestion_applied: '已应用修改' },
+  es: { polish_subject: 'Mejorar asunto', polish_text: 'Mejorar texto', explain: 'Explicar', simplify: 'Simplificar', reviewing: 'Revisando contexto y redacción...', improvements_found: 'Se encontraron {count} posibles mejoras.', one_improvement_found: 'Se encontró 1 posible mejora.', no_problems_found: 'No se encontraron problemas claros.', intent_label: 'Intención', apply: 'Aplicar', grammar: 'Gramática', clarity: 'Claridad', wording: 'Redacción', repetition: 'Repetición', tone_category: 'Tono', suggestion_applied: 'Cambio aplicado' },
+  ja: { polish_subject: '件名を改善', polish_text: '本文を改善', explain: '解説', simplify: '簡単にする', reviewing: '文脈と表現を確認中...', improvements_found: '{count} 件の改善候補があります。', one_improvement_found: '1 件の改善候補があります。', no_problems_found: '明確な問題はありません。', intent_label: '文章の意図', apply: '適用', grammar: '文法', clarity: '明確さ', wording: '表現', repetition: '繰り返し', tone_category: 'トーン', suggestion_applied: '修正を適用しました' },
+  ko: { polish_subject: '제목 다듬기', polish_text: '본문 다듬기', explain: '설명', simplify: '쉽게 쓰기', reviewing: '문맥과 표현을 검토하는 중...', improvements_found: '개선 가능한 부분 {count}개를 찾았습니다.', one_improvement_found: '개선 가능한 부분 1개를 찾았습니다.', no_problems_found: '뚜렷한 문제를 찾지 못했습니다.', intent_label: '글쓰기 의도', apply: '적용', grammar: '문법', clarity: '명확성', wording: '표현', repetition: '반복', tone_category: '어조', suggestion_applied: '수정을 적용했습니다' },
+  fr: { polish_subject: "Améliorer l'objet", polish_text: 'Améliorer le texte', explain: 'Expliquer', simplify: 'Simplifier', reviewing: 'Analyse du contexte et de la formulation...', improvements_found: '{count} améliorations possibles trouvées.', one_improvement_found: '1 amélioration possible trouvée.', no_problems_found: 'Aucun problème évident trouvé.', intent_label: "Intention d'écriture", apply: 'Appliquer', grammar: 'Grammaire', clarity: 'Clarté', wording: 'Formulation', repetition: 'Répétition', tone_category: 'Ton', suggestion_applied: 'Modification appliquée' },
+  de: { polish_subject: 'Betreff verbessern', polish_text: 'Text verbessern', explain: 'Erklären', simplify: 'Vereinfachen', reviewing: 'Kontext und Formulierung werden geprüft...', improvements_found: '{count} mögliche Verbesserungen gefunden.', one_improvement_found: '1 mögliche Verbesserung gefunden.', no_problems_found: 'Keine eindeutigen Probleme gefunden.', intent_label: 'Schreibabsicht', apply: 'Übernehmen', grammar: 'Grammatik', clarity: 'Klarheit', wording: 'Formulierung', repetition: 'Wiederholung', tone_category: 'Ton', suggestion_applied: 'Änderung übernommen' },
+  pt: { polish_subject: 'Aprimorar assunto', polish_text: 'Aprimorar texto', explain: 'Explicar', simplify: 'Simplificar', reviewing: 'Revisando contexto e redação...', improvements_found: '{count} melhorias possíveis encontradas.', one_improvement_found: '1 melhoria possível encontrada.', no_problems_found: 'Nenhum problema claro encontrado.', intent_label: 'Intenção da escrita', apply: 'Aplicar', grammar: 'Gramática', clarity: 'Clareza', wording: 'Redação', repetition: 'Repetição', tone_category: 'Tom', suggestion_applied: 'Alteração aplicada' },
+  ar: { polish_subject: 'تحسين الموضوع', polish_text: 'تحسين النص', explain: 'شرح', simplify: 'تبسيط', reviewing: 'تتم مراجعة السياق والصياغة...', improvements_found: 'تم العثور على {count} تحسينات محتملة.', one_improvement_found: 'تم العثور على تحسين محتمل واحد.', no_problems_found: 'لم يتم العثور على مشكلات واضحة.', intent_label: 'هدف الكتابة', apply: 'تطبيق', grammar: 'القواعد', clarity: 'الوضوح', wording: 'الصياغة', repetition: 'التكرار', tone_category: 'النبرة', suggestion_applied: 'تم تطبيق التعديل' },
+  hi: { polish_subject: 'विषय सुधारें', polish_text: 'पाठ सुधारें', explain: 'समझाएँ', simplify: 'सरल करें', reviewing: 'संदर्भ और भाषा की समीक्षा हो रही है...', improvements_found: '{count} संभावित सुधार मिले।', one_improvement_found: '1 संभावित सुधार मिला।', no_problems_found: 'कोई स्पष्ट समस्या नहीं मिली।', intent_label: 'लेखन का उद्देश्य', apply: 'लागू करें', grammar: 'व्याकरण', clarity: 'स्पष्टता', wording: 'शब्दावली', repetition: 'दोहराव', tone_category: 'लहजा', suggestion_applied: 'सुधार लागू किया गया' },
+  ru: { polish_subject: 'Улучшить тему', polish_text: 'Улучшить текст', explain: 'Объяснить', simplify: 'Упростить', reviewing: 'Проверяем контекст и формулировки...', improvements_found: 'Найдено возможных улучшений: {count}.', one_improvement_found: 'Найдено 1 возможное улучшение.', no_problems_found: 'Явных проблем не найдено.', intent_label: 'Цель текста', apply: 'Применить', grammar: 'Грамматика', clarity: 'Ясность', wording: 'Формулировка', repetition: 'Повтор', tone_category: 'Тон', suggestion_applied: 'Изменение применено' }
+};
+
+let activeUiLanguage = 'en';
+
 function resolvedUiLanguage(value = 'auto') {
   const requested = !value || value === 'auto' ? (navigator.language || 'en') : value;
   const language = requested.toLowerCase().split('-')[0];
@@ -91,8 +107,9 @@ function resolvedUiLanguage(value = 'auto') {
 
 function applyUiLanguage(value) {
   const language = resolvedUiLanguage(value);
-  const messages = { ...SETTINGS_I18N[language], ...APP_I18N[language], ...COMMERCE_I18N[language], ...DETAIL_I18N[language], ...HELP_I18N[language] };
-  const fallback = { ...SETTINGS_I18N.en, ...APP_I18N.en, ...COMMERCE_I18N.en, ...DETAIL_I18N.en, ...HELP_I18N.en };
+  activeUiLanguage = language;
+  const messages = { ...SETTINGS_I18N[language], ...APP_I18N[language], ...COMMERCE_I18N[language], ...DETAIL_I18N[language], ...HELP_I18N[language], ...REVIEW_I18N[language] };
+  const fallback = { ...SETTINGS_I18N.en, ...APP_I18N.en, ...COMMERCE_I18N.en, ...DETAIL_I18N.en, ...HELP_I18N.en, ...REVIEW_I18N.en };
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-i18n]').forEach(element => {
@@ -104,8 +121,8 @@ function applyUiLanguage(value) {
 }
 
 function translated(key) {
-  const language = resolvedUiLanguage(storageGet('ui-language') || 'auto');
-  return DETAIL_I18N[language]?.[key] || COMMERCE_I18N[language]?.[key] || SETTINGS_I18N[language]?.[key] || DETAIL_I18N.en[key] || COMMERCE_I18N.en[key] || SETTINGS_I18N.en[key] || key;
+  const language = activeUiLanguage;
+  return REVIEW_I18N[language]?.[key] || DETAIL_I18N[language]?.[key] || COMMERCE_I18N[language]?.[key] || SETTINGS_I18N[language]?.[key] || REVIEW_I18N.en[key] || DETAIL_I18N.en[key] || COMMERCE_I18N.en[key] || SETTINGS_I18N.en[key] || key;
 }
 
 function scopedKey(name) {
@@ -419,7 +436,7 @@ async function reviewDraft(manual = true) {
   if (!editor.value.trim()) return;
   reviewRequest = new AbortController();
   $('#reviewDraft').disabled = true;
-  $('#reviewStatus').textContent = 'Reviewing context and wording...';
+  $('#reviewStatus').textContent = translated('reviewing');
   try {
     const response = await fetch('/api/review', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: reviewRequest.signal,
@@ -430,7 +447,9 @@ async function reviewDraft(manual = true) {
     currentIntent = data.intent || '';
     reviewIssues = EnWriteCompletion.findIssueRanges(editor.value, data.issues || []);
     renderMirror(); renderReview();
-    $('#reviewStatus').textContent = reviewIssues.length ? `${reviewIssues.length} possible improvement${reviewIssues.length === 1 ? '' : 's'} found.` : 'No clear problems found.';
+    $('#reviewStatus').textContent = reviewIssues.length
+      ? translated(reviewIssues.length === 1 ? 'one_improvement_found' : 'improvements_found').replace('{count}', reviewIssues.length)
+      : translated('no_problems_found');
     if (manual && !reviewIssues.length) notify('No clear writing problems found');
   } catch (error) {
     if (error.name !== 'AbortError') $('#reviewStatus').textContent = friendlyModelError(error.message);
@@ -441,7 +460,7 @@ async function reviewDraft(manual = true) {
 
 function renderReview() {
   $('#reviewCount').textContent = reviewIssues.length ? `(${reviewIssues.length})` : '';
-  $('#intentNote').textContent = currentIntent ? `写作意图：${currentIntent}` : '';
+  $('#intentNote').textContent = currentIntent ? `${translated('intent_label')}：${currentIntent}` : '';
   $('#intentNote').classList.toggle('hidden', !currentIntent);
   const list = $('#issueList');
   list.textContent = '';
@@ -462,14 +481,15 @@ function renderReview() {
   reviewIssues.forEach((issue, index) => {
     const item = document.createElement('div'); item.className = 'review-issue';
     const locate = document.createElement('button'); locate.type = 'button'; locate.className = 'issue-locate';
-    const heading = document.createElement('strong'); heading.textContent = issue.category || 'wording';
+    const categoryKey = issue.category === 'tone' ? 'tone_category' : (issue.category || 'wording');
+    const heading = document.createElement('strong'); heading.textContent = translated(categoryKey);
     const quote = document.createElement('del'); quote.textContent = issue.quote;
     const arrow = document.createElement('span'); arrow.textContent = '→';
     const replacement = document.createElement('ins'); replacement.textContent = issue.replacement;
     const message = document.createElement('small'); message.textContent = issue.message;
     locate.append(heading, quote, arrow, replacement, message);
     locate.addEventListener('click', () => { editor.focus(); editor.setSelectionRange(issue.start, issue.end); });
-    const apply = document.createElement('button'); apply.type = 'button'; apply.className = 'issue-apply'; apply.textContent = 'Apply 修改';
+    const apply = document.createElement('button'); apply.type = 'button'; apply.className = 'issue-apply'; apply.textContent = translated('apply');
     apply.addEventListener('click', () => applyReviewIssue(index));
     item.append(locate, apply); list.appendChild(item);
   });
@@ -480,7 +500,7 @@ function applyReviewIssue(index) {
   if (!issue) return;
   editor.setRangeText(issue.replacement, issue.start, issue.end, 'end');
   reviewIssues = []; renderMirror(); renderReview(); updateStats(); saveDraft(); scheduleCompletion(); scheduleReview();
-  editor.focus(); notify('Suggestion applied');
+  editor.focus(); notify(translated('suggestion_applied'));
 }
 
 function saveDraft() {

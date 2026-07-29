@@ -435,10 +435,11 @@ class WriteMeloHandler(SimpleHTTPRequestHandler):
         instructions = (
             "You review English writing for a learner. Infer the writer's communicative intent from the whole draft, then identify only real, useful issues: "
             "grammar, awkward collocation, repetition, unclear meaning, or tone mismatch. Do not overcorrect acceptable personal style. "
-            "Return valid JSON only: {\"intent\":\"one concise Chinese sentence\",\"issues\":[{\"quote\":\"exact substring copied from draft\","
-            "\"replacement\":\"improved English\",\"message\":\"concise Chinese explanation\",\"category\":\"grammar|clarity|wording|repetition|tone\",\"severity\":\"warning|suggestion\"}]}. "
+            f"Write every intent and message value in {language}. Do not use English for those fields unless the requested language is English. "
+            "Return valid JSON only: {\"intent\":\"one concise sentence in the requested language\",\"issues\":[{\"quote\":\"exact substring copied from draft\","
+            "\"replacement\":\"improved English\",\"message\":\"concise explanation in the requested language\",\"category\":\"grammar|clarity|wording|repetition|tone\",\"severity\":\"warning|suggestion\"}]}. "
             "Return at most 5 non-overlapping issues. Every quote must exactly match the draft."
-        ).replace("Chinese", language)
+        )
         prompt = f"Format: {writing_format}\nAudience: {audience}\nDesired tone: {tone}\nLearner level: {level}\nDraft:\n{text}"
         output = self.chat_text(instructions, prompt, 700)
         cleaned = output.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
