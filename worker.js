@@ -98,7 +98,7 @@ async function fetchWithRetry(url, options) {
   for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
       const response = await fetch(url, options);
-      if (![429, 500, 502, 503, 504].includes(response.status) || attempt === 2) return response;
+      if (![408, 429, 500, 502, 503, 504].includes(response.status) || attempt === 2) return response;
     } catch (error) {
       lastError = error;
       if (attempt === 2) throw error;
@@ -108,7 +108,22 @@ async function fetchWithRetry(url, options) {
   throw lastError || new Error('Model connection failed');
 }
 
-async function chatText(env, instructions, prompt, maxTokens = 300, model = env.OPENAI_MODEL) {
+function providerChain(env) {
+  return Array.isArray(env.MODEL_PROVIDER_CHAIN) && env.MODEL_PROVIDER_CHAIN.length
+    ? env.MODEL_PROVIDER_CHAIN
+    : [env];
+}
+
+function isQuotaFailure(status, body) {
+  return [400, 402, 403, 429].includes(status)
+    && /quota|limit|capacity|allocation|credit|balance|insufficient/i.test(body);
+}
+
+function shouldFailOver(status, body) {
+  return status === 408 || status === 429 || status >= 500 || isQuotaFailure(status, body);
+}
+
+export async function chatText(env, instructions, prompt, maxTokens = 300, model = env.OPENAI_MODEL) {
   if (!env.OPENAI_API_KEY) {
     if (!env.AI) throw new Error('No model provider is configured');
     const workersModel = env.CLOUDFLARE_AI_MODEL;
@@ -127,13 +142,37 @@ async function chatText(env, instructions, prompt, maxTokens = 300, model = env.
       throw error;
     }
   }
-  const response = await fetchWithRetry(`${apiBase(env)}/chat/completions`, {
-    method: 'POST', headers: headers(env),
-    body: JSON.stringify({ model, messages: [{ role: 'system', content: instructions }, { role: 'user', content: prompt }], max_tokens: maxTokens, stream: false })
-  });
-  if (!response.ok) throw new Error(`Model API returned ${response.status}`);
-  const data = await response.json();
-  return data?.choices?.[0]?.message?.content || '';
+  const autocomplete = model === env.OPENAI_AUTOCOMPLETE_MODEL;
+  let lastError;
+  for (const candidate of providerChain(env)) {
+    const candidateModel = autocomplete
+      ? (candidate.OPENAI_AUTOCOMPLETE_MODEL || candidate.OPENAI_MODEL)
+      : candidate.OPENAI_MODEL;
+    try {
+      const response = await fetchWithRetry(`${apiBase(candidate)}/chat/completions`, {
+        method: 'POST', headers: headers(candidate),
+        body: JSON.stringify({
+          model: candidateModel,
+          messages: [{ role: 'system', content: instructions }, { role: 'user', content: prompt }],
+          max_tokens: maxTokens,
+          stream: false,
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data?.choices?.[0]?.message?.content || '';
+      }
+      const body = await response.text();
+      const error = new Error(`Model API returned ${response.status}`);
+      if (!shouldFailOver(response.status, body)) throw error;
+      error.failover = true;
+      lastError = error;
+    } catch (error) {
+      lastError = error;
+      if (error?.message?.startsWith('Model API returned ') && !error.failover) throw error;
+    }
+  }
+  throw lastError || new Error('Model connection failed');
 }
 
 function parseModelJson(output, fallback) {

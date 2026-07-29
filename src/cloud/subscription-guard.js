@@ -131,7 +131,9 @@ export class SubscriptionGuard {
       }
       return Response.json({ ok: true, usage: usage || null });
     }
-    if (input.action !== "consume") return Response.json({ error: "Invalid guard action" }, { status: 400 });
+    if (!["consume", "authorize-grant"].includes(input.action)) {
+      return Response.json({ error: "Invalid guard action" }, { status: 400 });
+    }
 
     const status = await this.state.storage.get("status");
     if (status && !status.active) return Response.json({ error: "Subscription inactive", code: "subscription_inactive" }, { status: 403 });
@@ -156,6 +158,13 @@ export class SubscriptionGuard {
     }
     if (!devices[device] && Object.keys(devices).length >= limits.devices) {
       return Response.json({ error: "Device limit reached", code: "device_limit" }, { status: 403 });
+    }
+
+    if (input.action === "authorize-grant") {
+      recent.push(now);
+      devices[device] = now;
+      await this.state.storage.put({ rate: recent, devices });
+      return Response.json({ ok: true, plan: claims.plan });
     }
 
     const currentMonth = monthKey(now);

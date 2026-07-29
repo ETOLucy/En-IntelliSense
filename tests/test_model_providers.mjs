@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import worker from '../worker.js';
+import worker, { chatText } from '../worker.js';
 import {
   publicModelProviders,
   publicProviderCatalog,
@@ -44,6 +44,49 @@ assert.equal(resolved.OPENAI_API_KEY, 'backup-secret');
 assert.equal(resolved.OPENAI_BASE_URL, 'https://backup.example.net/v1');
 assert.equal(resolved.OPENAI_MODEL, 'backup-model');
 assert.equal(resolved.MODEL_API_STYLE, 'chat');
+assert.equal(resolved.MODEL_PROVIDER_CHAIN.length, 2);
+
+const cnResolved = await resolveModelEnvironment({
+  ...env,
+  MARKET: 'cn',
+  DB: settingsDb('primary'),
+});
+assert.equal(cnResolved.ACTIVE_MODEL_PROVIDER, 'primary');
+assert.deepEqual(cnResolved.MODEL_PROVIDER_CHAIN.map(item => item.ACTIVE_MODEL_PROVIDER), ['primary', 'backup_a']);
+
+const intlResolved = await resolveModelEnvironment({
+  ...env,
+  MARKET: 'intl',
+  DB: settingsDb('backup_a'),
+  MODEL_PROVIDER: 'openai',
+});
+assert.equal(intlResolved.ACTIVE_MODEL_PROVIDER, 'primary');
+assert.deepEqual(intlResolved.MODEL_PROVIDER_CHAIN.map(item => item.ACTIVE_MODEL_PROVIDER), ['primary']);
+
+const originalFetch = globalThis.fetch;
+const calls = [];
+globalThis.fetch = async (url, options) => {
+  calls.push({ url: String(url), authorization: options.headers.authorization });
+  if (String(url).includes('backup.example.net')) {
+    return new Response(JSON.stringify({ error: 'insufficient quota' }), { status: 403 });
+  }
+  return Response.json({ choices: [{ message: { content: 'fallback worked' } }] });
+};
+try {
+  assert.equal(await chatText(resolved, 'system', 'hello'), 'fallback worked');
+  assert.deepEqual(calls.map(call => new URL(call.url).hostname), ['backup.example.net', 'primary.example.net']);
+  assert.deepEqual(calls.map(call => call.authorization), ['Bearer backup-secret', 'Bearer primary-secret']);
+
+  calls.length = 0;
+  globalThis.fetch = async (url, options) => {
+    calls.push({ url: String(url), authorization: options.headers.authorization });
+    return new Response(JSON.stringify({ error: 'invalid request parameter' }), { status: 400 });
+  };
+  await assert.rejects(() => chatText(resolved, 'system', 'hello'), /Model API returned 400/);
+  assert.equal(calls.length, 1);
+} finally {
+  globalThis.fetch = originalFetch;
+}
 
 const rejected = await worker.fetch(new Request('https://app.example/api/chat', {
   method: 'POST',

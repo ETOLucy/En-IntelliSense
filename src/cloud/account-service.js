@@ -13,6 +13,13 @@ const CHALLENGE_LIFETIME_MS = 10 * 60000;
 const TICKET_CATEGORIES = new Set(['account', 'billing', 'technical', 'model', 'privacy', 'feedback', 'other']);
 const TICKET_STATUSES = new Set(['open', 'waiting_for_user', 'in_progress', 'resolved', 'closed']);
 const TICKET_PRIORITIES = new Set(['low', 'normal', 'high', 'urgent']);
+const HOSTED_ROUTE_UNITS = Object.freeze({
+  '/api/complete': 1,
+  '/api/complete-stream': 1,
+  '/api/assist': 4,
+  '/api/chat': 5,
+  '/api/review': 7,
+});
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: ACCOUNT_JSON_HEADERS });
@@ -205,7 +212,7 @@ async function verifyLoginCode(request, env) {
       `INSERT INTO account_entitlements
         (user_id, plan, status, monthly_units, requests_per_minute, device_limit,
          period_start, period_end, source, created_at, updated_at)
-       VALUES (?, 'beta', 'active', 300, 15, 2, ?, ?, 'beta', ?, ?)`,
+       VALUES (?, 'beta', 'active', 30, 15, 2, ?, ?, 'beta', ?, ?)`,
     ).bind(userId, now, periodEnd, now, now).run();
     user = { id: userId, email, status: 'active', role: 'user' };
   } else {
@@ -253,21 +260,55 @@ export async function consumeAccountUsage(request, env, user, route) {
     `SELECT plan, status, monthly_units, requests_per_minute, device_limit, period_end
      FROM account_entitlements WHERE user_id = ?`,
   ).bind(user.id).first();
-  const now = Date.now();
-  if (!entitlement || entitlement.status !== 'active' || Number(entitlement.period_end) <= now) {
-    return json({ error: 'Hosted AI allowance is not active', code: 'entitlement_inactive' }, 403);
-  }
   const claims = {
-    plan: entitlement.plan === 'pro' ? 'pro' : 'standard',
-    monthly_units: Number(entitlement.monthly_units),
-    rpm: Number(entitlement.requests_per_minute),
-    devices: Number(entitlement.device_limit),
+    plan: entitlement?.plan === 'pro' ? 'pro' : 'standard',
+    monthly_units: Number(entitlement?.monthly_units || 0),
+    rpm: Number(entitlement?.requests_per_minute || 15),
+    devices: Number(entitlement?.device_limit || 2),
   };
   const device = request.headers.get('x-writemelo-device')
     || request.headers.get('cf-connecting-ip')
     || 'unknown';
   const id = env.SUBSCRIPTION_GUARD.idFromName(user.id);
-  const response = await env.SUBSCRIPTION_GUARD.get(id).fetch('https://guard.internal/consume', {
+  const guard = env.SUBSCRIPTION_GUARD.get(id);
+  const units = HOSTED_ROUTE_UNITS[route];
+  if (units) {
+    // The conditional update prevents two concurrent requests from spending the
+    // same grant. Retry selection when another request wins between SELECT and UPDATE.
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const now = Date.now();
+      const grant = await env.DB.prepare(
+        `SELECT id
+         FROM usage_grants
+         WHERE user_id = ? AND remaining_units >= ?
+           AND (expires_at IS NULL OR expires_at > ?)
+         ORDER BY CASE WHEN expires_at IS NULL THEN 1 ELSE 0 END,
+                  expires_at ASC, created_at ASC
+         LIMIT 1`,
+      ).bind(user.id, units, now).first();
+      if (!grant) break;
+      const authorization = await guard.fetch('https://guard.internal/authorize-grant', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'authorize-grant', claims, route, device }),
+      });
+      if (!authorization.ok) {
+        const result = await authorization.json();
+        return json(result, authorization.status);
+      }
+      const spent = await env.DB.prepare(
+        `UPDATE usage_grants
+         SET remaining_units = remaining_units - ?
+         WHERE id = ? AND user_id = ? AND remaining_units >= ?
+           AND (expires_at IS NULL OR expires_at > ?)`,
+      ).bind(units, grant.id, user.id, units, now).run();
+      if (Number(spent?.meta?.changes || 0) === 1) return null;
+    }
+  }
+  const now = Date.now();
+  if (!entitlement || entitlement.status !== 'active' || Number(entitlement.period_end) <= now) {
+    return json({ error: 'Hosted AI allowance is not active', code: 'entitlement_inactive' }, 403);
+  }
+  const response = await guard.fetch('https://guard.internal/consume', {
     method: 'POST',
     body: JSON.stringify({ action: 'consume', claims, route, device }),
   });
@@ -652,6 +693,38 @@ async function listAdminAudit(request, env) {
   return json({ events: result.results || [] });
 }
 
+async function adminRiskSummary(request, env) {
+  const actor = adminIdentity(request, env);
+  if (!actor) return json({ error: 'Administrator access required' }, 403);
+  const since = Date.now() - 86400000;
+  const [challenges, challengedSources, suspendedUsers, activeSessions] = await Promise.all([
+    env.DB.prepare(
+      `SELECT COUNT(*) AS count, COALESCE(SUM(attempts), 0) AS attempts
+       FROM auth_challenges WHERE created_at >= ?`,
+    ).bind(since).first(),
+    env.DB.prepare(
+      `SELECT COUNT(*) AS count FROM (
+         SELECT source_ip_hash FROM auth_challenges
+         WHERE created_at >= ? AND source_ip_hash <> ''
+         GROUP BY source_ip_hash HAVING COUNT(*) >= 5 OR SUM(attempts) >= 8
+       )`,
+    ).bind(since).first(),
+    env.DB.prepare(`SELECT COUNT(*) AS count FROM users WHERE status = 'suspended'`).first(),
+    env.DB.prepare(
+      `SELECT COUNT(*) AS count FROM user_sessions
+       WHERE revoked_at IS NULL AND expires_at > ?`,
+    ).bind(Date.now()).first(),
+  ]);
+  return json({
+    window_hours: 24,
+    login_challenges: Number(challenges?.count || 0),
+    verification_failures: Number(challenges?.attempts || 0),
+    suspicious_sources: Number(challengedSources?.count || 0),
+    suspended_users: Number(suspendedUsers?.count || 0),
+    active_sessions: Number(activeSessions?.count || 0),
+  });
+}
+
 async function listAdminTickets(request, env) {
   const actor = adminIdentity(request, env);
   if (!actor) return json({ error: 'Administrator access required' }, 403);
@@ -764,6 +837,7 @@ export async function accountApi(request, env) {
     if (path === '/api/admin/users' && request.method === 'GET') return await adminUsers(request, env);
     if (path === '/api/admin/orders' && request.method === 'GET') return await listAdminOrders(request, env);
     if (path === '/api/admin/audit' && request.method === 'GET') return await listAdminAudit(request, env);
+    if (path === '/api/admin/risk-summary' && request.method === 'GET') return await adminRiskSummary(request, env);
     if (path === '/api/admin/model-providers' && ['GET', 'PATCH'].includes(request.method)) {
       return await adminModelProviders(request, env);
     }

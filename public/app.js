@@ -139,6 +139,7 @@ function applyUiLanguage(value) {
   const fallback = { ...SETTINGS_I18N.en, ...APP_I18N.en, ...COMMERCE_I18N.en, ...DETAIL_I18N.en, ...HELP_I18N.en, ...REVIEW_I18N.en, ...WORKSPACE_I18N.en, ...NAV_I18N.en };
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  $('#byokGuideLink').href = language === 'zh' ? 'byok-privacy.html' : 'byok-privacy-en.html';
   $('#copyDocumentButton').textContent = language === 'zh' ? '复制全文' : 'Copy text';
   $('#accessGuideButton').textContent = language === 'zh' ? 'AI 服务' : 'AI service';
   if (language === 'zh') {
@@ -371,6 +372,23 @@ async function checkModel() {
     $('#ticketsPortalLink').href = portalUrl.replace(/support\.html(?:$|[?#])/, 'tickets.html');
     $('#trialAccessLink').href = portalUrl;
     const needsTrialSignIn = Boolean(data.requires_account && !sessionStorage.getItem('writemelo-access-token'));
+    const accountGate = $('#accountGate');
+    if (accountGate) {
+      const signInUrl = new URL(portalUrl, location.href);
+      signInUrl.searchParams.set('next', `${location.pathname}${location.search}${location.hash}`);
+      $('#accountGateAction').href = signInUrl.toString();
+      accountGate.classList.toggle('hidden', !needsTrialSignIn);
+      document.body.classList.toggle('account-required', needsTrialSignIn);
+      if (activeUiLanguage === 'zh') {
+        $('#accountGateTitle').textContent = '登录后开始写作';
+        $('#accountGateDescription').textContent = '草稿仍保存在当前设备。登录只用于保护试用额度、购买记录和共享 AI 资源。';
+        $('#accountGateTrial').textContent = '首次试用单位';
+        $('#accountGateReward').textContent = '每次有效邀请';
+        $('#accountGateByok').textContent = '可选本地 Key';
+        $('#accountGateAction').textContent = '登录或自动创建账号';
+        $('#accountGateNote').textContent = '邮箱验证成功后自动创建账号，无需设置密码。';
+      }
+    }
     modelConfigured = Boolean(data.configured) && !needsTrialSignIn;
     storageScope = data.storage_scope || 'local';
     $('#connectionState').className = `connection-state ${modelConfigured ? 'online' : 'offline'}`;

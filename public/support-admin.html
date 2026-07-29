@@ -107,7 +107,15 @@
         <div class="queue-heading">
           <div><p class="eyebrow">RISK &amp; AUDIT</p><h1>风控与审计</h1></div>
         </div>
-        <p class="field-note">记录管理员对用户策略、模型线路和工单执行的操作。正文和 API Key 不进入审计日志。</p>
+        <p class="field-note">风险指标只统计验证、会话和账号状态；管理员操作另行留痕。正文和 API Key 均不进入风控或审计日志。</p>
+        <dl class="risk-metrics" aria-label="最近 24 小时风险指标">
+          <div><dt>验证码请求</dt><dd id="riskChallenges">-</dd><small>最近 24 小时</small></div>
+          <div><dt>验证失败次数</dt><dd id="riskFailures">-</dd><small>包括重复输错</small></div>
+          <div class="risk-alert"><dt>可疑来源</dt><dd id="riskSources">-</dd><small>高频请求或失败</small></div>
+          <div><dt>暂停账号</dt><dd id="riskSuspended">-</dd><small>当前累计</small></div>
+          <div><dt>有效会话</dt><dd id="riskSessions">-</dd><small>尚未过期</small></div>
+        </dl>
+        <h2 class="audit-subheading">管理员操作记录</h2>
         <p id="auditStatus" class="status" aria-live="polite"></p>
         <div class="table-wrap">
           <table>

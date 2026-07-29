@@ -40,6 +40,25 @@ function safeHostname(value) {
   try { return new URL(value).hostname; } catch { return ''; }
 }
 
+function providerSupportsMarket(provider, market) {
+  if (!['cn', 'intl'].includes(market)) return true;
+  if (provider.provider_id === 'custom_openai_compatible') return true;
+  return market === 'cn'
+    ? provider.region_policy === 'china'
+    : provider.region_policy !== 'china';
+}
+
+function providerEnvironment(env, provider) {
+  const resolved = Object.create(env);
+  resolved.OPENAI_API_KEY = provider._api_key;
+  resolved.OPENAI_BASE_URL = provider._base_url;
+  resolved.OPENAI_MODEL = provider.model;
+  resolved.OPENAI_AUTOCOMPLETE_MODEL = provider._autocomplete_model || provider.model;
+  resolved.MODEL_API_STYLE = provider.api_style;
+  resolved.ACTIVE_MODEL_PROVIDER = provider.id;
+  return resolved;
+}
+
 export async function activeModelProviderId(env) {
   if (!env.DB) return 'primary';
   const row = await env.DB.prepare("SELECT value FROM platform_settings WHERE key = 'active_model_provider'").first();
@@ -49,16 +68,18 @@ export async function activeModelProviderId(env) {
 export async function resolveModelEnvironment(env) {
   const providers = modelProviders(env);
   const activeId = await activeModelProviderId(env);
-  const provider = providers.find(item => item.id === activeId && item.configured)
-    || providers.find(item => item.id === 'primary' && item.configured);
-  if (!provider) return env;
-  const resolved = Object.create(env);
-  resolved.OPENAI_API_KEY = provider._api_key;
-  resolved.OPENAI_BASE_URL = provider._base_url;
-  resolved.OPENAI_MODEL = provider.model;
-  resolved.OPENAI_AUTOCOMPLETE_MODEL = provider._autocomplete_model || provider.model;
-  resolved.MODEL_API_STYLE = provider.api_style;
-  resolved.ACTIVE_MODEL_PROVIDER = provider.id;
+  const market = String(env.MARKET || '').toLowerCase();
+  const eligible = providers.filter(item => item.configured && providerSupportsMarket(item, market));
+  const active = eligible.find(item => item.id === activeId)
+    || eligible.find(item => item.id === 'primary')
+    || eligible[0];
+  if (!active) return env;
+  const ordered = [active, ...eligible.filter(item => item.id !== active.id)];
+  const resolved = providerEnvironment(env, active);
+  Object.defineProperty(resolved, 'MODEL_PROVIDER_CHAIN', {
+    value: ordered.map(provider => providerEnvironment(env, provider)),
+    enumerable: false,
+  });
   return resolved;
 }
 

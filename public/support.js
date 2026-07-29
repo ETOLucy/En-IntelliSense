@@ -1,5 +1,6 @@
 const $ = selector => document.querySelector(selector);
 const page = document.body.dataset.page || "account";
+const nextPage = new URLSearchParams(location.search).get("next") || "";
 let challengeId = "";
 let currentEmail = "";
 let currentTicketId = "";
@@ -127,7 +128,7 @@ async function loadAccount() {
     if ($("#accountEmail")) $("#accountEmail").textContent = data.user.email;
     if ($("#accountPlan")) $("#accountPlan").textContent = data.entitlement?.plan || "Free";
     if ($("#accountUnits")) $("#accountUnits").textContent = data.entitlement ? String(data.entitlement.monthly_units) : "0";
-    if ($("#betaPlanUnits")) $("#betaPlanUnits").textContent = data.entitlement ? String(data.entitlement.monthly_units) : "300";
+    if ($("#betaPlanUnits")) $("#betaPlanUnits").textContent = data.entitlement ? String(data.entitlement.monthly_units) : "30";
     if ($("#accountExpiry")) $("#accountExpiry").textContent = data.entitlement ? dateText(data.entitlement.period_end) : "-";
     showPage();
     if (page === "plans") await loadStore();
@@ -219,6 +220,7 @@ $("#codeForm")?.addEventListener("submit", async event => {
     accessToken = data.access_token;
     sessionStorage.setItem("writemelo-access-token", accessToken);
     await loadAccount();
+    if (nextPage.startsWith("/") && !nextPage.startsWith("//")) location.assign(nextPage);
   } catch (error) {
     setStatus("#loginStatus", error.message, true);
   }

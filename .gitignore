@@ -14,6 +14,7 @@ server.log
 server-error.log
 .debug-server.*.log
 .debug-account-server*.log
+.runtime/
 *.stdout.log
 *.stderr.log
 .wrangler/

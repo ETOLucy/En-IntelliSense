@@ -22,10 +22,24 @@
 .provider-row p { flex: 1; margin: 12px 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .provider-row button { width: 100%; }
 .provider-row button:disabled { cursor: default; }
+.risk-metrics {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin: 24px 0 30px;
+}
+.risk-metrics > div { padding: 16px; border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+.risk-metrics dt { color: var(--muted); font-size: 12px; }
+.risk-metrics dd { margin: 10px 0 5px; font: 600 26px/1 Georgia, "Songti SC", serif; }
+.risk-metrics small { color: var(--muted); font-size: 11px; }
+.risk-metrics .risk-alert { border-color: #e4b887; background: #fffaf4; }
+.risk-metrics .risk-alert dd { color: #a25516; }
+.audit-subheading { margin: 0 0 8px; font-size: 16px; }
 @media (max-width: 760px) {
   .queue-heading { display: block; }
   .queue-heading form { grid-template-columns: 1fr; margin-top: 18px; }
   .admin-fields { grid-template-columns: 1fr; }
   .provider-rows { grid-template-columns: 1fr; }
   .admin-metrics { grid-template-columns: repeat(2, 1fr); }
+  .risk-metrics { grid-template-columns: repeat(2, 1fr); }
 }

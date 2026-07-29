@@ -69,4 +69,21 @@ const inspectRevoked = await guard.fetch(new Request("https://guard.internal", {
 assert.equal(inspectRevoked.status, 403);
 assert.equal((await inspectRevoked.json()).code, "subscription_inactive");
 
+const grantGuard = new SubscriptionGuard({ storage: new MemoryStorage() });
+const grantAuthorization = await grantGuard.fetch(new Request("https://guard.internal", {
+  method: "POST",
+  body: JSON.stringify({
+    action: "authorize-grant",
+    route: "/api/review",
+    device: "device-a",
+    claims: { plan: "standard", monthly_units: 30, rpm: 15, devices: 2 },
+  }),
+}));
+assert.equal(grantAuthorization.status, 200);
+const grantInspection = await grantGuard.fetch(new Request("https://guard.internal", {
+  method: "POST",
+  body: JSON.stringify({ action: "inspect" }),
+}));
+assert.equal((await grantInspection.json()).usage, null);
+
 console.log("Subscription security tests passed");

@@ -88,7 +88,7 @@ function openUser(id) {
   $("#adminUserEmail").textContent = user.email;
   $("#adminUserStatus").value = user.status;
   $("#adminUserPlan").value = user.plan || "beta";
-  $("#adminUserUnits").value = user.monthly_units ?? 300;
+  $("#adminUserUnits").value = user.monthly_units ?? 30;
   $("#adminUserRpm").value = user.requests_per_minute ?? 15;
   $("#adminUserDevices").value = user.device_limit ?? 2;
   setStatus("#adminUserSaveStatus", "");
@@ -189,7 +189,15 @@ async function loadQueue() {
 }
 
 async function loadAudit() {
-  const data = await adminApi("/api/admin/audit");
+  const [data, risk] = await Promise.all([
+    adminApi("/api/admin/audit"),
+    adminApi("/api/admin/risk-summary"),
+  ]);
+  $("#riskChallenges").textContent = String(risk.login_challenges);
+  $("#riskFailures").textContent = String(risk.verification_failures);
+  $("#riskSources").textContent = String(risk.suspicious_sources);
+  $("#riskSuspended").textContent = String(risk.suspended_users);
+  $("#riskSessions").textContent = String(risk.active_sessions);
   $("#auditRows").replaceChildren(...data.events.map(event => {
     const row = document.createElement("tr");
     appendCells(row, [
