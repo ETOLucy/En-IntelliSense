@@ -27,7 +27,7 @@
     "test:desktop": "node scripts/test_desktop_byok.mjs",
     "capture:demo": "node scripts/capture_demo.mjs",
     "privacy": "powershell -ExecutionPolicy Bypass -File ./scripts/check_privacy.ps1",
-    "package:windows": "npm run build:web && npm run build:desktop && electron-builder --win nsis portable",
+    "package:windows": "npm run build:web && npm run build:desktop && electron-builder --win nsis portable --publish never",
     "release:verify": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/verify_release.ps1"
   },
   "dependencies": {
