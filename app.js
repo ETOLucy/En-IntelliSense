@@ -116,7 +116,7 @@ let activeUiLanguage = 'en';
 function resolvedUiLanguage(value = 'auto') {
   const requested = !value || value === 'auto' ? (navigator.language || 'en') : value;
   const language = requested.toLowerCase().split('-')[0];
-  return SETTINGS_I18N[language] ? language : 'en';
+  return language === 'zh' ? 'zh' : 'en';
 }
 
 function applyUiLanguage(value) {
@@ -126,6 +126,11 @@ function applyUiLanguage(value) {
   const fallback = { ...SETTINGS_I18N.en, ...APP_I18N.en, ...COMMERCE_I18N.en, ...DETAIL_I18N.en, ...HELP_I18N.en, ...REVIEW_I18N.en, ...WORKSPACE_I18N.en };
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  const guideButton = $('.guide-button');
+  if (guideButton) {
+    guideButton.textContent = language === 'zh' ? '使用说明' : 'User guide';
+    guideButton.href = language === 'zh' ? 'byok-guide.html' : 'byok-guide-en.html';
+  }
   document.querySelectorAll('[data-i18n]').forEach(element => {
     const message = messages[element.dataset.i18n] || fallback[element.dataset.i18n];
     if (message) element.textContent = message;
@@ -210,6 +215,7 @@ function localWordSuggestion(value) {
 }
 
 function showSuggestion(suggestion, kind) {
+  suggestion = EnWriteCompletion.normalizeSuggestionBoundary(editor.value, suggestion, kind);
   activeSuggestion = suggestion;
   activeKind = kind;
   renderMirror();
@@ -382,7 +388,7 @@ async function openModelSettings() {
 function closeModelSettings() {
   $('#settingsModal').classList.add('hidden');
   sessionStorage.setItem(scopedKey('settings-dismissed'), '1');
-  if ($('#emailModal').classList.contains('hidden')) document.body.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
 }
 
 async function submitModelConfig(path) {
@@ -538,12 +544,6 @@ function notify(message) {
   setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
-function emailDraft() {
-  const modalOpen = !$('#emailModal').classList.contains('hidden');
-  const modalAddress = modalOpen ? $('#emailRecipientInput').value.trim() : '';
-  return { to: modalAddress || $('#recipient').value.trim(), subject: $('#subject').value.trim(), body: editor.value };
-}
-
 function finishedDocuments() {
   try {
     const documents = JSON.parse(storageGet('finished') || '[]');
@@ -640,22 +640,6 @@ function deleteFinishedDocument(id) {
   const documents = finishedDocuments().filter(item => item.id !== id);
   storageSet('finished', JSON.stringify(documents));
   renderFinishedDocuments(); notify('Finished document deleted');
-}
-
-function openEmailModal() {
-  const draft = emailDraft();
-  $('#emailRecipientInput').value = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.to) ? draft.to : '';
-  $('#emailRecipientInput').setCustomValidity('');
-  $('#emailSummarySubject').textContent = draft.subject || 'No subject';
-  $('#emailModal').classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  $('#emailRecipientInput').focus();
-}
-
-function closeEmailModal() {
-  $('#emailModal').classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  $('#finishButton').focus();
 }
 
 function closeDocumentMenu() {
@@ -973,20 +957,11 @@ $('#finishedList').addEventListener('click', event => {
 $('#refreshPhrases').addEventListener('click', () => { phraseOffset = (phraseOffset + 1) % 3; renderPhrases(); notify('Phrase ideas refreshed'); });
 $('#reviewDraft').addEventListener('click', () => reviewDraft(true));
 $('#finishButton').addEventListener('click', () => {
-  if ($('#format').value === 'letter') openEmailModal();
-  else {
-    archiveCurrentDocument(); showDocumentView('finished');
-    notify(`${content[$('#format').value].finish} saved to Finished`);
-  }
+  archiveCurrentDocument();
+  showDocumentView('finished');
+  notify(`${content[$('#format').value].finish} saved to Finished`);
 });
 $('#themeButton').addEventListener('click', () => document.body.classList.toggle('dark'));
-$('#preferencesButton').addEventListener('click', () => {
-  $('#uiLanguage').value = storageGet('ui-language') || 'auto';
-  $('#languageStatus').textContent = '';
-  $('#preferencesModal').classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  $('#uiLanguage').focus();
-});
 function closePreferences() {
   $('#preferencesModal').classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -1030,45 +1005,12 @@ $('#closeCoach').addEventListener('click', () => setCoachOpen(false));
 $('#coachToggle').addEventListener('click', () => setCoachOpen($('#writingCoach').classList.contains('closed')));
 document.querySelectorAll('#title, #recipient, #subject').forEach(input => input.addEventListener('input', saveDraft));
 
-async function copyInvite() {
-  const link = `${location.href.split('#')[0]}#write-together`;
-  try { await navigator.clipboard.writeText(link); notify('Invite link copied'); }
-  catch { notify('Invite link: ' + link); }
-}
-$('#shareButton').addEventListener('click', copyInvite);
 suggestionBar.addEventListener('click', acceptSuggestion);
 $('#polishSubject').addEventListener('click', () => requestAssist('polish_subject'));
 $('#polishText').addEventListener('click', () => requestAssist('polish_text'));
 $('#explainText').addEventListener('click', () => requestAssist('explain'));
 $('#simplifyText').addEventListener('click', () => requestAssist('simplify'));
 $('#closeAssist').addEventListener('click', () => $('#assistResult').classList.add('hidden'));
-$('#closeEmailModal').addEventListener('click', closeEmailModal);
-$('#emailBackdrop').addEventListener('click', closeEmailModal);
-$('#emailRecipientInput').addEventListener('input', event => event.currentTarget.setCustomValidity(''));
-$('#openDefaultEmail').addEventListener('click', async () => {
-  const input = $('#emailRecipientInput');
-  if (!input.reportValidity()) return;
-  const draft = emailDraft();
-  const complete = EnWriteCompletion.buildCompleteEmailText(draft);
-  try { await navigator.clipboard.writeText(complete); } catch {}
-  archiveCurrentDocument();
-  const url = EnWriteCompletion.buildEmailComposeUrl('default', draft);
-  const api = desktopDocumentApi();
-  if (api?.open_external) {
-    const result = await api.open_external(url);
-    if (!result.ok) return notify(result.error || 'Could not open the default email app');
-  } else {
-    window.location.href = url;
-  }
-  closeEmailModal();
-  notify('Email copied and opened in the default app');
-});
-$('#copyEmailDraft').addEventListener('click', async () => {
-  const draft = emailDraft();
-  const completeEmail = EnWriteCompletion.buildCompleteEmailText(draft);
-  try { await navigator.clipboard.writeText(completeEmail); notify('Complete email copied'); }
-  catch { notify('Clipboard access was blocked'); }
-});
 $('#moreButton').addEventListener('click', event => { event.stopPropagation(); toggleDocumentMenu(); });
 document.querySelectorAll('[data-doc-action]').forEach(button => button.addEventListener('click', () => runDocumentAction(button.dataset.docAction)));
 document.addEventListener('click', event => {
@@ -1080,7 +1022,6 @@ document.addEventListener('keydown', event => {
     if (key === 'o') { event.preventDefault(); openLocalDocument(); return; }
     if (key === 's') { event.preventDefault(); saveLocalDocument(event.shiftKey); return; }
   }
-  if (event.key === 'Escape' && !$('#emailModal').classList.contains('hidden')) closeEmailModal();
   if (event.key === 'Escape' && !$('#settingsModal').classList.contains('hidden')) closeModelSettings();
   if (event.key === 'Escape' && !$('#documentMenu').classList.contains('hidden')) { closeDocumentMenu(); $('#moreButton').focus(); }
 });

@@ -7,6 +7,9 @@ datas = [
     (str(root / "styles.css"), "."),
     (str(root / "app.js"), "."),
     (str(root / "completion.js"), "."),
+    (str(root / "byok-guide.html"), "."),
+    (str(root / "byok-guide-en.html"), "."),
+    (str(root / "byok-guide.css"), "."),
     (str(root / "logo.svg"), "."),
 ]
 a = Analysis(

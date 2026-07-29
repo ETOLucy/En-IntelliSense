@@ -12,6 +12,7 @@ __pycache__/
 server.log
 server-error.log
 .debug-server.*.log
+store-debug.*.log
 .wrangler/
 .edgeone/
 .dev.vars
@@ -43,6 +44,11 @@ docs/assets/store-*.png
 !docs/assets/store-zh-cn-01-writing.png
 docs/logo-concepts/
 scripts/build_store_listing.ps1
+!store/
+store/*
+!store/Package.appxmanifest.template
+!store/partner-center.example.json
+!scripts/build_msix.ps1
 public/admin.css
 public/admin.html
 public/admin.js

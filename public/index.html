@@ -14,9 +14,8 @@
         <a class="brand" href="#" aria-label="WriteMelo home"><img class="brand-mark" src="logo.svg" alt="" /><span>WriteMelo</span></a>
         <div class="draft-state"><span class="saved-dot"></span><span id="saveStatus" data-i18n="saved">Saved</span></div>
         <div class="top-actions">
-          <button class="share-button" id="shareButton" type="button" title="Copy a link to WriteMelo" data-i18n="share">Share</button>
+          <a class="guide-button" href="byok-guide.html">使用说明</a>
           <button class="coach-toggle" id="coachToggle" type="button" aria-controls="writingCoach" aria-expanded="true" data-i18n="coach">Coach</button>
-          <button class="icon-btn" id="preferencesButton" type="button" aria-label="Language and region" title="Language and region">&#127760;</button>
           <button class="icon-btn hidden" id="settingsButton" type="button" aria-label="Plans and AI service" title="Plans and AI service">&#9881;</button>
           <button class="icon-btn" id="themeButton" type="button" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
         </div>
@@ -56,15 +55,6 @@
             <select id="explanationLanguage">
               <option value="Chinese">中文</option>
               <option value="English">English</option>
-              <option value="Spanish">Español</option>
-              <option value="Japanese">日本語</option>
-              <option value="Korean">한국어</option>
-              <option value="French">Français</option>
-              <option value="German">Deutsch</option>
-              <option value="Portuguese">Português</option>
-              <option value="Arabic">العربية</option>
-              <option value="Hindi">हिन्दी</option>
-              <option value="Russian">Русский</option>
             </select>
             <label data-i18n="completion">Completion</label>
             <div class="segmented completion-level" id="completionMode" role="group" aria-label="Completion level">
@@ -175,16 +165,6 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
         </aside>
       </main>
     </div>
-    <div class="email-modal hidden" id="emailModal" role="dialog" aria-modal="true" aria-labelledby="emailModalTitle">
-      <button class="modal-backdrop" id="emailBackdrop" type="button" aria-label="Close email options"></button>
-      <section class="email-dialog">
-        <div class="email-dialog-head"><div><span>READY TO SEND</span><h2 id="emailModalTitle">Open in your email</h2></div><button id="closeEmailModal" type="button" aria-label="Close">×</button></div>
-        <div class="email-summary"><label for="emailRecipientInput">To / 收件人</label><input id="emailRecipientInput" type="email" placeholder="recipient@example.com" autocomplete="email" required aria-describedby="recipientHelp" /><span>Subject</span><strong id="emailSummarySubject">No subject</strong></div>
-        <p class="email-import-note" id="recipientHelp">The complete message is copied before the system email app opens, so it can be pasted if the app does not accept a long body.</p>
-        <button id="openDefaultEmail" type="button">Open default email app</button>
-        <button class="copy-email" id="copyEmailDraft" type="button">Copy complete email</button>
-      </section>
-    </div>
     <div class="settings-modal hidden" id="preferencesModal" role="dialog" aria-modal="true" aria-labelledby="preferencesTitle">
       <button class="modal-backdrop" id="preferencesBackdrop" type="button" aria-label="Close language and region settings"></button>
       <section class="settings-dialog preferences-dialog">
@@ -198,15 +178,6 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
             <option value="auto" data-i18n="system_default">System default</option>
             <option value="zh-CN">简体中文</option>
             <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="pt-BR">Português (Brasil)</option>
-            <option value="ar">العربية</option>
-            <option value="hi">हिन्दी</option>
-            <option value="ru">Русский</option>
           </select>
           <small data-i18n="language_available">Only languages with reviewed interface translations are listed.</small>
           <p class="settings-status" id="languageStatus" aria-live="polite"></p>
@@ -226,6 +197,10 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
         <form id="settingsForm">
           <div id="byokProviderFields" class="settings-mode-panel">
             <p class="developer-note" data-i18n="free_description">Use your own compatible model service and API key. WriteMelo does not charge for model usage.</p>
+            <a class="api-key-guide-link" href="byok-guide.html">
+              <span><strong>还没有 API Key？</strong><small>先找免费层，再比较基础与高质量模型</small></span>
+              <b aria-hidden="true">→</b>
+            </a>
             <label for="modelBaseUrl" data-i18n="api_endpoint">API endpoint</label>
             <input id="modelBaseUrl" type="url" autocomplete="off" placeholder="https://api.example.com" />
             <label for="modelApiKey" data-i18n="api_key">API key</label>
@@ -233,7 +208,36 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
               <input id="modelApiKey" type="password" autocomplete="off" placeholder="example-api-key" />
               <button id="toggleApiKey" type="button" aria-label="Show API key" title="Show API key" data-i18n="show">Show</button>
             </div>
-            <small id="apiKeyHelp" data-i18n="api_key_help">Your API key stays on this computer and is protected by Windows encryption. It is never uploaded to WriteMelo servers.</small>
+            <small id="apiKeyHelp" class="key-privacy-summary" data-i18n="api_key_help">Your API key stays on this computer and is protected by Windows encryption. It is never uploaded to WriteMelo servers.</small>
+            <details class="byok-guide">
+              <summary>
+                <span>
+                  <strong>使用与隐私说明</strong>
+                  <small>How to configure your own API Key safely</small>
+                </span>
+                <span class="byok-guide-action">查看</span>
+              </summary>
+              <div class="byok-guide-content">
+                <section>
+                  <h3>API Key 不会上传到 WriteMelo 服务器</h3>
+                  <p>设置页面只把 Key 提交到本机的 <code>127.0.0.1</code> 服务。应用使用 Windows DPAPI 加密后，将它保存在当前 Windows 账户的应用数据中，不提供账号同步或云端备份。</p>
+                </section>
+                <section>
+                  <h3>模型越强，复杂写作通常越稳定</h3>
+                  <p>免费或小型模型足够体验补全和简单改错；正式邮件、长文衔接、细微语气和复杂解释更依赖模型能力。价格不保证质量，请先用自己的真实文本比较。</p>
+                </section>
+                <ol>
+                  <li><strong>填写接口地址</strong><span>使用模型供应商提供的 HTTPS API 地址，不要填写控制台网页地址。</span></li>
+                  <li><strong>填写 API Key 和模型 ID</strong><span>模型 ID 必须与供应商账户中已开通的模型完全一致。</span></li>
+                  <li><strong>选择兼容协议</strong><span>按供应商文档选择 Chat Completions 或 Responses。</span></li>
+                  <li><strong>测试后保存</strong><span>测试会由本机直接连接你填写的供应商；成功后再保存配置。</span></li>
+                </ol>
+                <div class="byok-data-route" aria-label="API Key 数据路径">
+                  <span>设置界面</span><b aria-hidden="true">→</b><span>Windows 本机</span><b aria-hidden="true">→</b><span>模型供应商</span>
+                </div>
+                <p class="byok-caution"><strong>请注意：</strong>模型供应商会收到完成任务所需的写作内容，并按其规则收取 Token 费用。WriteMelo 不经手充值。不要使用来源不明的共享 Key；要移除 Key，可清除应用本地数据或删除 <code>%APPDATA%\WriteMelo\config.json</code>。</p>
+              </div>
+            </details>
             <label for="modelName" data-i18n="main_model">Model ID</label>
             <input id="modelName" placeholder="example-model" />
             <label for="modelApiStyle" data-i18n="api_protocol">Compatible API protocol</label>

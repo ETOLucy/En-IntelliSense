@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Key 购买与配置 - WriteMelo</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="byok-guide.css">
+</head>
+<body>
+  <header class="guide-header">
+    <a class="brand" href="index.html"><img src="logo.svg" alt=""><span><strong>WriteMelo</strong><small>API Key 使用指南</small></span></a>
+    <nav class="header-actions"><a class="language-link" href="byok-guide-en.html">English</a><a class="back-link" href="index.html">返回写作</a></nav>
+  </header>
+  <main>
+    <section class="intro">
+      <div>
+        <p class="eyebrow">BRING YOUR OWN KEY</p>
+        <h1>先用免费层试写，再决定模型档位</h1>
+        <p class="lead">WriteMelo 不卖充值，也不会催你订阅。优先选择供应商允许的免费 API 层；免费模型适合体验流程，能力更强的模型通常更适合正式邮件和长文。</p>
+      </div>
+      <div class="route" aria-label="配置流程">
+        <span><b>1</b>注册供应商账户</span><i>→</i><span><b>2</b>领取免费额度并创建 Key</span><i>→</i><span><b>3</b>回到 WriteMelo 配置</span>
+      </div>
+    </section>
+    <section class="reassurance">
+      <div><strong>为什么要 API Key？</strong><p>可以把 AI 理解成按用量计费的水电服务：WriteMelo 是你电脑里的工具，真正生成文字的是你选择的 AI 供应商。</p></div>
+      <div><strong>一定要立刻付费吗？</strong><p>不用。先找明确的免费计划或赠送额度；不想花钱时，不要开通自动付费，免费额度用完就停止。</p></div>
+      <div><strong>会不会不停扣钱？</strong><p>不会自动向 WriteMelo 付款。你可以在供应商控制台查看账单、设置限额，余额用完后停止使用。</p></div>
+    </section>
+
+    <div class="guide-layout">
+      <aside>
+        <strong>本页内容</strong>
+        <a href="#quality">比较模型</a>
+        <a href="#choose">选择供应商</a>
+        <a href="#buy">购买步骤</a>
+        <a href="#configure">填写示例</a>
+        <a href="#privacy">隐私与费用</a>
+      </aside>
+      <article>
+        <section id="quality">
+          <p class="section-label">比较模型</p>
+          <h2>简单任务看速度，复杂任务看能力</h2>
+          <div class="facts">
+            <div><strong>免费或基础模型</strong><p>适合短补全、简单语法修改和体验软件，长文一致性与细微语气可能不稳定。</p></div>
+            <div><strong>均衡模型</strong><p>适合日常邮件和常规润色。优先比较响应速度、上下文长度和你的实际输出。</p></div>
+            <div><strong>高质量模型</strong><p>通常更擅长保持全文意图、正式语气、复杂改写和解释，适合重要邮件与长文。</p></div>
+            <div><strong>价格不是能力证明</strong><p>先用同一段真实文本测试补全、审查和润色，再决定是否值得付费。</p></div>
+          </div>
+        </section>
+
+        <section id="choose">
+          <p class="section-label">选择供应商</p>
+          <h2>优先使用官方 API 平台</h2>
+          <p>不要在聊天产品会员页面购买。网页会员通常不能当作 API 额度使用，应进入供应商的开放平台或模型服务控制台。</p>
+          <div class="provider-list">
+            <a href="https://platform.deepseek.com/" target="_blank" rel="noreferrer"><strong>DeepSeek 开放平台</strong><span>价格敏感、普通英文写作</span><code>api.deepseek.com</code></a>
+            <a href="https://bailian.console.aliyun.com/" target="_blank" rel="noreferrer"><strong>阿里云百炼</strong><span>中国大陆网络、通义千问模型</span><code>dashscope.aliyuncs.com</code></a>
+            <a href="https://open.bigmodel.cn/" target="_blank" rel="noreferrer"><strong>智谱 BigModel</strong><span>GLM 模型和中文任务</span><code>open.bigmodel.cn</code></a>
+            <a href="https://platform.moonshot.cn/" target="_blank" rel="noreferrer"><strong>Moonshot 开放平台</strong><span>Kimi 模型和长文本</span><code>api.moonshot.cn</code></a>
+          </div>
+          <p class="warning">不要购买来源不明的共享 Key。中转服务可能看到 Key、请求内容和返回内容，其价格与稳定性也不受官方保证。</p>
+        </section>
+
+        <section id="buy">
+          <p class="section-label">购买步骤</p>
+          <h2>有免费层先用，不想花钱就关闭自动付费</h2>
+          <ol class="steps">
+            <li><b>01</b><div><strong>注册并完成供应商要求的验证</strong><p>地区、实名或支付要求以供应商页面为准。</p></div></li>
+            <li><b>02</b><div><strong>在 API 控制台开通按量计费</strong><p>第一次只充少量余额，并设置余额提醒或消费上限。</p></div></li>
+            <li><b>03</b><div><strong>创建一个只给 WriteMelo 使用的 Key</strong><p>不要复用重要项目的 Key；创建后立即妥善保存，很多平台只展示一次。</p></div></li>
+            <li><b>04</b><div><strong>确认可用模型 ID</strong><p>模型名称必须与控制台和供应商文档完全一致。</p></div></li>
+          </ol>
+        </section>
+
+        <section id="configure">
+          <p class="section-label">填写示例</p>
+          <h2>以 DeepSeek 为例</h2>
+          <div class="config-example">
+            <div><span>API 接口地址</span><code>https://api.deepseek.com</code></div>
+            <div><span>API Key</span><code>••••••••••••••••</code></div>
+            <div><span>模型 ID</span><code>deepseek-chat</code></div>
+            <div><span>兼容协议</span><code>Chat Completions</code></div>
+          </div>
+          <p>回到 WriteMelo 的 AI 服务设置，填写四项后先点“测试连接”，成功后再保存。其他供应商必须使用其官方文档提供的接口地址和模型 ID。</p>
+          <a class="primary-action" href="index.html">返回 WriteMelo 配置</a>
+        </section>
+
+        <section id="privacy">
+          <p class="section-label">隐私与费用</p>
+          <h2>Key 留在本机，文本发给供应商</h2>
+          <div class="facts">
+            <div><strong>WriteMelo 不接收 Key</strong><p>Key 只提交到 127.0.0.1，并由 Windows DPAPI 加密保存在当前账户。</p></div>
+            <div><strong>供应商会收到写作内容</strong><p>生成补全、审查或改写时，必要文本会直接从本机发送给所选供应商。</p></div>
+            <div><strong>每次调用都会计费</strong><p>费用按供应商 Token 定价扣除。WriteMelo 不经手充值，也不承诺供应商价格。</p></div>
+            <div><strong>Key 不会云同步</strong><p>换电脑后需要重新配置。删除本地应用数据即可移除已保存的加密 Key。</p></div>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+</body>
+</html>

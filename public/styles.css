@@ -26,7 +26,8 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
 .draft-state { justify-self: center; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
 .saved-dot { width: 7px; height: 7px; border-radius: 50%; background: #5ba378; }
 .top-actions { justify-self: end; display: flex; align-items: center; gap: 8px; }
-.share-button, .coach-toggle { height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green); font-size: 11px; font-weight: 600; }
+.guide-button, .coach-toggle { display: inline-flex; height: 34px; align-items: center; padding: 0 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green); font-size: 11px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.guide-button:hover { border-color: #aac1b4; background: var(--surface-2); }
 .coach-toggle[aria-expanded="true"] { border-color: #aac1b4; background: var(--surface-2); }
 .icon-btn, .more-btn { display: grid; place-items: center; width: 34px; height: 34px; border: 0; background: transparent; border-radius: 6px; color: var(--muted); }
 .icon-btn:hover, .more-btn:hover { background: var(--surface-2); color: var(--ink); }
@@ -215,22 +216,7 @@ kbd { padding: 2px 5px; border: 1px solid #cad2cc; border-bottom-width: 2px; bor
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 18px); padding: 10px 16px; border-radius: 5px; background: #18241f; color: white; opacity: 0; pointer-events: none; transition: .2s; font-size: 12px; box-shadow: var(--shadow); }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 .hidden { display: none !important; }
-.email-modal { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; }
-.email-modal.hidden { display: none; }
 .modal-backdrop { position: absolute; inset: 0; width: 100%; border: 0; background: rgba(18, 29, 24, .42); backdrop-filter: blur(2px); }
-.email-dialog { position: relative; width: min(520px, 100%); padding: 22px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); box-shadow: 0 24px 70px rgba(20, 35, 28, .22); }
-.email-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; }
-.email-dialog-head span { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: 1.2px; }
-.email-dialog-head h2 { margin: 5px 0 0; font-family: var(--font-writing); font-size: 25px; letter-spacing: 0; }
-.email-dialog-head > button { width: 30px; height: 30px; border: 0; background: transparent; color: var(--muted); font-size: 20px; }
-.email-summary { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 8px 12px; margin-top: 18px; padding: 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
-.email-summary span, .email-summary label { align-self: center; color: var(--muted); font-size: 10px; }
-.email-summary strong { overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
-.email-summary input { width: 100%; min-width: 0; height: 30px; padding: 0 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); outline: 0; font-size: 11px; }
-.email-summary input:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(40, 100, 77, .1); }
-.email-import-note { margin: 12px 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
-.email-import-note strong { color: var(--ink); }
-.copy-email { width: 100%; height: 36px; margin-top: 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green); font-size: 10px; font-weight: 700; }
 body.modal-open { overflow: hidden; }
 .settings-modal { position: fixed; z-index: 25; inset: 0; display: grid; place-items: center; padding: 20px; }
 .settings-modal.hidden { display: none; }
@@ -270,6 +256,36 @@ body.modal-open { overflow: hidden; }
 .settings-mode-panel { display: grid; gap: 10px; margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--line); }
 .settings-mode-panel > small, .developer-note { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
 .developer-note { padding: 8px 10px; border-left: 3px solid var(--gold); background: var(--surface-2); }
+.api-key-guide-link { display: flex; min-height: 54px; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 12px; border: 1px solid #b9d0c1; border-radius: 6px; background: #f4faf6; color: var(--ink); text-decoration: none; }
+.api-key-guide-link span { display: grid; gap: 2px; }
+.api-key-guide-link strong { color: var(--green-dark); font-size: 11px; }
+.api-key-guide-link small { color: var(--muted); font-size: 9px; }
+.api-key-guide-link b { color: var(--green); font-size: 16px; }
+.api-key-guide-link:hover { border-color: var(--green); background: #edf6f0; }
+.key-privacy-summary { display: block; padding: 9px 10px; border-left: 3px solid var(--green); background: #edf6f0; color: var(--green-dark) !important; font-size: 10px !important; font-weight: 700; }
+.byok-guide { overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.byok-guide summary { display: flex; min-height: 52px; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 12px; cursor: pointer; list-style: none; }
+.byok-guide summary::-webkit-details-marker { display: none; }
+.byok-guide summary > span:first-child { display: grid; gap: 2px; }
+.byok-guide summary strong { color: var(--ink); font-size: 11px; }
+.byok-guide summary small { color: var(--muted); font-size: 9px; }
+.byok-guide-action { color: var(--green); font-size: 10px; font-weight: 700; white-space: nowrap; }
+.byok-guide[open] .byok-guide-action { font-size: 0; }
+.byok-guide[open] .byok-guide-action::after { content: "收起"; font-size: 10px; }
+.byok-guide-content { display: grid; gap: 14px; padding: 14px; border-top: 1px solid var(--line); background: var(--surface-2); }
+.byok-guide-content h3 { margin: 0 0 5px; color: var(--green-dark); font-size: 13px; }
+.byok-guide-content p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
+.byok-guide-content code { padding: 1px 4px; border-radius: 3px; background: var(--surface); color: var(--ink); font-family: Consolas, monospace; font-size: 9px; }
+.byok-guide-content ol { display: grid; gap: 8px; margin: 0; padding-left: 22px; }
+.byok-guide-content li { padding-left: 2px; color: var(--green); font-size: 10px; }
+.byok-guide-content li strong, .byok-guide-content li span { display: block; }
+.byok-guide-content li strong { color: var(--ink); }
+.byok-guide-content li span { margin-top: 2px; color: var(--muted); line-height: 1.5; }
+.byok-data-route { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 6px; }
+.byok-data-route span { min-width: 0; padding: 8px 5px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); text-align: center; font-size: 9px; font-weight: 700; }
+.byok-data-route b { color: var(--green); }
+.byok-caution { padding: 9px 10px; border-left: 3px solid var(--gold); background: var(--surface); }
+.byok-caution strong { color: var(--ink); }
 .secret-field { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
 .secret-field input { border-radius: 5px 0 0 5px !important; }
 .secret-field button { min-width: 58px; border: 1px solid var(--line); border-left: 0; border-radius: 0 5px 5px 0; background: var(--surface-2); color: var(--green); font-size: 9px; font-weight: 700; }
@@ -325,7 +341,6 @@ body.dark .title-input { color: var(--ink); }
   .shortcut { display: none; }
   .send-button { margin-left: auto; }
   .coach-panel { top: 58px; width: min(90vw, 320px); }
-  .email-dialog { padding: 18px; }
   .settings-dialog { padding: 18px; }
   .settings-grid { grid-template-columns: 1fr; gap: 4px; }
   .plan-grid { grid-template-columns: 1fr; }
