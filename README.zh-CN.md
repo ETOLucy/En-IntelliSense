@@ -1,151 +1,138 @@
 <div align="center">
-  <img src="docs/assets/writemelo-melon-logo.svg" width="300" alt="写美了（WriteMelo）瓜形标志" />
-  <p><strong>写美了</strong></p>
-  <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
-  <p>面向英语学习者的上下文智能补全、审查与润色工具。</p>
+  <img src="docs/assets/writemelo-melon-logo.svg" width="280" alt="WriteMelo" />
+  <p><strong>WriteMelo（写美了）</strong></p>
+  <p><strong>边写边补词、改错并理解原因。</strong></p>
   <p>
-    <strong>简体中文</strong>
-    &nbsp;&middot;&nbsp;
     <a href="README.md">English</a>
+    &nbsp;&middot;&nbsp;
+    <strong>简体中文</strong>
   </p>
   <p>
-    <a href="#demo">查看效果</a>
-    &nbsp;&middot;&nbsp;
-    <a href="#下载">下载</a>
-    &nbsp;&middot;&nbsp;
-    <a href="docs/USER_GUIDE.zh-CN.md">使用指南</a>
-    &nbsp;&middot;&nbsp;
-    <a href="docs/ROADMAP.zh-CN.md">未来规划</a>
-    &nbsp;&middot;&nbsp;
-    <a href="#配置与运行">本地运行</a>
-    &nbsp;&middot;&nbsp;
-    <a href="https://github.com/ETOLucy/WriteMelo">GitHub 仓库</a>
-  </p>
-  <p>
-    <img src="https://img.shields.io/badge/补全-单词%20%7C%20短语%20%7C%20句子-1f6f5b?style=flat-square" alt="单词、短语和句子补全" />
-    <img src="https://img.shields.io/badge/AI-用户自备模型-3a7ca5?style=flat-square" alt="用户自备模型" />
-    <img src="https://img.shields.io/badge/存储-本地优先-3a7ca5?style=flat-square" alt="本地优先存储" />
-    <a href="LICENSE"><img src="https://img.shields.io/badge/协议-MIT-c65d3b?style=flat-square" alt="MIT 协议" /></a>
+    <img src="https://img.shields.io/badge/写作-本地优先-23694e?style=flat-square" alt="本地优先写作" />
+    <img src="https://img.shields.io/badge/平台-Windows-39718c?style=flat-square" alt="Windows" />
+    <img src="https://img.shields.io/badge/界面-中文%20%7C%20English-6b7772?style=flat-square" alt="中英文界面" />
+    <img src="https://img.shields.io/badge/AI-可选-b67a24?style=flat-square" alt="可选 AI" />
   </p>
 </div>
 
 ---
 
-WriteMelo 会先结合整篇草稿理解用户真正想表达的意思，再给出下一步建议。它将单词、短语和句子补全，与上下文审查、原文问题标记、双语解释和一键修缮整合在同一个写作界面中。
+> 拼写检查帮得太少，AI 代写又接管得太多；WriteMelo 在你写作时补全、诊断并解释，最后仍由你决定怎么写。
 
-## 下载
+WriteMelo 是一款本地优先的英语写作 IDE。我们把现代代码编辑器的成熟交互迁移到英文写作：上下文补全、问题诊断、快速修复、文档大纲、版本历史和可选 AI。它不是聊天框，也不是把整篇文章交给模型重写的网页。
 
-<a href="https://apps.microsoft.com/detail/9NPGS9N22396">
-  <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="360" alt="从 Microsoft Store 下载" />
-</a>
+仓库现在只有一条产品线。旧的商店重传版与平台版保留在 Git 历史中，后续开发统一基于 TypeScript 架构。
 
-**Microsoft Store：** 商品页将在通过认证并完成发布后自动生效。
+![WriteMelo writing workbench](docs/assets/writemelo-workbench-2.0.png)
 
-- **GitHub Releases**
+**第一次了解 WriteMelo？** 请直接查看[完整操作演示](docs/DEMO.zh-CN.md)：用同一封邮件看懂本地补全、精确修复、大纲检查、版本历史、AI 同意边界和 BYOK。
 
-  从 [GitHub Releases](https://github.com/ETOLucy/WriteMelo/releases/latest) 下载最新安装版或便携版。
+## 为什么做它
 
-第一次使用可以查看[使用指南](docs/USER_GUIDE.zh-CN.md)，完成模型配置并了解主要写作功能。
+早期写代码时，编辑、编译、查错和修改彼此分离。现代代码编辑器把补全、实时诊断、快速修复、项目导航和版本历史放进同一个工作流，让开发者专注于“要实现什么”，而不是反复切换工具。
 
-## Demo
+英文写作仍然很分散：词典负责查词，拼写工具只画红线，语法网站要求粘贴全文，AI 聊天则经常直接重写。上下文在工具之间丢失，作者也容易失去对表达的控制。
 
-![WriteMelo 审查并补全英语草稿](docs/assets/store-zh-cn-01-writing.png)
+WriteMelo 把这些能力收进一个写作工作台。它理解当前文档中的专有名词和结构，在输入时给出本地补全，在原文上标出问题并提供精确修改；只有用户主动选择时才调用 AI。
 
-### 界面语言
+| 写代码时 | 写英文时 |
+| --- | --- |
+| 语言关键字 | 按学习等级排序的英语词汇 |
+| 项目变量名 | 当前文章中的专有名词、缩写和产品名 |
+| Snippet | 邮件、作文和消息常用表达 |
+| Language Service | 本地英语上下文分析器 |
+| Quick Fix | 精确范围的一键改正与解释 |
+| Document Symbols | 段落大纲与提交检查 |
+| Source Control | 本地版本快照与恢复 |
+| AI 编程助手 | 由用户明确启用的可选 AI |
 
-可以使用应用目前提供的 11 种界面语言，也可以跟随 Windows 系统语言。
+## 核心能力
 
-![WriteMelo 界面语言选择](docs/assets/demo-language.png)
+- 基于本地规则、词频和文档实体的英文单词/短语补全。
+- 复用当前文章中的专有名词、缩写和混合大小写产品名，不把普通重复词误当成重点。
+- 使用 `nspell` 与 `dictionary-en` 的离线英语拼写检查。
+- 本地语法与措辞诊断，提供精确范围的一键修复。
+- 邮件、作文和消息片段，以及对应的提交检查清单。
+- 文档大纲、本地版本历史和个人词典。
+- 简体中文与英文界面；美式与英式英语写作变体。
+- Web 使用 IndexedDB，Windows 使用 Electron 用户目录持久化。
+- AI 默认关闭；发送整篇文档需要单独同意。
+- Windows 应用可自备 OpenAI、Groq、Together AI、OpenRouter、Ollama 或兼容接口。
 
-### 接入自己的 AI 服务
+## 使用场景
 
-填写兼容模型的 API 接口地址、自己的 API Key 和模型 ID。API Key 仅保存在 Windows 设备上，并由 Windows 加密保护。
+- **留学生：** 写课程作业、小组消息和给导师的邮件；在原文中补全表达、检查错误，并保持课程名、人名和术语一致。
+- **外企员工：** 写英文邮件、周报、会议纪要和工作消息；复用项目名与缩写，减少来回查询和复制到其他网站。
+- **外贸与跨境从业者：** 写询盘回复、报价说明、客户跟进和售后消息；快速调用常用表达，同时保留对语气和最终内容的控制。
+- **英语学习与备考：** 练习作文、邮件和日常表达；不仅看到修改结果，也能理解错误原因并保留自己的写法。
 
-![WriteMelo AI 服务配置](docs/assets/demo-ai-service.png)
+## 快速开始
 
-## 功能
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <strong>Microsoft Store</strong><br /><br />
+      <a href="https://apps.microsoft.com/detail/9NPGS9N22396">
+        <img src="https://get.microsoft.com/images/zh-cn%20dark.svg" width="240" alt="从 Microsoft Store 下载 WriteMelo" />
+      </a><br />
+      <sub>稳定版与自动更新</sub>
+    </td>
+    <td align="center" width="50%">
+      <strong>GitHub beta</strong><br /><br />
+      <a href="https://github.com/ETOLucy/WriteMelo/releases/latest"><strong>下载安装包或便携版</strong></a><br /><br />
+      <sub>最新预览版与 SHA-256 校验值</sub>
+    </td>
+  </tr>
+</table>
 
-- 本地单词补全，以及模型驱动的短语和句子补全。
-- 从完整草稿推断写作意图，并将意图用于后续补全。
-- 停笔后自动审查，也可以手动点击“检查”。
-- 在原文中标出问题，显示中文原因和替换建议，支持一键修改。
-- 标题润色、正文润色、中文翻译、表达解释和简单改写。
-- “实用短语”会替换选中内容或光标所在句子，不会继续追加重复内容。
-- 支持书信、作文和消息格式，草稿保存在本地浏览器。
-- 完成书信后复制完整邮件，并打开系统默认邮件应用。
-- 已完成文档保存在本地“已完成”列表中，可重新创建编辑副本。
+2.0 beta 产物在代码签名证书到位前会明确标注为未签名。
 
-## AI 模型、费用与隐私
+## 架构
 
-WriteMelo 不包含语言模型、共享 API Key 或免费 AI 额度。AI 短语/句子补全、审查、润色和聊天功能需要每位用户配置提供兼容 Chat Completions 或 Responses 接口的模型服务。费用、限速、数据保留规则和隐私条款均由用户选择的提供商决定；本项目不提供或推荐来源不明的中转站。
-
-没有配置 API Key 时，应用仍可打开，本地单词补全、草稿、“已完成”文档和邮件跳转均可使用；右侧会显示“配置 AI 服务”。模型驱动的补全、审查、润色和聊天会保持不可用，直到用户完成配置。
-
-第一版的草稿和“已完成”文档保存在当前 Windows 用户的本地应用数据中，项目尚未提供应用账户或服务端草稿数据库，也不支持跨设备同步。第一版不提供付费订阅，只允许用户配置自己的 API Key。
-
-使用 AI 功能时，相关正文会发送给用户自行选择的模型服务。应用本身不会持久化这些请求，API 响应也设置了 `Cache-Control: no-store`；处理机密或敏感内容前，请确认提供商的隐私条款。桌面版 `.env` 是本地明文文件，请妥善保管，不要提交到 Git，也不要把 API Key 粘贴到 GitHub Issue。
-
-有关本地存储、第三方模型处理、文件访问、数据保留和删除方式，请阅读[隐私政策](PRIVACY.zh-CN.md)。
-
-自行部署 Cloudflare 版本时可以使用 Workers AI，并消耗部署者自己的 Cloudflare 账户额度。该额度不包含在 Windows EXE 中，也不会使用或共享维护者的个人模型资源。
-
-## 配置与运行
-
-复制 `.env.example` 为 `.env`，填写用户自己的模型服务：
-
-```dotenv
-MODEL_API_KEY=your_own_api_key
-MODEL_BASE_URL=https://api.example.com
-MODEL_ID=example-model
-MODEL_API_STYLE=chat
+```text
+apps/web       React、CodeMirror、Dexie
+apps/desktop   受限的 Electron Windows 容器
+apps/worker    Hono 入口和现有 Cloudflare Worker 业务
+packages/
+  contracts    共享数据协议
+  i18n         中英文界面文本
+  writing-core 纯 TypeScript 写作算法
 ```
 
-模型 ID 必须是所选服务实际支持的值。自动补全、润色、审查与聊天默认使用同一个 `MODEL_ID`；只有经过生产验证后，才需要可选的 `MODEL_AUTOCOMPLETE_ID` 覆盖项。
+`writing-core` 不依赖 React、Electron、Hono、Cloudflare 或任何 AI 供应商。界面把编辑状态整理成 `WritingContext`，核心返回补全候选、诊断、文本编辑、大纲和检查项；Web 层负责展示并把文档保存到本机。AI 请求必须经过独立的同意边界。
+
+详细说明见[架构文档](docs/product/ARCHITECTURE.zh-CN.md)和[实现路线](docs/product/IMPLEMENTATION-ROADMAP.zh-CN.md)。
+
+## 开发
+
+需要 Node.js 22 或更高版本。
 
 ```powershell
-python -m pip install -r requirements.txt
-python server.py
-```
-
-打开 `http://127.0.0.1:8000`。不要提交 `.env`，也不要把 API Key 写入前端 JavaScript。
-
-## Windows 桌面版
-
-普通使用时，从 [GitHub 最新版本](https://github.com/ETOLucy/WriteMelo/releases/latest) 下载 `WriteMelo-Setup.exe`。安装程序会创建开始菜单快捷方式，并可选择创建桌面快捷方式；不需要终端、Python 或任何构建命令。不希望安装时，也可以下载 `WriteMelo-Portable.zip`。
-
-> **签名状态：** 没有配置签名证书时，安装包仍可生成和使用，但 Windows 可能显示“未知发布者”或 SmartScreen 警告。构建脚本支持稍后为主程序和安装包添加签名及可信时间戳。
-
-下面的命令只供修改源码后需要重新生成 EXE 的开发者使用：
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
-```
-
-安装版产物为 `dist/WriteMelo-Setup.exe`，便携版为 `dist/WriteMelo-Portable.zip`。本地没有安装 Inno Setup 6 时，脚本仍会构建便携版并跳过安装包。应用会把本地 Python 服务和前端一起打包，启动时自动选择空闲的回环端口，并在原生 WebView2 窗口中打开工作区。运行成品不要求用户另外安装 Python；当前 Windows 10/11 通常已自带所需的 Microsoft Edge WebView2 Runtime。
-
-API Key 和维护者个人模型资源都不会被写进程序。桌面版首次启动会打开 Model settings，用户可以填写兼容模型服务的地址、API Key、模型 ID 和 API 类型，并在保存前测试连接。API Key 使用 Windows DPAPI 为当前 Windows 账户加密，配置保存在 `%APPDATA%\WriteMelo\config.json`，保存后立即生效。环境变量和 `.env` 仍保留为开发者兼容入口。
-
-以后取得 PFX 代码签名证书时，可设置 `WINDOWS_CERTIFICATE_PATH`、`WINDOWS_CERTIFICATE_PASSWORD` 和可选的 `WINDOWS_TIMESTAMP_URL` 后运行同一个构建命令。GitHub Actions 对应使用 `WINDOWS_CERTIFICATE_BASE64` 与 `WINDOWS_CERTIFICATE_PASSWORD` 仓库 Secret。
-
-## 测试
-
-```powershell
-python -m unittest discover -s tests -p "test_*.py"
+npm install
+npm run dev
 npm test
+npm run test:e2e
+npm run build
 ```
 
-## 使用方法
+开发界面地址为 `http://127.0.0.1:4173`。
 
-- 选择“自动”“单词”“短语”或“句子”；按 `Tab` 接受补全，按 `Esc` 忽略。
-- 停止输入片刻后会自动审查，也可以点击“检查”。
-- 点击问题可定位原文，点击“修改”可直接替换。
-- 使用“润色正文”“解释”或“简化”前可选中文字；未选择时自动使用光标所在句子。
-- 点击“实用短语”会替换当前句子。
+## Windows 构建
+
+```powershell
+npm run package:windows
+```
+
+构建结果位于 `release/`，包含 NSIS 安装包和便携版。Microsoft 代码签名证书到位前，公开 beta 产物保持未签名并明确标注。
+
+## 隐私
+
+文档、个人词典和版本历史保留在设备上。本地补全、拼写和诊断不需要账号或联网。BYOK Key 使用 Windows `safeStorage` 加密保存；经用户同意的请求会直达所选供应商，并受供应商自身留存与计费条款约束。详见[隐私说明](PRIVACY.zh-CN.md)。
 
 ## 友情链接
 
 - [LINUX DO - 新的理想型社区](https://linux.do/)
 
-## 开源协议
+## 许可证
 
-[MIT](LICENSE)
+WriteMelo 是自由软件，采用 [GNU General Public License v3.0](LICENSE)（`GPL-3.0-only`）开源。

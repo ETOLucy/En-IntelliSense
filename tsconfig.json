@@ -1,18 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "lib": ["ES2022", "WebWorker"],
-    "types": ["@cloudflare/workers-types"],
-    "strict": true,
-    "noEmit": true,
-    "allowJs": true,
-    "checkJs": false,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": [
-    "apps/**/*.ts"
+  "files": [],
+  "references": [
+    { "path": "./packages/contracts/tsconfig.json" },
+    { "path": "./packages/i18n/tsconfig.json" },
+    { "path": "./packages/writing-core/tsconfig.json" },
+    { "path": "./apps/web/tsconfig.json" },
+    { "path": "./apps/desktop/tsconfig.json" },
+    { "path": "./apps/worker/tsconfig.json" }
   ]
 }

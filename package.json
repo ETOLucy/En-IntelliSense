@@ -1,24 +1,95 @@
 {
   "name": "writemelo",
-  "version": "1.1.5",
+  "version": "2.0.0-beta.1",
   "private": true,
+  "type": "module",
+  "author": "ETOLucy",
+  "description": "A local-first English writing editor for learners and professionals.",
+  "license": "GPL-3.0-only",
+  "main": "apps/desktop/dist/main.js",
+  "workspaces": [
+    "apps/web",
+    "apps/desktop",
+    "packages/*"
+  ],
   "scripts": {
-    "debug": "powershell -ExecutionPolicy Bypass -File ./scripts/start_debug.ps1",
-    "account:debug": "powershell -ExecutionPolicy Bypass -File ./scripts/start_account_debug.ps1",
-    "typecheck": "tsc --noEmit",
-    "build:worker": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/build_worker.ps1",
-    "test": "npm run typecheck && npm run test:unit && npm run test:hono",
-    "test:unit": "node tests/test_completion.js && node tests/test_worker.mjs && node tests/test_account.mjs && node tests/test_model_providers.mjs && node tests/test_subscription.mjs && node tests/test_edgeone_proxy.mjs && node tests/test_i18n.mjs",
-    "test:hono": "vitest run tests/hono",
-    "privacy": "powershell -ExecutionPolicy Bypass -File ./scripts/check_privacy.ps1"
+    "dev": "npm run dev -w @writemelo/web",
+    "dev:web": "npm run dev -w @writemelo/web",
+    "dev:worker": "wrangler dev",
+    "typecheck": "tsc -b",
+    "build": "npm run build:web && npm run build:desktop && npm run build:worker",
+    "build:web": "npm run build -w @writemelo/web",
+    "build:desktop": "npm run build -w @writemelo/desktop",
+    "build:worker": "wrangler deploy --dry-run --outdir dist/worker",
+    "test": "npm run typecheck && vitest run && npm run test:legacy",
+    "test:legacy": "node --test tests/test_account.mjs tests/test_model_providers.mjs tests/test_subscription.mjs tests/test_worker.mjs",
+    "test:e2e": "playwright test",
+    "test:desktop": "node scripts/test_desktop_byok.mjs",
+    "capture:demo": "node scripts/capture_demo.mjs",
+    "privacy": "powershell -ExecutionPolicy Bypass -File ./scripts/check_privacy.ps1",
+    "package:windows": "npm run build:web && npm run build:desktop && electron-builder --win nsis portable",
+    "release:verify": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/verify_release.ps1"
   },
   "dependencies": {
-    "hono": "^4.12.32"
+    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/commands": "^6.10.4",
+    "@codemirror/lint": "^6.9.7",
+    "@codemirror/state": "^6.7.1",
+    "@codemirror/view": "^6.43.7",
+    "dexie": "^4.4.4",
+    "dictionary-en": "^4.0.0",
+    "hono": "^4.12.32",
+    "lucide-react": "^1.27.0",
+    "nspell": "^2.1.5",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260729.1",
+    "@playwright/test": "^1.62.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.4",
+    "electron": "^43.2.0",
+    "electron-builder": "^26.15.3",
     "typescript": "^7.0.2",
+    "vite": "^8.1.5",
     "vitest": "^4.1.10",
     "wrangler": "^4.115.0"
+  },
+  "build": {
+    "appId": "com.writemelo.desktop",
+    "productName": "WriteMelo",
+    "directories": {
+      "output": "release",
+      "buildResources": "desktop-assets"
+    },
+    "files": [
+      "apps/desktop/dist/**/*",
+      "apps/web/dist/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "icon": "desktop-assets/app-icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "artifactName": "WriteMelo-${version}-Setup-${arch}.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "WriteMelo"
+    },
+    "portable": {
+      "artifactName": "WriteMelo-${version}-Portable-${arch}.${ext}"
+    }
   }
 }

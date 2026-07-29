@@ -1,60 +1,53 @@
-# WriteMelo 02 架构
+# WriteMelo 架构
 
-WriteMelo 02 正在迁移为模块化单体。Hono 接管 Cloudflare Worker 的 HTTP 入口，原有行为暂时统一放在一个明确的 legacy 适配器之后。这样可以按业务边界逐个迁移路由，不必一次性重写产品。
+WriteMelo 采用模块化单体与本地优先写作核心。浏览器和 Windows 应用共用 React 界面与纯 TypeScript 分析包；只有必须跨越网络边界的能力才进入 Cloudflare Workers。
 
-## 运行结构
+## 运行时数据流
 
 ```text
-React/Vite Web 应用（规划中）
-              |
-              v
-Hono HTTP 入口：apps/worker/src
-              |
-       +------+------+
-       |             |
-新模块路由       legacy 适配器
-       |             |
-       +------+------+
-              |
-应用层与领域层（迁移目标）
-              |
-       +------+------------------+
-       |             |           |
-      D1        Durable Objects  模型供应商
-```
+键盘 / 文档事件
+       |
+       v
+React + CodeMirror（apps/web）
+       |
+       +--> WritingContext --> packages/writing-core
+       |                         | 补全候选
+       |                         | 诊断与精确文本编辑
+       |                         | 大纲与检查清单
+       |                         v
+       |                       本地展示
+       |
+       +--> Dexie / IndexedDB --> 文档、版本
+       |
+       +--> 明确 AI 同意 --> Hono API --> 模型路由
 
-正式部署入口是 `apps/worker/src/index.ts`。当前 `worker.js` 仍是已经过测试的兼容实现，但不应继续加入新的产品领域。新的 HTTP 路由统一放在 `apps/worker/src/routes`。
+Electron（apps/desktop）只加载构建后的 Web 应用：
+关闭 Node 集成，启用上下文隔离和沙箱，并限制页面跳转。
+```
 
 ## 模块边界
 
-- `apps/worker`：HTTP 路由、中间件、响应格式和依赖组装。
-- `packages/domain`（规划中）：账号、额度、支付、邀请、模型、工单和风控规则，不包含 HTTP 或 SQL。
-- `packages/database`（规划中）：D1 Schema 和 Repository。
-- `packages/contracts`（规划中）：前后端共享的请求、响应 Schema。
-- `public`：当前浏览器应用，暂时不急着组件化重写。
-- `worker.js` 与 `src/cloud`：兼容实现，随着迁移逐步缩小。
+- `packages/contracts`：界面、本地分析和 HTTP 服务共享的数据结构。
+- `packages/writing-core`：确定性的写作逻辑，不能依赖界面、数据库、云平台或模型供应商。
+- `packages/i18n`：公开支持的英文与简体中文界面。
+- `apps/web`：编辑器状态、展示、同意交互和设备持久化。
+- `apps/desktop`：仅负责交付与操作系统安全边界。
+- `apps/worker`：Hono 路由、中间件、依赖装配和兼容分发。
+- `src/cloud` 与 `worker.js`：已经过测试的旧账号、额度、工单和模型业务，按模块逐步缩小。
 
-HTTP Handler 不能成为业务规则的唯一来源。领域代码不能直接依赖 Hono、D1、Microsoft Store 或模型 SDK。基础设施通过接口为应用层和领域层提供能力。
+## 数据与隐私规则
 
-## 迁移顺序
+本地分析只在内存中接收文档文本并返回结构化结果。文档、个人词典和版本保存在设备上。AI 不是本地分析的兜底；同意模式为 `off` 时不能发起请求，发送整篇文档还必须满足 `allowFullDocument`。
 
-1. 建立 Hono 入口、TypeScript 检查、健康检查和 legacy 边界。
-2. 将登录和 Session 路由迁移到账户应用服务。
-3. 用统一额度账本和预占、结算、释放流程替代分散的月额度与单位包扣减。
-4. 将线路选择、健康状态、预算和故障转移迁移到 Provider Router。
-5. 将商店验证和邀请奖励迁移到支付与邀请模块。
-6. 迁移工单和风控 API，最终让 `worker.js` 不再包含应用业务。
-7. API 合同稳定后，再将浏览器页面迁移到 React/Vite。
+生产密钥、模型资源池、风控阈值、用户内容和证书只能存在于运行环境，不能进入仓库。
 
-每一步都必须保留既有测试，为迁移后的边界增加测试，并保持随时可以部署。
+## 后端迁移顺序
 
-## 常用命令
+1. 登录与 Session。
+2. 统一额度账本：reserve → 模型调用 → commit / release。
+3. 模型选择与故障转移。
+4. 商店验证、支付与邀请。
+5. 工单与风控。
+6. 每一块通过兼容测试后，最后移除旧适配器。
 
-```powershell
-npm run typecheck
-npm run build:worker
-npm test
-npm run privacy
-```
-
-`GET /api/health` 完全由 Hono 管理，只返回架构版本、环境、市场和请求 ID，不暴露密钥。
+这样能保持系统始终可运行，同时避免一次性重写带来的业务回归。

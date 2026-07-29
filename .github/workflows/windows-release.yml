@@ -1,6 +1,7 @@
 name: Windows release
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*"
@@ -12,38 +13,42 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Check out source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: "3.12"
-          cache: pip
-          cache-dependency-path: requirements-build.txt
+          node-version: "22"
+          cache: npm
 
-      - name: Install Inno Setup
-        shell: pwsh
-        run: choco install innosetup --no-progress -y
+      - name: Install
+        run: npm ci
 
-      - name: Build Windows release
-        shell: pwsh
-        env:
-          WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
-          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
-          WINDOWS_TIMESTAMP_URL: https://timestamp.digicert.com
+      - name: Verify
         run: |
-          $version = "${{ github.ref_name }}".TrimStart("v")
-          .\scripts\build_windows.ps1 -Version $version -RequireInstaller
+          npm test
+          npm run test:e2e
 
-      - name: Publish GitHub release
+      - name: Build Windows artifacts
+        env:
+          CSC_LINK: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
+          CSC_KEY_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: npm run package:windows
+
+      - name: Verify packaged desktop security boundary
+        run: npm run test:desktop
+
+      - name: Verify release artifacts
+        run: npm run release:verify
+
+      - name: Publish or update GitHub release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${{ github.ref_name }}" `
-            "dist/WriteMelo-Setup.exe#Windows installer" `
-            "dist/WriteMelo-Portable.zip#Portable version" `
-            "dist/SHA256SUMS.txt#SHA-256 checksums" `
-            --title "WriteMelo ${{ github.ref_name }}" `
-            --generate-notes
+          $tag = "${{ github.ref_name }}"
+          if (-not $tag.StartsWith("v")) { $tag = "v$((Get-Content package.json | ConvertFrom-Json).version)" }
+          gh release view $tag 2>$null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $tag --title "WriteMelo $tag" --generate-notes --prerelease
+          }
+          gh release upload $tag release/*.exe release/SHA256SUMS.txt --clobber

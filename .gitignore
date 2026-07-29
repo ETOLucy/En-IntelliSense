@@ -33,6 +33,11 @@ config.json
 .venv-build/
 build/
 dist/
+release/
+test-results/
+*.tsbuildinfo
+.tmp-edge*/
+tmp-*.png
 desktop-assets/*.ico
 desktop-assets/*.png
 store/

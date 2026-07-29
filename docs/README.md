@@ -1,28 +1,12 @@
-# Documentation map
+# WriteMelo Documentation
 
-## User documentation
-
-- `USER_GUIDE.md` / `USER_GUIDE.zh-CN.md`: setup and daily usage
-- `ROADMAP.md` / `ROADMAP.zh-CN.md`: public roadmap
-- `FAQ.md` / `FAQ.zh-CN.md`: common questions
-- `PRIVACY.md` / `PRIVACY.zh-CN.md`: detailed privacy notes
-
-## Product and architecture
-
-- `product/`: 02 product, provider, quota, and commerce planning
-- `product/ARCHITECTURE.md` / `product/ARCHITECTURE.zh-CN.md`: modular-monolith architecture and migration sequence
-- `ARCHITECTURE.md`: runtime architecture
-- `OPEN_SOURCE_BOUNDARIES.md`: public and private data boundaries
-- `SECURITY.md`: security design
-
-## Operations
-
-- `operations/`: local account and administrator debugging
-- `DEPLOYMENT.md`: deployment process
-- `WINDOWS_STORE_RELEASE.md`: Microsoft Store release process
-- `RELEASE_CHECKLIST.md`: release verification
-
-## Marketing
-
-- `marketing/`: platform copy, video scripts, and promotion playbooks
-- `assets/`: documentation and Store images
+- [Guided demo](DEMO.md)
+- [完整操作演示](DEMO.zh-CN.md)
+- [Architecture](product/ARCHITECTURE.md)
+- [架构](product/ARCHITECTURE.zh-CN.md)
+- [Implementation roadmap](product/IMPLEMENTATION-ROADMAP.md)
+- [实现路线](product/IMPLEMENTATION-ROADMAP.zh-CN.md)
+- [User guide](USER_GUIDE.md)
+- [使用指南](USER_GUIDE.zh-CN.md)
+- [Open-source boundaries](OPEN_SOURCE_BOUNDARIES.md)
+- [Account service local debugging](operations/ACCOUNT_LOCAL_DEBUG.zh-CN.md)

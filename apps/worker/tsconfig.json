@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "WebWorker"],
+    "types": ["@cloudflare/workers-types"],
+    "allowJs": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "../../worker.js",
+    "../../src/cloud/**/*.js"
+  ]
+}

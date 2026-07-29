@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"]
+  },
+  "references": [
+    {"path":"../../packages/contracts/tsconfig.json"},
+    {"path":"../../packages/i18n/tsconfig.json"},
+    {"path":"../../packages/writing-core/tsconfig.json"}
+  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts"]
+}

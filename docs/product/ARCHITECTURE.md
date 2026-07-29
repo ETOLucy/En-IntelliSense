@@ -1,60 +1,53 @@
-# WriteMelo 02 Architecture
+# WriteMelo Architecture
 
-WriteMelo 02 is migrating to a modular monolith. Hono owns the Cloudflare Worker HTTP entry point while existing behavior remains behind one explicit legacy adapter. Routes can therefore move one bounded module at a time without rewriting the product.
+WriteMelo is a modular monolith with a local-first writing core. The browser and Windows app share the same React UI and pure TypeScript analysis packages; Cloudflare Workers host only features that require a network boundary.
 
-## Runtime
+## Runtime map
 
 ```text
-React/Vite web application (planned)
-              |
-              v
-Hono HTTP entry: apps/worker/src
-              |
-       +------+------+
-       |             |
-new module routes    legacy adapter
-       |             |
-       +------+------+
-              |
-application and domain modules (migration target)
-              |
-       +------+------------------+
-       |             |           |
-      D1       Durable Objects   model providers
+keyboard / document event
+          |
+          v
+React + CodeMirror (apps/web)
+          |
+          +--> WritingContext --> packages/writing-core
+          |                         | completion candidates
+          |                         | diagnostics + exact edits
+          |                         | outline + checklist
+          |                         v
+          |                    rendered locally
+          |
+          +--> Dexie / IndexedDB --> documents, revisions
+          |
+          +--> explicit AI consent --> Hono API --> provider router
+
+Electron (apps/desktop) loads the built web application with Node integration
+disabled, context isolation enabled, sandbox enabled, and navigation restricted.
 ```
 
-The deployed entry is `apps/worker/src/index.ts`. The current `worker.js` is still the tested legacy implementation and must not gain new product domains. New HTTP routes belong under `apps/worker/src/routes`.
+## Module boundaries
 
-## Boundaries
+- `packages/contracts`: data exchanged between UI, local analysis, and HTTP services.
+- `packages/writing-core`: deterministic writing logic. It cannot import UI, database, cloud, or provider code.
+- `packages/i18n`: the supported public UI locales, English and Simplified Chinese.
+- `apps/web`: editor state, rendering, consent UX, and device persistence.
+- `apps/desktop`: delivery and operating-system security boundary only.
+- `apps/worker`: Hono routing, middleware, dependency assembly, and compatibility dispatch.
+- `src/cloud` and `worker.js`: tested legacy account, quota, support, and provider behavior. This boundary shrinks module by module.
 
-- `apps/worker`: HTTP routing, middleware, response formatting, and dependency assembly.
-- `packages/domain` (planned): account, usage, billing, referral, provider, support, and risk rules without HTTP or SQL.
-- `packages/database` (planned): D1 schemas and repositories.
-- `packages/contracts` (planned): shared request and response schemas.
-- `public`: current browser application. A component migration is intentionally deferred.
-- `worker.js` and `src/cloud`: compatibility implementation that shrinks as modules migrate.
+## Data and privacy rules
 
-HTTP handlers must not become the source of business rules. Domain code must not import Hono, D1, Microsoft Store, or provider SDKs. Infrastructure adapters implement interfaces defined by the application or domain layer.
+Local analysis receives document text in memory and returns structured results. Documents, personal words, and revisions remain on the device. AI is not a fallback for local analysis and cannot be called while consent mode is `off`. Full-document transmission additionally requires `allowFullDocument`.
 
-## Migration Sequence
+Production secrets, provider pools, fraud thresholds, user content, and certificates are runtime configuration and must never enter the repository.
 
-1. Establish the Hono entry, TypeScript checking, a health route, and the legacy boundary.
-2. Move authentication and session routes behind an account application service.
-3. Replace split monthly and grant deductions with one usage ledger and reserve/commit/release flow.
-4. Move provider selection, health, budgets, and failover into a provider router.
-5. Move Store verification and referral qualification into billing and referral modules.
-6. Move support and risk APIs, then reduce `worker.js` to zero application behavior.
-7. Migrate browser pages to React/Vite only after the API contracts stabilize.
+## Backend migration order
 
-Every step must preserve existing tests, add tests for the migrated boundary, and remain deployable.
+1. Authentication and sessions.
+2. Unified usage ledger using reserve, provider call, then commit or release.
+3. Provider selection and failover.
+4. Store verification, payments, and referrals.
+5. Support and risk controls.
+6. Remove the legacy adapter only after parity tests pass.
 
-## Commands
-
-```powershell
-npm run typecheck
-npm run build:worker
-npm test
-npm run privacy
-```
-
-`GET /api/health` is owned by Hono and reports the architecture, environment, market, and request ID without exposing secrets.
+This sequence keeps the deployed system usable while avoiding a risky all-at-once rewrite.

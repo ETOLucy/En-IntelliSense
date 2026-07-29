@@ -1,0 +1,11 @@
+{
+  "name": "@writemelo/writing-core",
+  "version": "2.0.0-beta.1",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.ts",
+  "dependencies": {
+    "@writemelo/contracts": "2.0.0-beta.1",
+    "nspell": "^2.1.5"
+  }
+}
