@@ -126,6 +126,8 @@ function applyUiLanguage(value) {
   const fallback = { ...SETTINGS_I18N.en, ...APP_I18N.en, ...COMMERCE_I18N.en, ...DETAIL_I18N.en, ...HELP_I18N.en, ...REVIEW_I18N.en, ...WORKSPACE_I18N.en };
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  const languageButton = $('#languageButton');
+  if (languageButton) languageButton.setAttribute('aria-label', language === 'zh' ? '选择界面语言' : 'Choose interface language');
   const guideButton = $('.guide-button');
   if (guideButton) {
     guideButton.textContent = language === 'zh' ? '使用说明' : 'User guide';
@@ -962,6 +964,12 @@ $('#finishButton').addEventListener('click', () => {
   notify(`${content[$('#format').value].finish} saved to Finished`);
 });
 $('#themeButton').addEventListener('click', () => document.body.classList.toggle('dark'));
+$('#languageButton').addEventListener('click', () => {
+  $('#uiLanguage').value = storageGet('ui-language') || 'auto';
+  $('#preferencesModal').classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  $('#uiLanguage').focus();
+});
 function closePreferences() {
   $('#preferencesModal').classList.add('hidden');
   document.body.classList.remove('modal-open');

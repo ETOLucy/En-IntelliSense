@@ -1,5 +1,67 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>API Key 购买与配置 - WriteMelo</title><link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="stylesheet" href="byok-guide.css"></head>
-<body><script>location.replace("../byok-guide.html")</script></body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Key 获取与配置 - WriteMelo</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="byok-guide.css">
+</head>
+<body>
+  <header class="guide-header">
+    <a class="brand" href="index.html"><img src="logo.svg" alt=""><span><strong>WriteMelo</strong><small>API Key 使用指南</small></span></a>
+    <nav class="header-actions"><a class="language-link" href="byok-guide-en.html">English</a><a class="back-link" href="index.html">返回写作</a></nav>
+  </header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow">自备 API KEY</p><h1>选择中国大陆可直连的官方 API 平台</h1><p class="lead">WriteMelo 01 版不出售额度、不要求订阅。你直接向模型供应商申请 API Key，并自行决定是否使用免费额度或付费服务。</p></div>
+      <div class="route" aria-label="配置流程"><span><b>1</b>确认地区与付款条件</span><i>→</i><span><b>2</b>在官方平台创建 Key</span><i>→</i><span><b>3</b>回到 WriteMelo 配置</span></div>
+    </section>
+    <section class="reassurance">
+      <div><strong>为什么需要 API Key？</strong><p>Key 用来授权你的供应商账户调用模型。聊天产品会员通常不包含 API 用量。</p></div>
+      <div><strong>现在必须付费吗？</strong><p>不一定。先查看供应商是否提供免费额度；没有免费额度时，也只建议从平台允许的最低金额开始。</p></div>
+      <div><strong>谁负责收费？</strong><p>费用、退款和余额都由供应商处理。WriteMelo 不代充、不抽成，也不会自动替你开通付费。</p></div>
+    </section>
+    <div class="guide-layout">
+      <aside><strong>本页内容</strong><a href="#choose">选择供应商</a><a href="#availability">地区与付款</a><a href="#configure">配置示例</a><a href="#privacy">隐私与费用</a></aside>
+      <article>
+        <section id="choose">
+          <p class="section-label">选择供应商</p><h2>只使用中国大陆可直连的官方平台</h2>
+          <p>以下推荐面向中文版和中国大陆用户。请从官方开放平台创建 Key，不要把聊天会员、网页地址或来源不明的共享 Key 当作 API 服务。</p>
+          <div class="provider-list">
+            <a href="https://platform.deepseek.com/" target="_blank" rel="noreferrer"><strong>DeepSeek 开放平台</strong><span>日常英文写作与价格敏感场景</span><code>api.deepseek.com</code></a>
+            <a href="https://bailian.console.aliyun.com/" target="_blank" rel="noreferrer"><strong>阿里云百炼</strong><span>通义千问模型与大陆网络</span><code>dashscope.aliyuncs.com</code></a>
+            <a href="https://open.bigmodel.cn/" target="_blank" rel="noreferrer"><strong>智谱 BigModel</strong><span>GLM 模型与中文服务支持</span><code>open.bigmodel.cn</code></a>
+            <a href="https://platform.moonshot.cn/" target="_blank" rel="noreferrer"><strong>Moonshot 开放平台</strong><span>Kimi 模型与长文本任务</span><code>api.moonshot.cn</code></a>
+          </div>
+          <p class="warning">供应商的免费额度、实名要求、可用模型和价格会变化，请以其官方控制台当日显示为准。不要购买来源不明的共享 Key或中转 Key。</p>
+        </section>
+        <section id="availability">
+          <p class="section-label">地区与付款</p><h2>注册前先确认账户是否可以正常使用</h2>
+          <ol class="steps">
+            <li><b>01</b><div><strong>确认服务地区</strong><p>检查平台是否接受你所在地区注册，以及是否要求中国大陆手机号或实名认证。</p></div></li>
+            <li><b>02</b><div><strong>确认免费额度</strong><p>免费额度可能有期限、模型限制或请求上限；没有明确赠送时，不要假设一定免费。</p></div></li>
+            <li><b>03</b><div><strong>确认付款方式</strong><p>需要付费时，先确认平台接受你的付款方式，并设置余额提醒或消费上限。</p></div></li>
+            <li><b>04</b><div><strong>创建独立 Key</strong><p>为 WriteMelo 单独创建一个 Key，便于随时停用和核对用量。</p></div></li>
+          </ol>
+        </section>
+        <section id="configure">
+          <p class="section-label">配置示例</p><h2>以 DeepSeek 为例</h2>
+          <div class="config-example"><div><span>API 接口地址</span><code>https://api.deepseek.com</code></div><div><span>API Key</span><code>••••••••••••••••</code></div><div><span>模型 ID</span><code>deepseek-chat</code></div><div><span>兼容协议</span><code>Chat Completions</code></div></div>
+          <p>回到 AI 服务设置，填写接口地址、Key 和模型 ID，测试连接成功后再保存。其他供应商必须使用其官方文档给出的地址和模型 ID。</p>
+          <a class="primary-action" href="index.html">返回 WriteMelo 配置</a>
+        </section>
+        <section id="privacy">
+          <p class="section-label">隐私与费用</p><h2>Key 留在本机，必要文本直达供应商</h2>
+          <div class="facts">
+            <div><strong>Key 在本机加密</strong><p>Key 只提交给本机 127.0.0.1 服务，并使用 Windows DPAPI 绑定当前 Windows 账户加密保存。</p></div>
+            <div><strong>WriteMelo 不接收 Key</strong><p>01 版没有账号同步或云端 Key 备份。换电脑后需要重新配置。</p></div>
+            <div><strong>供应商会收到必要文本</strong><p>补全、检查或改写时，本机会把完成任务所需的写作上下文直接发送给你选择的供应商。</p></div>
+            <div><strong>供应商可能收费</strong><p>模型调用可能按 Token 或其他规则计费，价格、账单和退款均由供应商决定。</p></div>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+</body>
 </html>
