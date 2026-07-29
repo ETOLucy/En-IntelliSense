@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/writemelo-logo.svg" width="300" alt="WriteMelo" />
+  <img src="docs/assets/writemelo-melon-logo.svg" width="300" alt="WriteMelo melon logo" />
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>Context-aware English completion, review, and rewriting for learners.</p>
   <p>

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/writemelo-logo.svg" width="300" alt="写美了（WriteMelo）" />
+  <img src="docs/assets/writemelo-melon-logo.svg" width="300" alt="写美了（WriteMelo）瓜形标志" />
   <p><strong>写美了</strong></p>
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>面向英语学习者的上下文智能补全、审查与润色工具。</p>
