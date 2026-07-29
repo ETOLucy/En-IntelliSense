@@ -152,7 +152,7 @@ npm test
 
 - Choose Auto, Word, Phrase, or Sentence completion. Press `Tab` to accept and `Esc` to dismiss.
 - Pause after typing to trigger contextual review, or press **Review**.
-- Click a review item to select its exact source text, then press **Apply 修改** to replace it.
+- Click a review item to select its exact source text, then press **Apply** to replace it.
 - Select text, or place the cursor in a sentence, before using Polish, Explain, or Simplify.
 - Clicking a Useful phrase replaces the selection/current sentence.
 
