@@ -47,7 +47,7 @@ WriteMelo 会先结合整篇草稿理解用户真正想表达的意思，再给�
 
 ## Demo
 
-![WriteMelo 英语写作工作区](docs/assets/demo.png)
+![WriteMelo 审查并补全英语草稿](docs/assets/store-zh-cn.png)
 
 ### 界面语言
 

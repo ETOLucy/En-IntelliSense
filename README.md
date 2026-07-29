@@ -48,7 +48,7 @@ New users can follow the [User Guide](docs/USER_GUIDE.md) for setup and everyday
 
 ## Demo
 
-![WriteMelo writing workspace](docs/assets/demo.png)
+![WriteMelo reviewing and completing an English draft](docs/assets/store-zh-cn.png)
 
 ### Interface language
 
