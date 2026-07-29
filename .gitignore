@@ -39,6 +39,10 @@ docs/SUBSCRIPTION_OPERATIONS.md
 docs/listingData-*.csv
 docs/store-listing-import-*.zip
 docs/store-listing-import-ready/
+docs/assets/store-*.png
+!docs/assets/store-zh-cn-01-writing.png
+docs/logo-concepts/
+scripts/build_store_listing.ps1
 public/admin.css
 public/admin.html
 public/admin.js

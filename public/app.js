@@ -97,6 +97,20 @@ const REVIEW_I18N = {
   ru: { polish_subject: 'Улучшить тему', polish_text: 'Улучшить текст', explain: 'Объяснить', simplify: 'Упростить', reviewing: 'Проверяем контекст и формулировки...', improvements_found: 'Найдено возможных улучшений: {count}.', one_improvement_found: 'Найдено 1 возможное улучшение.', no_problems_found: 'Явных проблем не найдено.', intent_label: 'Цель текста', apply: 'Применить', grammar: 'Грамматика', clarity: 'Ясность', wording: 'Формулировка', repetition: 'Повтор', tone_category: 'Тон', suggestion_applied: 'Изменение применено' }
 };
 
+const WORKSPACE_I18N = {
+  en: { saved: 'Saved', saving: 'Saving...', share: 'Share', draft_letter: 'DRAFT LETTER', draft_essay: 'DRAFT ESSAY', draft_message: 'DRAFT MESSAGE', to: 'To', subject: 'Subject', select_sentence: 'Select text or place the cursor in a sentence', suggestion: 'Suggestion', tab_to_accept: 'Tab to accept', words: 'words', tab_accept: 'accept', esc_dismiss: 'dismiss', finish_letter: 'Finish letter', finish_essay: 'Finish essay', finish_message: 'Finish message', model_connected: 'Custom model service connected', configure_model: 'Configure AI service' },
+  zh: { saved: '已保存', saving: '正在保存……', share: '分享', draft_letter: '信件草稿', draft_essay: '文章草稿', draft_message: '消息草稿', to: '收件人', subject: '主题', select_sentence: '选择文字，或将光标放在一个句子中', suggestion: '建议', tab_to_accept: '按 Tab 接受', words: '词', tab_accept: '接受', esc_dismiss: '忽略', finish_letter: '完成信件', finish_essay: '完成文章', finish_message: '完成消息', model_connected: '已连接自定义模型服务', configure_model: '配置 AI 服务' },
+  es: { saved: 'Guardado', saving: 'Guardando...', share: 'Compartir', draft_letter: 'BORRADOR DE CARTA', draft_essay: 'BORRADOR DE ENSAYO', draft_message: 'BORRADOR DE MENSAJE', to: 'Para', subject: 'Asunto', select_sentence: 'Selecciona texto o coloca el cursor en una oración', suggestion: 'Sugerencia', tab_to_accept: 'Tab para aceptar', words: 'palabras', tab_accept: 'aceptar', esc_dismiss: 'descartar', finish_letter: 'Terminar carta', finish_essay: 'Terminar ensayo', finish_message: 'Terminar mensaje', model_connected: 'Servicio de modelo personalizado conectado', configure_model: 'Configurar servicio de IA' },
+  ja: { saved: '保存済み', saving: '保存中...', share: '共有', draft_letter: '手紙の下書き', draft_essay: '作文の下書き', draft_message: 'メッセージの下書き', to: '宛先', subject: '件名', select_sentence: 'テキストを選択するか、文中にカーソルを置いてください', suggestion: '提案', tab_to_accept: 'Tab で適用', words: '語', tab_accept: '適用', esc_dismiss: '閉じる', finish_letter: '手紙を完成', finish_essay: '作文を完成', finish_message: 'メッセージを完成', model_connected: 'カスタムモデルサービスに接続済み', configure_model: 'AI サービスを設定' },
+  ko: { saved: '저장됨', saving: '저장 중...', share: '공유', draft_letter: '편지 초안', draft_essay: '에세이 초안', draft_message: '메시지 초안', to: '받는 사람', subject: '제목', select_sentence: '텍스트를 선택하거나 문장에 커서를 놓으세요', suggestion: '제안', tab_to_accept: 'Tab으로 적용', words: '단어', tab_accept: '적용', esc_dismiss: '닫기', finish_letter: '편지 완료', finish_essay: '에세이 완료', finish_message: '메시지 완료', model_connected: '사용자 지정 모델 서비스 연결됨', configure_model: 'AI 서비스 설정' },
+  fr: { saved: 'Enregistré', saving: 'Enregistrement...', share: 'Partager', draft_letter: 'BROUILLON DE LETTRE', draft_essay: "BROUILLON D'ESSAI", draft_message: 'BROUILLON DE MESSAGE', to: 'À', subject: 'Objet', select_sentence: 'Sélectionnez du texte ou placez le curseur dans une phrase', suggestion: 'Suggestion', tab_to_accept: 'Tab pour accepter', words: 'mots', tab_accept: 'accepter', esc_dismiss: 'ignorer', finish_letter: 'Terminer la lettre', finish_essay: "Terminer l'essai", finish_message: 'Terminer le message', model_connected: 'Service de modèle personnalisé connecté', configure_model: "Configurer le service d'IA" },
+  de: { saved: 'Gespeichert', saving: 'Wird gespeichert...', share: 'Teilen', draft_letter: 'BRIEFENTWURF', draft_essay: 'AUFSATZENTWURF', draft_message: 'NACHRICHTENTWURF', to: 'An', subject: 'Betreff', select_sentence: 'Text auswählen oder den Cursor in einen Satz setzen', suggestion: 'Vorschlag', tab_to_accept: 'Mit Tab übernehmen', words: 'Wörter', tab_accept: 'übernehmen', esc_dismiss: 'verwerfen', finish_letter: 'Brief abschließen', finish_essay: 'Aufsatz abschließen', finish_message: 'Nachricht abschließen', model_connected: 'Eigener Modelldienst verbunden', configure_model: 'KI-Dienst einrichten' },
+  pt: { saved: 'Salvo', saving: 'Salvando...', share: 'Compartilhar', draft_letter: 'RASCUNHO DE CARTA', draft_essay: 'RASCUNHO DE REDAÇÃO', draft_message: 'RASCUNHO DE MENSAGEM', to: 'Para', subject: 'Assunto', select_sentence: 'Selecione o texto ou coloque o cursor em uma frase', suggestion: 'Sugestão', tab_to_accept: 'Tab para aceitar', words: 'palavras', tab_accept: 'aceitar', esc_dismiss: 'descartar', finish_letter: 'Concluir carta', finish_essay: 'Concluir redação', finish_message: 'Concluir mensagem', model_connected: 'Serviço de modelo personalizado conectado', configure_model: 'Configurar serviço de IA' },
+  ar: { saved: 'تم الحفظ', saving: 'جارٍ الحفظ...', share: 'مشاركة', draft_letter: 'مسودة رسالة', draft_essay: 'مسودة مقال', draft_message: 'مسودة رسالة قصيرة', to: 'إلى', subject: 'الموضوع', select_sentence: 'حدد نصًا أو ضع المؤشر داخل جملة', suggestion: 'اقتراح', tab_to_accept: 'اضغط Tab للقبول', words: 'كلمات', tab_accept: 'قبول', esc_dismiss: 'تجاهل', finish_letter: 'إنهاء الرسالة', finish_essay: 'إنهاء المقال', finish_message: 'إنهاء الرسالة القصيرة', model_connected: 'تم الاتصال بخدمة النموذج المخصصة', configure_model: 'إعداد خدمة الذكاء الاصطناعي' },
+  hi: { saved: 'सहेजा गया', saving: 'सहेजा जा रहा है...', share: 'साझा करें', draft_letter: 'पत्र का ड्राफ़्ट', draft_essay: 'निबंध का ड्राफ़्ट', draft_message: 'संदेश का ड्राफ़्ट', to: 'प्रति', subject: 'विषय', select_sentence: 'टेक्स्ट चुनें या कर्सर किसी वाक्य में रखें', suggestion: 'सुझाव', tab_to_accept: 'स्वीकार करने के लिए Tab', words: 'शब्द', tab_accept: 'स्वीकार', esc_dismiss: 'हटाएँ', finish_letter: 'पत्र पूरा करें', finish_essay: 'निबंध पूरा करें', finish_message: 'संदेश पूरा करें', model_connected: 'कस्टम मॉडल सेवा कनेक्ट है', configure_model: 'AI सेवा सेट करें' },
+  ru: { saved: 'Сохранено', saving: 'Сохранение...', share: 'Поделиться', draft_letter: 'ЧЕРНОВИК ПИСЬМА', draft_essay: 'ЧЕРНОВИК ЭССЕ', draft_message: 'ЧЕРНОВИК СООБЩЕНИЯ', to: 'Кому', subject: 'Тема', select_sentence: 'Выделите текст или установите курсор в предложение', suggestion: 'Вариант', tab_to_accept: 'Tab — принять', words: 'слов', tab_accept: 'принять', esc_dismiss: 'отклонить', finish_letter: 'Завершить письмо', finish_essay: 'Завершить эссе', finish_message: 'Завершить сообщение', model_connected: 'Собственный сервис модели подключён', configure_model: 'Настроить сервис ИИ' }
+};
+
 let activeUiLanguage = 'en';
 
 function resolvedUiLanguage(value = 'auto') {
@@ -108,21 +122,25 @@ function resolvedUiLanguage(value = 'auto') {
 function applyUiLanguage(value) {
   const language = resolvedUiLanguage(value);
   activeUiLanguage = language;
-  const messages = { ...SETTINGS_I18N[language], ...APP_I18N[language], ...COMMERCE_I18N[language], ...DETAIL_I18N[language], ...HELP_I18N[language], ...REVIEW_I18N[language] };
-  const fallback = { ...SETTINGS_I18N.en, ...APP_I18N.en, ...COMMERCE_I18N.en, ...DETAIL_I18N.en, ...HELP_I18N.en, ...REVIEW_I18N.en };
+  const messages = { ...SETTINGS_I18N[language], ...APP_I18N[language], ...COMMERCE_I18N[language], ...DETAIL_I18N[language], ...HELP_I18N[language], ...REVIEW_I18N[language], ...WORKSPACE_I18N[language] };
+  const fallback = { ...SETTINGS_I18N.en, ...APP_I18N.en, ...COMMERCE_I18N.en, ...DETAIL_I18N.en, ...HELP_I18N.en, ...REVIEW_I18N.en, ...WORKSPACE_I18N.en };
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-i18n]').forEach(element => {
     const message = messages[element.dataset.i18n] || fallback[element.dataset.i18n];
     if (message) element.textContent = message;
   });
+  if ($('#format')) setFormat($('#format').value, false);
+  if ($('#connectionState') && modelConfigured) {
+    $('#connectionState').innerHTML = `<i></i> ${translated('model_connected')}`;
+  }
   updateStats();
   renderReview();
 }
 
 function translated(key) {
   const language = activeUiLanguage;
-  return REVIEW_I18N[language]?.[key] || DETAIL_I18N[language]?.[key] || COMMERCE_I18N[language]?.[key] || SETTINGS_I18N[language]?.[key] || REVIEW_I18N.en[key] || DETAIL_I18N.en[key] || COMMERCE_I18N.en[key] || SETTINGS_I18N.en[key] || key;
+  return WORKSPACE_I18N[language]?.[key] || REVIEW_I18N[language]?.[key] || DETAIL_I18N[language]?.[key] || COMMERCE_I18N[language]?.[key] || SETTINGS_I18N[language]?.[key] || WORKSPACE_I18N.en[key] || REVIEW_I18N.en[key] || DETAIL_I18N.en[key] || COMMERCE_I18N.en[key] || SETTINGS_I18N.en[key] || key;
 }
 
 function scopedKey(name) {
@@ -196,10 +214,10 @@ function showSuggestion(suggestion, kind) {
   activeKind = kind;
   renderMirror();
   ghostText.textContent = suggestion;
-  $('#suggestionKind').textContent = kind.charAt(0).toUpperCase() + kind.slice(1);
+  $('#suggestionKind').textContent = translated(`completion_${kind}`);
   autocompleteStatus.classList.toggle('hidden', !suggestion);
   suggestionBar.classList.toggle('hidden', !suggestion);
-  $('#barKind').textContent = kind || 'Suggestion';
+  $('#barKind').textContent = kind ? translated(`completion_${kind}`) : translated('suggestion');
   $('#barText').textContent = suggestion;
   modelThinking.classList.add('hidden');
 }
@@ -280,7 +298,7 @@ async function requestCompletion(value, mode) {
     }
     const data = await response.json();
     $('#connectionState').className = 'connection-state online';
-    $('#connectionState').innerHTML = '<i></i> Model connected';
+    $('#connectionState').innerHTML = `<i></i> ${translated('model_connected')}`;
     const unchanged = editor.value === value && editor.selectionStart === value.length;
     if (data.suggestion) {
       completionCache.set(cacheKey, data.suggestion);
@@ -305,7 +323,7 @@ async function checkModel() {
     modelConfigured = Boolean(data.configured);
     storageScope = data.storage_scope || 'local';
     $('#connectionState').className = `connection-state ${modelConfigured ? 'online' : 'offline'}`;
-    $('#connectionState').innerHTML = `<i></i> ${modelConfigured ? 'Custom model service connected' : 'Configure AI service'}`;
+    $('#connectionState').innerHTML = `<i></i> ${translated(modelConfigured ? 'model_connected' : 'configure_model')}`;
     if (modelConfigured) { scheduleCompletion(); scheduleReview(); }
     else if (desktopApp && !sessionStorage.getItem(scopedKey('settings-dismissed'))) openModelSettings();
     return data;
@@ -505,12 +523,12 @@ function applyReviewIssue(index) {
 
 function saveDraft() {
   if (currentFileName) fileDirty = true;
-  saveStatus.textContent = 'Saving...';
+  saveStatus.textContent = translated('saving');
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     const draft = { format: $('#format').value, title: $('#title').value, text: editor.value, recipient: $('#recipient').value, subject: $('#subject').value };
     storageSet('draft', JSON.stringify(draft));
-    saveStatus.textContent = 'Saved in this browser';
+    saveStatus.textContent = translated('saved');
   }, 450);
 }
 
@@ -899,8 +917,8 @@ async function sendChat(message) {
 
 function setFormat(format, reset = true) {
   const preset = content[format];
-  $('#documentType').textContent = preset.eyebrow;
-  $('#finishButton').firstChild.textContent = `${preset.finish} `;
+  $('#documentType').textContent = translated(`draft_${format}`);
+  $('#finishButton').firstChild.textContent = `${translated(`finish_${format}`)} `;
   $('#addressFields').classList.toggle('hidden', format !== 'letter');
   $('#editorWrap').classList.toggle('standalone', format !== 'letter');
   if (reset) { $('#title').value = preset.title; editor.value = preset.text; }

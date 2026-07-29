@@ -15,6 +15,8 @@
     &nbsp;&middot;&nbsp;
     <a href="docs/USER_GUIDE.zh-CN.md">使用指南</a>
     &nbsp;&middot;&nbsp;
+    <a href="docs/ROADMAP.zh-CN.md">未来规划</a>
+    &nbsp;&middot;&nbsp;
     <a href="#配置与运行">本地运行</a>
     &nbsp;&middot;&nbsp;
     <a href="https://github.com/ETOLucy/WriteMelo">GitHub 仓库</a>
@@ -47,7 +49,7 @@ WriteMelo 会先结合整篇草稿理解用户真正想表达的意思，再给�
 
 ## Demo
 
-![WriteMelo 审查并补全英语草稿](docs/assets/store-zh-cn.png)
+![WriteMelo 审查并补全英语草稿](docs/assets/store-zh-cn-01-writing.png)
 
 ### 界面语言
 

@@ -13,7 +13,7 @@ function readTranslations(constantName) {
   return vm.runInNewContext(`(${source.slice(start + marker.length, end + 2)})`);
 }
 
-for (const constantName of ['DETAIL_I18N', 'REVIEW_I18N']) {
+for (const constantName of ['DETAIL_I18N', 'REVIEW_I18N', 'WORKSPACE_I18N']) {
   const translations = readTranslations(constantName);
   const required = Object.keys(translations.en).sort();
   assert.deepEqual(Object.keys(translations).sort(), [...languages].sort());

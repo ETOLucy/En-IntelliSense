@@ -8,10 +8,11 @@ ASSET_DIR = ROOT / "desktop-assets"
 DOCS_ASSET_DIR = ROOT / "docs" / "assets"
 SCALE = 4
 SIZE = 512
-GREEN = "#173F35"
-GOLD = "#E2A63B"
-CORAL = "#E56855"
-PAPER = "#F7FAF8"
+GREEN = "#153F35"
+RIND = "#A9CF72"
+CORAL = "#F07D68"
+SEED = "#5A342A"
+PAPER = "#FFF9F4"
 INK = "#17332C"
 MUTED = "#60736B"
 
@@ -38,25 +39,23 @@ def draw_mark(draw, left=42, top=42, size=428):
         radius=radius,
         fill=GREEN,
     )
-    line_width = max(1, point(9 * scale))
-    draw.line((xy(31), xy(27), xy(31), xy(69)), fill=PAPER, width=line_width)
-    for y, end in ((27, 61), (48, 53), (69, 61)):
-        draw.line((xy(31), xy(y), xy(end), xy(y)), fill=PAPER, width=line_width)
+
+    curve = []
+    for step in range(41):
+        t = step / 40
+        x = 20 + (56 * t)
+        y = 37 + (128 * t * (1 - t))
+        curve.append((xy(x), xy(y)))
+    draw.polygon([(xy(20), xy(37)), (xy(76), xy(37)), *reversed(curve)], fill=CORAL)
+    draw.line(curve, fill=RIND, width=max(1, point(6 * scale)), joint="curve")
+
+    w_points = [(xy(x), xy(y)) for x, y in ((29, 42), (35, 59), (48, 45), (61, 59), (67, 42))]
+    draw.line(w_points, fill=PAPER, width=max(1, point(5.5 * scale)), joint="curve")
+
     draw.polygon(
-        [
-            (xy(67), xy(33)),
-            (xy(71), xy(44)),
-            (xy(80), xy(48)),
-            (xy(71), xy(52)),
-            (xy(67), xy(61)),
-            (xy(63), xy(52)),
-            (xy(54), xy(48)),
-            (xy(63), xy(44)),
-        ],
-        fill=GOLD,
+        [(xy(43), xy(37)), (xy(48), xy(35)), (xy(53), xy(37)), (xy(51), xy(41)), (xy(48), xy(42)), (xy(45), xy(41))],
+        fill=SEED,
     )
-    radius = point(3.5 * scale)
-    draw.ellipse((xy(55) - radius, xy(36) - radius, xy(55) + radius, xy(36) + radius), fill=CORAL)
 
 
 def build_app_icon():
@@ -95,9 +94,9 @@ def build_social_preview():
     )
     draw_mark(draw, left=112, top=112, size=416)
     draw.text((point(570), point(214)), "WriteMelo", fill=INK, font=font(54, bold=True))
-    draw.text((point(574), point(300)), "Context-aware English writing", fill=MUTED, font=font(25))
+    draw.text((point(574), point(300)), "English writing coach for non-native speakers", fill=MUTED, font=font(21))
     draw.line((point(574), point(364), point(1080), point(364)), fill="#D9E2DD", width=point(3))
-    draw.line((point(574), point(410), point(930), point(410)), fill=GOLD, width=point(8))
+    draw.line((point(574), point(410), point(930), point(410)), fill=CORAL, width=point(8))
     image.resize((width, height), Image.Resampling.LANCZOS).save(
         DOCS_ASSET_DIR / "social-preview.png",
         optimize=True,

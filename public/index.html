@@ -12,10 +12,10 @@
     <div class="app-shell">
       <header class="topbar">
         <a class="brand" href="#" aria-label="WriteMelo home"><img class="brand-mark" src="logo.svg" alt="" /><span>WriteMelo</span></a>
-        <div class="draft-state"><span class="saved-dot"></span><span id="saveStatus">Saved in this browser</span></div>
+        <div class="draft-state"><span class="saved-dot"></span><span id="saveStatus" data-i18n="saved">Saved</span></div>
         <div class="top-actions">
-          <button class="share-button" id="shareButton" type="button" title="Copy a link to WriteMelo">Share</button>
-          <button class="coach-toggle" id="coachToggle" type="button" aria-controls="writingCoach" aria-expanded="true">Coach</button>
+          <button class="share-button" id="shareButton" type="button" title="Copy a link to WriteMelo" data-i18n="share">Share</button>
+          <button class="coach-toggle" id="coachToggle" type="button" aria-controls="writingCoach" aria-expanded="true" data-i18n="coach">Coach</button>
           <button class="icon-btn" id="preferencesButton" type="button" aria-label="Language and region" title="Language and region">&#127760;</button>
           <button class="icon-btn hidden" id="settingsButton" type="button" aria-label="Plans and AI service" title="Plans and AI service">&#9881;</button>
           <button class="icon-btn" id="themeButton" type="button" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
@@ -87,7 +87,7 @@
         <section class="workspace">
           <div class="compose-view" id="composeView">
           <div class="letter-heading">
-            <div><span class="eyebrow" id="documentType">DRAFT LETTER</span><input class="title-input" id="title" value="A letter to an old friend" aria-label="Document title" /></div>
+            <div><span class="eyebrow" id="documentType" data-i18n="draft_letter">DRAFT LETTER</span><input class="title-input" id="title" value="A letter to an old friend" aria-label="Document title" /></div>
             <div class="more-menu-wrap">
               <button class="more-btn" id="moreButton" type="button" aria-label="More actions" title="More actions" aria-expanded="false" aria-controls="documentMenu">•••</button>
               <div class="document-menu hidden" id="documentMenu" role="menu">
@@ -103,12 +103,12 @@
           </div>
 
           <div class="address-fields" id="addressFields">
-            <label><span>To</span><input id="recipient" type="email" value="emma@example.com" placeholder="recipient@example.com" aria-label="To, recipient email address" /></label>
-            <label class="subject-row"><span>Subject</span><input id="subject" type="text" value="Greetings from Shanghai" aria-label="Subject" /><button class="field-action" id="polishSubject" type="button" data-i18n="polish_subject">Polish subject</button></label>
+            <label><span data-i18n="to">To</span><input id="recipient" type="email" value="emma@example.com" placeholder="recipient@example.com" aria-label="To, recipient email address" /></label>
+            <label class="subject-row"><span data-i18n="subject">Subject</span><input id="subject" type="text" value="Greetings from Shanghai" aria-label="Subject" /><button class="field-action" id="polishSubject" type="button" data-i18n="polish_subject">Polish subject</button></label>
           </div>
 
           <div class="editor-tools">
-            <span>Select text or place the cursor in a sentence</span>
+            <span data-i18n="select_sentence">Select text or place the cursor in a sentence</span>
             <button id="polishText" type="button" data-i18n="polish_text">Polish text</button>
             <button id="explainText" type="button" data-i18n="explain">Explain</button>
             <button id="simplifyText" type="button" data-i18n="simplify">Simplify</button>
@@ -128,12 +128,12 @@ It was so lovely to receive your last letter. I was happy to hear about your new
 Life here has been busy, but in a good way. Last weekend, I</textarea>
             <div class="autocomplete-status hidden" id="autocompleteStatus" aria-live="polite"><span id="suggestionKind">Sentence</span> suggestion <kbd>Tab</kbd></div>
             <div class="model-thinking hidden" id="modelThinking"><span></span> Thinking</div>
-            <button class="suggestion-bar hidden" id="suggestionBar" type="button"><span><b id="barKind">Suggestion</b><span id="barText"></span></span><kbd>Tab to accept</kbd></button>
+            <button class="suggestion-bar hidden" id="suggestionBar" type="button"><span><b id="barKind">Suggestion</b><span id="barText"></span></span><kbd data-i18n="tab_to_accept">Tab to accept</kbd></button>
           </div>
 
           <div class="editor-footer">
-            <span><strong id="wordCount">0</strong> words</span>
-            <span class="shortcut"><kbd>Tab</kbd> accept <kbd>Esc</kbd> dismiss</span>
+            <span><strong id="wordCount">0</strong> <span data-i18n="words">words</span></span>
+            <span class="shortcut"><kbd>Tab</kbd> <span data-i18n="tab_accept">accept</span> <kbd>Esc</kbd> <span data-i18n="esc_dismiss">dismiss</span></span>
             <button class="send-button" id="finishButton" type="button">Finish draft <span aria-hidden="true">→</span></button>
           </div>
           </div>

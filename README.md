@@ -14,6 +14,8 @@
     &nbsp;&middot;&nbsp;
     <a href="docs/USER_GUIDE.md">User Guide</a>
     &nbsp;&middot;&nbsp;
+    <a href="docs/ROADMAP.md">Roadmap</a>
+    &nbsp;&middot;&nbsp;
     <a href="#run">Run locally</a>
     &nbsp;&middot;&nbsp;
     <a href="https://github.com/ETOLucy/WriteMelo">GitHub Repository</a>
@@ -28,7 +30,7 @@
 
 ---
 
-WriteMelo understands the intent behind the whole draft before it suggests the next word. It combines word, phrase, and sentence completion with contextual review, exact issue highlighting, bilingual explanations, and one-click repairs.
+WriteMelo is an English writing coach for non-native speakers. It understands the intent behind the whole draft, explains corrections in the learner's preferred language, and combines contextual review with word, phrase, and sentence completion.
 
 <a id="download"></a>
 
@@ -48,7 +50,7 @@ New users can follow the [User Guide](docs/USER_GUIDE.md) for setup and everyday
 
 ## Demo
 
-![WriteMelo reviewing and completing an English draft](docs/assets/store-zh-cn.png)
+![WriteMelo reviewing and completing an English draft](docs/assets/store-zh-cn-01-writing.png)
 
 ### Interface language
 
