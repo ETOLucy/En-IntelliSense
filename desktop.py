@@ -7,9 +7,9 @@ from pathlib import Path
 
 import webview
 
-os.environ.setdefault("ENWRITE_DESKTOP", "1")
+os.environ.setdefault("WRITEMELO_DESKTOP", "1")
 
-from server import EnWriteHandler
+from server import WriteMeloHandler
 
 
 class DocumentApi:
@@ -125,9 +125,9 @@ class DocumentApi:
             return {"ok": False, "error": f"Could not open the system application: {error}"}
 
 def run():
-    server = ThreadingHTTPServer(("127.0.0.1", 0), EnWriteHandler)
+    server = ThreadingHTTPServer(("127.0.0.1", 0), WriteMeloHandler)
     port = server.server_address[1]
-    thread = threading.Thread(target=server.serve_forever, name="en-intellisense-server", daemon=True)
+    thread = threading.Thread(target=server.serve_forever, name="writemelo-server", daemon=True)
     thread.start()
     document_api = DocumentApi()
 
@@ -142,7 +142,8 @@ def run():
             js_api=document_api,
         )
         document_api.attach_window(window)
-        webview.start(debug=os.getenv("ENWRITE_DEBUG") == "1", gui="edgechromium")
+        debug = os.getenv("WRITEMELO_DEBUG") or os.getenv("ENWRITE_DEBUG")
+        webview.start(debug=debug == "1", gui="edgechromium")
     finally:
         server.shutdown()
         server.server_close()

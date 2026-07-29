@@ -16,7 +16,7 @@
     &nbsp;&middot;&nbsp;
     <a href="#run">Run locally</a>
     &nbsp;&middot;&nbsp;
-    <a href="https://github.com/ETOLucy/En-IntelliSense">GitHub Repository</a>
+    <a href="https://github.com/ETOLucy/WriteMelo">GitHub Repository</a>
   </p>
   <p>
     <img src="https://img.shields.io/badge/completion-word%20%7C%20phrase%20%7C%20sentence-1f6f5b?style=flat-square" alt="Word, phrase, and sentence completion" />
@@ -42,7 +42,7 @@ WriteMelo understands the intent behind the whole draft before it suggests the n
 
 - **GitHub Releases**
 
-  Download the latest installer or portable build from [GitHub Releases](https://github.com/ETOLucy/En-IntelliSense/releases/latest).
+  Download the latest installer or portable build from [GitHub Releases](https://github.com/ETOLucy/WriteMelo/releases/latest).
 
 New users can follow the [User Guide](docs/USER_GUIDE.md) for setup and everyday writing.
 
@@ -122,7 +122,7 @@ Open `http://127.0.0.1:8000`.
 
 ## Windows desktop app
 
-For normal use, download `WriteMelo-Setup.exe` from the [latest GitHub release](https://github.com/ETOLucy/En-IntelliSense/releases/latest). The installer creates a Start menu shortcut and can optionally create a desktop shortcut. `WriteMelo-Portable.zip` remains available for users who do not want to install it.
+For normal use, download `WriteMelo-Setup.exe` from the [latest GitHub release](https://github.com/ETOLucy/WriteMelo/releases/latest). The installer creates a Start menu shortcut and can optionally create a desktop shortcut. `WriteMelo-Portable.zip` remains available for users who do not want to install it.
 
 > **Signing status:** The installer can be built and used without a certificate, but Windows may show an unknown-publisher or SmartScreen warning. The build supports adding a trusted timestamped signature to both the application and installer later.
 

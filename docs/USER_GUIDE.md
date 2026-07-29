@@ -4,7 +4,7 @@
 
 ## Install and open
 
-Download the installer or portable package from [GitHub Releases](https://github.com/ETOLucy/En-IntelliSense/releases/latest). The Microsoft Store package will be added after certification.
+Download the installer or portable package from [GitHub Releases](https://github.com/ETOLucy/WriteMelo/releases/latest). The Microsoft Store package will be added after certification.
 
 The Windows app opens the writing workspace directly. Python is not required on the target computer.
 

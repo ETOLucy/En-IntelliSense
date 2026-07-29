@@ -22,7 +22,7 @@ function obsoleteDesktopClient(request, env) {
   const match = (request.headers.get('x-enwrite-client') || '').match(/^windows-desktop\/(\d+(?:\.\d+){0,3})$/);
   if (!match || compareVersions(match[1], minimum) >= 0) return null;
   return json({
-    error: 'This version is no longer supported. Update En-IntelliSense from Microsoft Store.',
+    error: 'This version is no longer supported. Update WriteMelo from Microsoft Store.',
     code: 'upgrade_required',
     minimum_version: minimum,
   }, 426);
@@ -59,7 +59,7 @@ function apiBase(env) {
 }
 
 function headers(env) {
-  return { authorization: `Bearer ${env.OPENAI_API_KEY}`, 'content-type': 'application/json', accept: 'application/json', 'user-agent': 'En-IntelliSense/1.0' };
+  return { authorization: `Bearer ${env.OPENAI_API_KEY}`, 'content-type': 'application/json', accept: 'application/json', 'user-agent': 'WriteMelo/1.1' };
 }
 
 async function fetchWithRetry(url, options) {
@@ -179,7 +179,7 @@ async function chat(request, env) {
   if (!message) return json({ error: 'Message cannot be empty' }, 400);
   const history = (Array.isArray(data.history) ? data.history : []).slice(-8).map(item => `${item.role || 'user'}: ${String(item.content || '').slice(0, 1000)}`).join('\n');
   const prompt = `Current draft:\n${String(data.context || '').slice(-5000)}\n\nSelected text:\n${String(data.selection || '').slice(0, 2000) || '(none)'}\n\nRecent conversation:\n${history || '(none)'}\n\nLearner: ${message}`;
-  const instructions = `You are En-IntelliSense, an English writing tutor. Reply primarily in concise ${language} with useful English examples. Explain tone and nuance plainly and give immediately usable writing.`;
+  const instructions = `You are WriteMelo, an English writing tutor. Reply primarily in concise ${language} with useful English examples. Explain tone and nuance plainly and give immediately usable writing.`;
   return json({ reply: (await chatText(env, instructions, prompt, 500)).trim() });
 }
 

@@ -11,7 +11,7 @@ import server
 
 class CompletionTests(unittest.TestCase):
     def make_handler(self):
-        return object.__new__(server.EnWriteHandler)
+        return object.__new__(server.WriteMeloHandler)
 
     def test_completion_punctuation_is_ascii_safe(self):
         self.assertEqual(server.normalize_completion_text("I’d say “hello”—soon…"), 'I\'d say "hello"-soon...')
@@ -155,7 +155,7 @@ class ModelConfigTests(unittest.TestCase):
         response = Mock()
         response.raise_for_status.return_value = None
         post.return_value = response
-        result = object.__new__(server.EnWriteHandler).test_model_config({
+        result = object.__new__(server.WriteMeloHandler).test_model_config({
             "base_url": "https://provider.example/v1",
             "api_key": "test-key",
             "model": "chat-model",
@@ -172,6 +172,25 @@ class ModelConfigTests(unittest.TestCase):
 
 
 class StorageIsolationTests(unittest.TestCase):
+    def test_migrates_legacy_config_without_removing_source(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            legacy_path = root / "En-IntelliSense" / "config.json"
+            current_path = root / "WriteMelo" / "config.json"
+            legacy_path.parent.mkdir()
+            legacy_path.write_text('{"provider_mode":"byok","model":"example-model"}', encoding="utf-8")
+            with (
+                patch.object(server, "USER_CONFIG_ROOT", current_path.parent),
+                patch.object(server, "USER_CONFIG_PATH", current_path),
+                patch.object(server, "LEGACY_USER_CONFIG_PATH", legacy_path),
+            ):
+                server.migrate_legacy_user_config()
+            self.assertEqual(
+                json.loads(current_path.read_text(encoding="utf-8"))["model"],
+                "example-model",
+            )
+            self.assertTrue(legacy_path.exists())
+
     def test_local_profiles_have_different_stable_scopes(self):
         with patch.object(server, "read_user_config", return_value={"device_id": "device-a"}):
             first = server.storage_scope()
@@ -193,7 +212,7 @@ class StorageIsolationTests(unittest.TestCase):
 
 class LocalRequestSecurityTests(unittest.TestCase):
     def handler_with_headers(self, headers):
-        handler = object.__new__(server.EnWriteHandler)
+        handler = object.__new__(server.WriteMeloHandler)
         handler.headers = headers
         return handler
 

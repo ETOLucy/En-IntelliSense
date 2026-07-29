@@ -650,8 +650,8 @@ window.addEventListener('beforeunload', event => {
 
 function suggestedFileName() {
   if (currentFileName) return currentFileName;
-  const safeTitle = ($('#title').value || 'en-intellisense-draft').replace(/[\\/:*?"<>|]+/g, '-').trim();
-  return `${safeTitle || 'en-intellisense-draft'}.txt`;
+  const safeTitle = ($('#title').value || 'writemelo-draft').replace(/[\\/:*?"<>|]+/g, '-').trim();
+  return `${safeTitle || 'writemelo-draft'}.txt`;
 }
 
 async function openLocalDocument() {
@@ -716,7 +716,7 @@ async function runDocumentAction(action) {
     return;
   }
   if (action === 'download') {
-    const safeName = ($('#title').value || 'en-intellisense-draft').replace(/[\\/:*?"<>|]+/g, '-').trim();
+    const safeName = ($('#title').value || 'writemelo-draft').replace(/[\\/:*?"<>|]+/g, '-').trim();
     const blob = new Blob([editor.value], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a'); link.href = url; link.download = `${safeName}.txt`; link.click();

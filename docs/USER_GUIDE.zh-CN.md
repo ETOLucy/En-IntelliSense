@@ -4,7 +4,7 @@
 
 ## 安装与启动
 
-从 [GitHub Releases](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载安装版或便携版。通过微软认证后会增加 Microsoft Store 安装入口。
+从 [GitHub Releases](https://github.com/ETOLucy/WriteMelo/releases/latest) 下载安装版或便携版。通过微软认证后会增加 Microsoft Store 安装入口。
 
 Windows 桌面版启动后直接进入写作界面，用户不需要另外安装 Python。
 

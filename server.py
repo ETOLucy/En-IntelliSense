@@ -1,6 +1,7 @@
 import json
 import os
 import secrets
+import shutil
 import sys
 import time
 import ctypes
@@ -19,10 +20,13 @@ import requests
 SOURCE_ROOT = Path(__file__).resolve().parent
 ROOT = Path(getattr(sys, "_MEIPASS", SOURCE_ROOT))
 CONFIG_ROOT = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else SOURCE_ROOT
-USER_CONFIG_ROOT = Path(os.getenv("APPDATA", CONFIG_ROOT)) / "En-IntelliSense"
+APPDATA_ROOT = Path(os.getenv("APPDATA", CONFIG_ROOT))
+USER_CONFIG_ROOT = APPDATA_ROOT / "WriteMelo"
 USER_CONFIG_PATH = USER_CONFIG_ROOT / "config.json"
-HOST = os.getenv("ENWRITE_HOST", "127.0.0.1")
-PORT = int(os.getenv("ENWRITE_PORT", "8000"))
+LEGACY_USER_CONFIG_ROOT = APPDATA_ROOT / "En-IntelliSense"
+LEGACY_USER_CONFIG_PATH = LEGACY_USER_CONFIG_ROOT / "config.json"
+HOST = os.getenv("WRITEMELO_HOST") or os.getenv("ENWRITE_HOST", "127.0.0.1")
+PORT = int(os.getenv("WRITEMELO_PORT") or os.getenv("ENWRITE_PORT", "8000"))
 MODEL_CONFIG_KEYS = {
     "base_url": "OPENAI_BASE_URL",
     "model": "OPENAI_MODEL",
@@ -90,6 +94,19 @@ def read_user_config():
     except (OSError, ValueError, TypeError):
         return {}
 
+
+def migrate_legacy_user_config():
+    if USER_CONFIG_PATH.exists() or not LEGACY_USER_CONFIG_PATH.is_file():
+        return
+    try:
+        USER_CONFIG_ROOT.mkdir(parents=True, exist_ok=True)
+        temporary = USER_CONFIG_PATH.with_suffix(".tmp")
+        shutil.copyfile(LEGACY_USER_CONFIG_PATH, temporary)
+        temporary.replace(USER_CONFIG_PATH)
+    except OSError:
+        return
+
+
 def remove_legacy_subscription_config():
     if not USER_CONFIG_PATH.is_file():
         return
@@ -142,7 +159,11 @@ def storage_scope():
 
 
 def desktop_mode():
-    return bool(getattr(sys, "frozen", False) or os.getenv("ENWRITE_DESKTOP") == "1")
+    return bool(
+        getattr(sys, "frozen", False)
+        or os.getenv("WRITEMELO_DESKTOP") == "1"
+        or os.getenv("ENWRITE_DESKTOP") == "1"
+    )
 
 
 def validate_model_config(data):
@@ -202,11 +223,12 @@ def save_user_config(data):
 
 
 def load_dotenv():
-    configured_path = os.getenv("ENWRITE_ENV_FILE")
+    configured_path = os.getenv("WRITEMELO_ENV_FILE") or os.getenv("ENWRITE_ENV_FILE")
     candidates = [Path(configured_path).expanduser()] if configured_path else []
     candidates.extend([
         CONFIG_ROOT / ".env",
-        Path(os.getenv("APPDATA", CONFIG_ROOT)) / "En-IntelliSense" / ".env",
+        USER_CONFIG_ROOT / ".env",
+        LEGACY_USER_CONFIG_ROOT / ".env",
     ])
     path = next((candidate for candidate in candidates if candidate.is_file()), None)
     if path is None:
@@ -246,11 +268,12 @@ def explanation_language(data):
 
 load_dotenv()
 apply_public_model_env()
+migrate_legacy_user_config()
 remove_legacy_subscription_config()
 apply_user_config()
 
 
-class EnWriteHandler(SimpleHTTPRequestHandler):
+class WriteMeloHandler(SimpleHTTPRequestHandler):
     extensions_map = {**SimpleHTTPRequestHandler.extensions_map, ".js": "text/javascript", ".css": "text/css"}
 
     def __init__(self, *args, **kwargs):
@@ -670,4 +693,4 @@ def api_key_value():
 
 if __name__ == "__main__":
     print(f"WriteMelo running at http://{HOST}:{PORT}")
-    ThreadingHTTPServer((HOST, PORT), EnWriteHandler).serve_forever()
+    ThreadingHTTPServer((HOST, PORT), WriteMeloHandler).serve_forever()

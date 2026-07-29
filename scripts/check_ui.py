@@ -16,7 +16,7 @@ with net_socket.socket() as port_probe:
     port = port_probe.getsockname()[1]
 chrome = subprocess.Popen([
     r"C:\Program Files\Google\Chrome\Application\chrome.exe", "--headless=new", "--disable-gpu", "--hide-scrollbars",
-    "--remote-allow-origins=*", f"--remote-debugging-port={port}", f"--user-data-dir={tempfile.mkdtemp(prefix='en-intellisense-ui-')}",
+    "--remote-allow-origins=*", f"--remote-debugging-port={port}", f"--user-data-dir={tempfile.mkdtemp(prefix='writemelo-ui-')}",
     "--window-size=1440,1000", "http://127.0.0.1:8000",
 ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 

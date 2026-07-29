@@ -108,7 +108,7 @@ try {
         Remove-Item -LiteralPath $setupExe -Force
     }
     if ($env:WINDOWS_CERTIFICATE_BASE64 -and -not $env:WINDOWS_CERTIFICATE_PATH) {
-        $temporaryCertificate = Join-Path $env:TEMP "en-intellisense-signing.pfx"
+        $temporaryCertificate = Join-Path $env:TEMP "writemelo-signing.pfx"
         [IO.File]::WriteAllBytes($temporaryCertificate, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE_BASE64))
         $env:WINDOWS_CERTIFICATE_PATH = $temporaryCertificate
     }

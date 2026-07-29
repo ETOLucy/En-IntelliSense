@@ -55,7 +55,7 @@ def main():
     browser_executable = next((path for path in BROWSER_CANDIDATES if path.exists()), None)
     if browser_executable is None:
         raise RuntimeError("Microsoft Edge or Google Chrome is required to capture demos")
-    profile = tempfile.mkdtemp(prefix="en-intellisense-demo-")
+    profile = tempfile.mkdtemp(prefix="writemelo-demo-")
     process = subprocess.Popen([
         str(browser_executable), "--headless=new", "--disable-gpu", "--hide-scrollbars",
         "--no-proxy-server",

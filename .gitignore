@@ -8,7 +8,7 @@
 .codex/
 __pycache__/
 *.pyc
-.enwrite.pid
+.writemelo.pid
 server.log
 server-error.log
 .debug-server.*.log

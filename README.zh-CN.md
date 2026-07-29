@@ -17,7 +17,7 @@
     &nbsp;&middot;&nbsp;
     <a href="#配置与运行">本地运行</a>
     &nbsp;&middot;&nbsp;
-    <a href="https://github.com/ETOLucy/En-IntelliSense">GitHub 仓库</a>
+    <a href="https://github.com/ETOLucy/WriteMelo">GitHub 仓库</a>
   </p>
   <p>
     <img src="https://img.shields.io/badge/补全-单词%20%7C%20短语%20%7C%20句子-1f6f5b?style=flat-square" alt="单词、短语和句子补全" />
@@ -41,7 +41,7 @@ WriteMelo 会先结合整篇草稿理解用户真正想表达的意思，再给�
 
 - **GitHub Releases**
 
-  从 [GitHub Releases](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载最新安装版或便携版。
+  从 [GitHub Releases](https://github.com/ETOLucy/WriteMelo/releases/latest) 下载最新安装版或便携版。
 
 第一次使用可以查看[使用指南](docs/USER_GUIDE.zh-CN.md)，完成模型配置并了解主要写作功能。
 
@@ -109,7 +109,7 @@ python server.py
 
 ## Windows 桌面版
 
-普通使用时，从 [GitHub 最新版本](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载 `WriteMelo-Setup.exe`。安装程序会创建开始菜单快捷方式，并可选择创建桌面快捷方式；不需要终端、Python 或任何构建命令。不希望安装时，也可以下载 `WriteMelo-Portable.zip`。
+普通使用时，从 [GitHub 最新版本](https://github.com/ETOLucy/WriteMelo/releases/latest) 下载 `WriteMelo-Setup.exe`。安装程序会创建开始菜单快捷方式，并可选择创建桌面快捷方式；不需要终端、Python 或任何构建命令。不希望安装时，也可以下载 `WriteMelo-Portable.zip`。
 
 > **签名状态：** 没有配置签名证书时，安装包仍可生成和使用，但 Windows 可能显示“未知发布者”或 SmartScreen 警告。构建脚本支持稍后为主程序和安装包添加签名及可信时间戳。
 
