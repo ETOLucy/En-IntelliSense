@@ -393,7 +393,11 @@ export function App() {
             </div>}
             {rightTab === 'ai' && <div className="ai-panel">
               <div className="ai-heading"><Sparkles size={22} /><div><h3>{t(locale, 'aiTitle')}</h3><p>{t(locale, 'aiDescription')}</p></div></div>
-              <div className="privacy-row"><span>{aiConsent.mode === 'off' ? t(locale, 'aiOff') : 'Manual only'}</span><button className="secondary" onClick={() => setShowConsent(true)}>{aiConsent.mode === 'off' ? t(locale, 'enableAi') : t(locale, 'settings')}</button></div>
+              <div className="privacy-row"><span>{aiConsent.mode === 'off'
+                ? t(locale, 'aiOff')
+                : aiConsent.allowFullDocument
+                  ? (locale === 'en' ? 'On demand: question + full document' : '按需调用：问题 + 当前全文')
+                  : (locale === 'en' ? 'On demand: question only' : '按需调用：仅发送问题')}</span><button className="secondary" onClick={() => setShowConsent(true)}>{aiConsent.mode === 'off' ? t(locale, 'enableAi') : t(locale, 'settings')}</button></div>
               {window.writeMeloDesktop?.byok && <section className="byok-settings">
                 <h3>{locale === 'en' ? 'Your AI provider' : '自备 AI 服务'}</h3>
                 <p>{locale === 'en' ? 'The provider receives only text you explicitly send and may charge your account.' : '供应商只会收到你主动发送的文本，并可能向你的账号收费。'}</p>
@@ -427,7 +431,11 @@ export function App() {
       {showConsent && <div className="modal-backdrop" role="presentation">
         <section className="modal" role="dialog" aria-modal="true" aria-labelledby="consent-title">
           <div className="modal-icon"><Bot size={22} /></div><h2 id="consent-title">{t(locale, 'aiTitle')}</h2>
-          <p>{locale === 'en' ? 'AI is never required. When you use it, selected text is sent to the configured provider. You can change this choice at any time.' : 'AI 从不强制使用。使用时，所选文本会发送给配置的供应商；你可以随时更改选择。'}</p>
+          <div className="consent-levels">
+            <div><strong>{locale === 'en' ? 'AI off' : 'AI 已关闭'}</strong><p>{locale === 'en' ? 'No API calls and no AI provider charges. Local completion, spelling, diagnostics, outline, and history still work.' : '不调用 API，不产生 AI 供应商费用。本地补全、拼写、诊断、大纲和历史仍然可用。'}</p></div>
+            <div><strong>{locale === 'en' ? 'Question only' : '仅询问 AI'}</strong><p>{locale === 'en' ? 'Only the question you type below is sent. Your document is not sent. Asking may use provider quota or incur charges.' : '只发送你在下方输入的问题，不发送文档。实际提问可能消耗供应商额度或产生费用。'}</p></div>
+            <div><strong>{locale === 'en' ? 'Attach the full document' : '附带当前全文'}</strong><p>{locale === 'en' ? 'Each question also sends the current document until you turn this off. This usually uses more tokens and may cost more.' : '关闭此选项前，每次提问都会同时发送当前文档，通常消耗更多 token，也可能产生更多费用。'}</p></div>
+          </div>
           <label className="checkbox"><input id="full-doc-consent" type="checkbox" />{t(locale, 'fullDocument')}</label>
           <div className="modal-actions"><button className="secondary" onClick={() => setShowConsent(false)}>{t(locale, 'cancel')}</button><button className="primary" onClick={() => confirmAi((document.getElementById('full-doc-consent') as HTMLInputElement).checked)}>{t(locale, 'enableAi')}</button></div>
         </section>

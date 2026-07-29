@@ -10,7 +10,9 @@ In the browser, local data is stored in IndexedDB and local storage. In the Wind
 
 ## Optional AI
 
-AI is off by default. Enabling it requires an explicit action. Sending an entire document requires a separate checkbox. When a user invokes AI, the selected text or approved document and the minimum required writing settings may be sent to the configured service. The provider may retain or bill for requests under its own terms.
+AI is off by default. While it is off, WriteMelo makes no AI API requests and creates no AI provider charges. Local completion, spelling, diagnostics, outlines, and revision history remain available.
+
+Enabling question-only mode does not send the document. When the user asks a question, only that question and the minimum required request settings are sent to the configured provider. Attaching the current full document requires a separate checkbox; while enabled, every AI question also sends the active document until the user turns the option off. Any actual AI request may consume provider quota or incur charges under the provider's terms, and full-document requests generally use more tokens.
 
 The current beta UI implements this consent boundary. A production AI provider must not be enabled until its endpoint, retention terms, regional routing, and account controls are configured and reviewed.
 

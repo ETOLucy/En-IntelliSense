@@ -21,8 +21,10 @@ test('applies a local correction without AI', async ({ page }) => {
 
 test('requires explicit consent before enabling AI', async ({ page }) => {
   let chatRequests = 0;
+  const payloads: Array<{ message: string; context: string; selection: string }> = [];
   await page.route('**/api/chat', async route => {
     chatRequests += 1;
+    payloads.push(route.request().postDataJSON() as { message: string; context: string; selection: string });
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ reply: 'Use a concise opening.' }) });
   });
   await page.getByRole('button', { name: 'AI', exact: true }).click();
@@ -36,6 +38,19 @@ test('requires explicit consent before enabling AI', async ({ page }) => {
   await page.getByRole('button', { name: '询问 AI' }).click();
   await expect(page.getByText('Use a concise opening.')).toBeVisible();
   expect(chatRequests).toBe(1);
+  expect(payloads[0]).toMatchObject({
+    message: 'How can I improve the opening?',
+    context: '',
+    selection: '',
+  });
+
+  await page.getByRole('button', { name: '写作设置' }).last().click();
+  await page.getByRole('dialog').getByRole('checkbox').check();
+  await page.getByRole('dialog').getByRole('button', { name: '启用 AI' }).click();
+  await page.getByLabel('AI question').fill('Review the complete email.');
+  await page.getByRole('button', { name: '询问 AI' }).click();
+  await expect.poll(() => chatRequests).toBe(2);
+  expect(payloads[1]?.context).toContain('Dear Alex,');
 });
 
 test('mobile editor starts with the inspector closed', async ({ page }) => {

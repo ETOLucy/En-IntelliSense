@@ -81,11 +81,11 @@ Every screenshot below comes from the working application. You can reproduce the
 
 **What you do:** Open **AI**, choose Enable AI, and decide separately whether the full document may be sent.
 
-**What happens:** AI stays unavailable until you confirm. Full-document access is not bundled into the basic consent.
+**What happens:** The dialog separates three states: AI off makes zero API calls and creates no provider charges; question-only sends only what you type; full-document mode attaches the active document to every question until disabled.
 
 **What you gain:** Local tools remain useful without an account or AI, while deeper review is available only when you request it.
 
-**Network / AI:** Still no request at this step. A request occurs only after consent and after you ask a question.
+**Network / AI:** Opening settings or enabling on-demand mode sends nothing. A provider is called only when you actually ask, which may consume quota or incur charges; full-document requests generally use more tokens.
 
 ## 7. You want to choose the AI provider and control the cost
 

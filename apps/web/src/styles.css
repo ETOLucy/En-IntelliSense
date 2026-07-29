@@ -114,6 +114,11 @@ button { color: inherit; }
 .modal { width: min(440px, 100%); background: #fff; border: 1px solid #c8d2cd; padding: 24px; }
 .modal h2 { font-size: 18px; margin: 9px 0; }
 .modal-icon { width: 40px; height: 40px; display: grid; place-items: center; background: #e2eee8; color: #185a40; }
+.consent-levels { display: grid; gap: 10px; margin: 14px 0; }
+.consent-levels > div { border-left: 3px solid #cbd6d1; padding-left: 10px; }
+.consent-levels > div:first-child { border-left-color: #2b7458; }
+.consent-levels strong { font-size: 12px; }
+.consent-levels p { margin: 3px 0 0; }
 .checkbox { display: flex; gap: 8px; align-items: start; font-size: 12px; margin: 18px 0; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
 .loading { height: 100%; display: grid; place-items: center; font-weight: 700; color: #18352d; }
