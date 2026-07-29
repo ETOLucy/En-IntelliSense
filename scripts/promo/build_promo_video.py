@@ -159,7 +159,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("dist/WriteMelo-promo-zh-CN.mp4"))
     args = parser.parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     assets = root / "docs" / "assets"
     frames = root / "build" / "promo-video"
     frames.mkdir(parents=True, exist_ok=True)

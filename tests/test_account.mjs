@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { accountApi, normalizeEmail } from './account-service.js';
+import { accountApi, normalizeEmail } from '../src/cloud/account-service.js';
 
 assert.equal(normalizeEmail('  Learner@Example.COM '), 'learner@example.com');
 assert.equal(normalizeEmail('not-an-email'), '');

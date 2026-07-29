@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
-import worker from './worker.js';
+import worker from '../worker.js';
 import {
   publicModelProviders,
   publicProviderCatalog,
   resolveModelEnvironment,
-} from './model-providers.js';
+} from '../src/cloud/model-providers.js';
 
 function settingsDb(activeProvider) {
   return {

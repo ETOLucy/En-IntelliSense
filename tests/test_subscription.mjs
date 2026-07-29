@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
-import { signSubscriptionToken, SubscriptionGuard, subscriptionLimits, verifySubscriptionToken } from "./subscription-guard.js";
+import { signSubscriptionToken, SubscriptionGuard, subscriptionLimits, verifySubscriptionToken } from "../src/cloud/subscription-guard.js";
 
 const secret = "test-secret-that-is-longer-than-thirty-two-characters";
 const now = 2_000_000_000;

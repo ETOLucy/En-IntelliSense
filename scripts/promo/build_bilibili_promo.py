@@ -74,7 +74,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     work = root / "build" / "bilibili-promo"
     work.mkdir(parents=True, exist_ok=True)
     output = args.output if args.output.is_absolute() else root / args.output

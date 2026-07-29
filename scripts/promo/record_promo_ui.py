@@ -21,7 +21,7 @@ except ModuleNotFoundError:
     import websocket
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 WIDTH = 1920
 HEIGHT = 1080
 FPS = 20

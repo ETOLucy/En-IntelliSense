@@ -195,7 +195,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     input_video = args.input if args.input.is_absolute() else root / args.input
     output_video = args.output if args.output.is_absolute() else root / args.output
     audio_path = root / "build" / "bilibili-promo" / "custom-sfx.wav"

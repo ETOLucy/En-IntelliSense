@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { compareVersions, normalizeCompletion, obsoleteDesktopClient } from './worker.js';
+import { compareVersions, normalizeCompletion, obsoleteDesktopClient } from '../worker.js';
 
 assert.equal(normalizeCompletion('ossible that I should reconsider', 'This is imp', 'word'), 'ossible');
 assert.equal(normalizeCompletion('important because context matters', 'This is imp', 'word'), 'ortant');

@@ -334,7 +334,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("dist/WriteMelo-logo-animation.mp4"))
     args = parser.parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     output = args.output if args.output.is_absolute() else root / args.output
     output.parent.mkdir(parents=True, exist_ok=True)
     work = root / "build" / "logo-animation"

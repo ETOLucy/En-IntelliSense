@@ -1,6 +1,6 @@
-import { accountApi, authenticateSession, consumeAccountUsage } from './account-service.js';
-import { resolveModelEnvironment } from './model-providers.js';
-export { SubscriptionGuard } from './subscription-guard.js';
+import { accountApi, authenticateSession, consumeAccountUsage } from './src/cloud/account-service.js';
+import { resolveModelEnvironment } from './src/cloud/model-providers.js';
+export { SubscriptionGuard } from './src/cloud/subscription-guard.js';
 
 const securityHeaders = {
   'x-content-type-options': 'nosniff',
