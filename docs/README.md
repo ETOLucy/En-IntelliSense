@@ -10,6 +10,7 @@
 ## Product and architecture
 
 - `product/`: 02 product, provider, quota, and commerce planning
+- `product/ARCHITECTURE.md` / `product/ARCHITECTURE.zh-CN.md`: modular-monolith architecture and migration sequence
 - `ARCHITECTURE.md`: runtime architecture
 - `OPEN_SOURCE_BOUNDARIES.md`: public and private data boundaries
 - `SECURITY.md`: security design
@@ -25,4 +26,3 @@
 
 - `marketing/`: platform copy, video scripts, and promotion playbooks
 - `assets/`: documentation and Store images
-

@@ -5,7 +5,20 @@
   "scripts": {
     "debug": "powershell -ExecutionPolicy Bypass -File ./scripts/start_debug.ps1",
     "account:debug": "powershell -ExecutionPolicy Bypass -File ./scripts/start_account_debug.ps1",
-    "test": "node tests/test_completion.js && node tests/test_worker.mjs && node tests/test_account.mjs && node tests/test_model_providers.mjs && node tests/test_subscription.mjs && node tests/test_edgeone_proxy.mjs && node tests/test_i18n.mjs",
+    "typecheck": "tsc --noEmit",
+    "build:worker": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/build_worker.ps1",
+    "test": "npm run typecheck && npm run test:unit && npm run test:hono",
+    "test:unit": "node tests/test_completion.js && node tests/test_worker.mjs && node tests/test_account.mjs && node tests/test_model_providers.mjs && node tests/test_subscription.mjs && node tests/test_edgeone_proxy.mjs && node tests/test_i18n.mjs",
+    "test:hono": "vitest run tests/hono",
     "privacy": "powershell -ExecutionPolicy Bypass -File ./scripts/check_privacy.ps1"
+  },
+  "dependencies": {
+    "hono": "^4.12.32"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260729.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.115.0"
   }
 }
