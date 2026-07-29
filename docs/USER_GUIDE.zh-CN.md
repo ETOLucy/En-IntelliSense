@@ -1,4 +1,4 @@
-# En-IntelliSense 使用指南
+# 写美了（WriteMelo）使用指南
 
 [English](USER_GUIDE.md)
 
@@ -33,7 +33,7 @@ Windows 桌面版启动后直接进入写作界面，用户不需要另外安装
 
 草稿和已完成文档保存在当前 Windows 用户的本地应用数据中。第一版不提供云同步。
 
-桌面版可以打开和保存 UTF-8 编码的 `.txt`、`.md`、`.markdown` 文件。使用 **另存为** 可以保留独立副本。如果文件被其他应用修改，En-IntelliSense 会在覆盖前提示。
+桌面版可以打开和保存 UTF-8 编码的 `.txt`、`.md`、`.markdown` 文件。使用 **另存为** 可以保留独立副本。如果文件被其他应用修改，WriteMelo 会在覆盖前提示。
 
 ## 打开邮件应用
 

@@ -75,7 +75,7 @@ class DocumentApi:
                 path = None if save_as else self._current_path
                 signature = self._current_signature
             if path is not None and path.exists() and signature and self._signature(path) != signature and not force:
-                return {"ok": False, "conflict": True, "error": "The file changed outside En-IntelliSense."}
+                return {"ok": False, "conflict": True, "error": "The file changed outside WriteMelo."}
             if path is None:
                 safe_name = Path(str(suggested_name)).name
                 if Path(safe_name).suffix.lower() not in {".txt", ".md", ".markdown"}:
@@ -133,7 +133,7 @@ def run():
 
     try:
         window = webview.create_window(
-            "En-IntelliSense",
+            "WriteMelo",
             f"http://127.0.0.1:{port}",
             width=1440,
             height=900,

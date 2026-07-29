@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/logo-mark.svg" width="104" alt="En-IntelliSense logo mark" />
+  <img src="docs/assets/writemelo-logo.svg" width="300" alt="WriteMelo" />
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>Context-aware English completion, review, and rewriting for learners.</p>
   <p>
@@ -28,15 +28,17 @@
 
 ---
 
-En-IntelliSense understands the intent behind the whole draft before it suggests the next word. It combines word, phrase, and sentence completion with contextual review, exact issue highlighting, bilingual explanations, and one-click repairs.
+WriteMelo understands the intent behind the whole draft before it suggests the next word. It combines word, phrase, and sentence completion with contextual review, exact issue highlighting, bilingual explanations, and one-click repairs.
 
 <a id="download"></a>
 
 ## Download
 
-<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="360" alt="Download from the Microsoft Store" />
+<a href="https://apps.microsoft.com/detail/9NPGS9N22396">
+  <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="360" alt="Download from the Microsoft Store" />
+</a>
 
-**Microsoft Store:** Coming soon. The link will be enabled after certification.
+**Microsoft Store:** The product page will become available automatically after certification and publishing.
 
 - **GitHub Releases**
 
@@ -46,19 +48,19 @@ New users can follow the [User Guide](docs/USER_GUIDE.md) for setup and everyday
 
 ## Demo
 
-![En-IntelliSense writing workspace](docs/assets/demo.png)
+![WriteMelo writing workspace](docs/assets/demo.png)
 
 ### Interface language
 
 Choose from the 11 interface languages currently included in the app, or follow the Windows language.
 
-![En-IntelliSense interface language selection](docs/assets/demo-language.png)
+![WriteMelo interface language selection](docs/assets/demo-language.png)
 
 ### Bring your own AI service
 
 Connect a compatible model endpoint with your own API key and model ID. The key stays on the Windows device and is protected with Windows encryption.
 
-![En-IntelliSense AI service configuration](docs/assets/demo-ai-service.png)
+![WriteMelo AI service configuration](docs/assets/demo-ai-service.png)
 
 ## Features
 
@@ -78,7 +80,7 @@ Connect a compatible model endpoint with your own API key and model ID. The key 
 
 ## AI model, cost, and privacy
 
-En-IntelliSense does not include a language model, shared API key, or free AI credit. AI completion, review, rewriting, and chat require each user to configure their own OpenAI-compatible model provider. Any fees, rate limits, retention rules, and privacy terms belong to that provider; the project does not provide or endorse unofficial relay services.
+WriteMelo does not include a language model, shared API key, or free AI credit. AI completion, review, rewriting, and chat require each user to configure their own OpenAI-compatible model provider. Any fees, rate limits, retention rules, and privacy terms belong to that provider; the project does not provide or endorse unofficial relay services.
 
 Without an API key, the app still opens and supports local word completion, drafts, finished documents, and email handoff. The coach displays `Add API key for AI`; model-powered phrase/sentence completion, review, polish, and chat remain unavailable until configuration is added.
 
@@ -120,7 +122,7 @@ Open `http://127.0.0.1:8000`.
 
 ## Windows desktop app
 
-For normal use, download `En-IntelliSense-Setup.exe` from the [latest GitHub release](https://github.com/ETOLucy/En-IntelliSense/releases/latest). The installer creates a Start menu shortcut and can optionally create a desktop shortcut. `En-IntelliSense-Portable.zip` remains available for users who do not want to install it.
+For normal use, download `WriteMelo-Setup.exe` from the [latest GitHub release](https://github.com/ETOLucy/En-IntelliSense/releases/latest). The installer creates a Start menu shortcut and can optionally create a desktop shortcut. `WriteMelo-Portable.zip` remains available for users who do not want to install it.
 
 > **Signing status:** The installer can be built and used without a certificate, but Windows may show an unknown-publisher or SmartScreen warning. The build supports adding a trusted timestamped signature to both the application and installer later.
 
@@ -130,9 +132,9 @@ The following command is only for developers who changed the source and need to 
 powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
 ```
 
-The installer is written to `dist/En-IntelliSense-Setup.exe`; the portable build is `dist/En-IntelliSense-Portable.zip`. If Inno Setup 6 is not installed locally, the script still builds the portable ZIP and skips the installer. The app bundles the local Python service and frontend, chooses an available loopback port automatically, and opens the workspace in a native WebView2 window. Python is not required on the target computer; Microsoft Edge WebView2 Runtime is required and is already included with current Windows 10/11 installations.
+The installer is written to `dist/WriteMelo-Setup.exe`; the portable build is `dist/WriteMelo-Portable.zip`. If Inno Setup 6 is not installed locally, the script still builds the portable ZIP and skips the installer. The app bundles the local Python service and frontend, chooses an available loopback port automatically, and opens the workspace in a native WebView2 window. Python is not required on the target computer; Microsoft Edge WebView2 Runtime is required and is already included with current Windows 10/11 installations.
 
-API keys and maintainer-owned model resources are never embedded in the executable. The first release accepts a compatible provider URL, the user's API key, one model ID, and API type, with a connection test before saving. The key is protected for the current Windows account with Windows DPAPI, stored in `%APPDATA%\En-IntelliSense\config.json`, and applied immediately. Paid hosted plans are not included in the first release. Environment variables and `.env` remain supported for development.
+API keys and maintainer-owned model resources are never embedded in the executable. The first release accepts a compatible provider URL, the user's API key, one model ID, and API type, with a connection test before saving. The key is protected for the current Windows account with Windows DPAPI, stored in `%APPDATA%\WriteMelo\config.json`, and applied immediately. Paid hosted plans are not included in the first release. Environment variables and `.env` remain supported for development.
 
 To sign later, set `WINDOWS_CERTIFICATE_PATH`, `WINDOWS_CERTIFICATE_PASSWORD`, and optionally `WINDOWS_TIMESTAMP_URL` before running the same build command. GitHub Actions uses the `WINDOWS_CERTIFICATE_BASE64` and `WINDOWS_CERTIFICATE_PASSWORD` repository secrets.
 

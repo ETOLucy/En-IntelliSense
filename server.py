@@ -432,7 +432,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
             for item in history if isinstance(item, dict)
         )
         instructions = (
-            "You are En-IntelliSense's English writing tutor. Help a learner understand and improve their own writing. "
+            "You are WriteMelo's English writing tutor. Help a learner understand and improve their own writing. "
             "Reply primarily in concise Chinese, keeping English examples where useful. Explain tone and nuance plainly, adapt to the learner, "
             "and never replace their whole draft unless asked. When suggesting English, give an immediately usable version."
         ).replace("Chinese", language)
@@ -504,7 +504,7 @@ class EnWriteHandler(SimpleHTTPRequestHandler):
         return response.json().get("choices", [{}])[0].get("message", {}).get("content", "")
 
     def model_headers(self):
-        return {"Authorization": f"Bearer {api_key_value()}", "Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0 En-IntelliSense/1.0"}
+        return {"Authorization": f"Bearer {api_key_value()}", "Content-Type": "application/json", "Accept": "application/json", "User-Agent": "WriteMelo/1.1"}
 
     def model_post(self, url, **kwargs):
         last_error = None
@@ -654,5 +654,5 @@ def api_key_value():
 
 
 if __name__ == "__main__":
-    print(f"En-IntelliSense running at http://{HOST}:{PORT}")
+    print(f"WriteMelo running at http://{HOST}:{PORT}")
     ThreadingHTTPServer((HOST, PORT), EnWriteHandler).serve_forever()

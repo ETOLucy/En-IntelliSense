@@ -1,6 +1,6 @@
 # Open-source and private-data boundaries
 
-En-IntelliSense can publish its application, Worker, admin-console, schema, and risk-control source code. Security must not depend on hiding source code. Authentication, authorization, server-side Store verification, rate limits, least-privilege access, secret rotation, and audit trails protect production.
+WriteMelo can publish its application, Worker, admin-console, schema, and risk-control source code. Security must not depend on hiding source code. Authentication, authorization, server-side Store verification, rate limits, least-privilege access, secret rotation, and audit trails protect production.
 
 The following must never be committed to this public repository:
 
@@ -8,7 +8,7 @@ The following must never be committed to this public repository:
 - D1/SQLite database files, database exports, backups, audit exports, analytics exports, or raw logs.
 - Microsoft Store receipts, entitlement payloads, refund records, or customer transaction exports.
 - Real `.env`, `.dev.vars`, `store/partner-center.json`, production Wrangler configuration, API keys, signing keys, admin secrets, Azure credentials, certificates, or certificate passwords.
-- `%APPDATA%\En-IntelliSense\config.json` or any DPAPI-protected user configuration copied from a machine.
+- `%APPDATA%\WriteMelo\config.json` or any DPAPI-protected user configuration copied from a machine.
 
 Safe to publish:
 

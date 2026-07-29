@@ -36,6 +36,9 @@ scripts/mint_subscription_token.mjs
 docs/GLOBAL_RELEASE_PLAN.md
 docs/PRODUCTION_READINESS.md
 docs/SUBSCRIPTION_OPERATIONS.md
+docs/listingData-*.csv
+docs/store-listing-import-*.zip
+docs/store-listing-import-ready/
 public/admin.css
 public/admin.html
 public/admin.js

@@ -2,9 +2,9 @@
   #define MyAppVersion "0.0.0"
 #endif
 
-#define MyAppName "En-IntelliSense"
-#define MyAppPublisher "En-IntelliSense"
-#define MyAppExeName "En-IntelliSense.exe"
+#define MyAppName "WriteMelo"
+#define MyAppPublisher "WriteMelo"
+#define MyAppExeName "WriteMelo.exe"
 
 [Setup]
 AppId={{A7294473-96CA-4A82-B996-977BB6BD55AA}
@@ -16,7 +16,7 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile=..\LICENSE
 OutputDir=..\dist
-OutputBaseFilename=En-IntelliSense-Setup
+OutputBaseFilename=WriteMelo-Setup
 SetupIconFile=..\desktop-assets\app-icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2
@@ -37,7 +37,7 @@ Name: "chinesesimp"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\dist\En-IntelliSense\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\dist\WriteMelo\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

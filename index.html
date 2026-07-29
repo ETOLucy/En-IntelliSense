@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="En-IntelliSense is a context-aware English writing workspace with autocomplete and inline review." />
-    <title>En-IntelliSense</title>
+    <meta name="description" content="WriteMelo is a context-aware English writing workspace with autocomplete and inline review." />
+    <title>WriteMelo</title>
     <link rel="icon" href="logo.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <a class="brand" href="#" aria-label="En-IntelliSense home"><img class="brand-mark" src="logo.svg" alt="" /><span>En-IntelliSense</span></a>
+        <a class="brand" href="#" aria-label="WriteMelo home"><img class="brand-mark" src="logo.svg" alt="" /><span>WriteMelo</span></a>
         <div class="draft-state"><span class="saved-dot"></span><span id="saveStatus">Saved in this browser</span></div>
         <div class="top-actions">
-          <button class="share-button" id="shareButton" type="button" title="Copy a link to En-IntelliSense">Share</button>
+          <button class="share-button" id="shareButton" type="button" title="Copy a link to WriteMelo">Share</button>
           <button class="coach-toggle" id="coachToggle" type="button" aria-controls="writingCoach" aria-expanded="true">Coach</button>
           <button class="icon-btn" id="preferencesButton" type="button" aria-label="Language and region" title="Language and region">&#127760;</button>
           <button class="icon-btn hidden" id="settingsButton" type="button" aria-label="Plans and AI service" title="Plans and AI service">&#9881;</button>
@@ -220,12 +220,12 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
       <button class="modal-backdrop" id="settingsBackdrop" type="button" aria-label="Close plans and AI service"></button>
       <section class="settings-dialog plan-dialog">
         <div class="settings-head">
-          <div><span>EN-INTELLISENSE</span><h2 id="settingsModalTitle" data-i18n="ai_service">AI service</h2></div>
+          <div><span>WRITEMELO</span><h2 id="settingsModalTitle" data-i18n="ai_service">AI service</h2></div>
           <button id="closeSettings" type="button" aria-label="Close plans and AI service">&times;</button>
         </div>
         <form id="settingsForm">
           <div id="byokProviderFields" class="settings-mode-panel">
-            <p class="developer-note" data-i18n="free_description">Use your own compatible model service and API key. En-IntelliSense does not charge for model usage.</p>
+            <p class="developer-note" data-i18n="free_description">Use your own compatible model service and API key. WriteMelo does not charge for model usage.</p>
             <label for="modelBaseUrl" data-i18n="api_endpoint">API endpoint</label>
             <input id="modelBaseUrl" type="url" autocomplete="off" placeholder="https://api.example.com" />
             <label for="modelApiKey" data-i18n="api_key">API key</label>
@@ -233,7 +233,7 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
               <input id="modelApiKey" type="password" autocomplete="off" placeholder="example-api-key" />
               <button id="toggleApiKey" type="button" aria-label="Show API key" title="Show API key" data-i18n="show">Show</button>
             </div>
-            <small id="apiKeyHelp" data-i18n="api_key_help">Your API key stays on this computer and is protected by Windows encryption. It is never uploaded to En-IntelliSense servers.</small>
+            <small id="apiKeyHelp" data-i18n="api_key_help">Your API key stays on this computer and is protected by Windows encryption. It is never uploaded to WriteMelo servers.</small>
             <label for="modelName" data-i18n="main_model">Model ID</label>
             <input id="modelName" placeholder="example-model" />
             <label for="modelApiStyle" data-i18n="api_protocol">Compatible API protocol</label>

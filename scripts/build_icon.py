@@ -94,7 +94,7 @@ def build_social_preview():
         width=point(2),
     )
     draw_mark(draw, left=112, top=112, size=416)
-    draw.text((point(570), point(214)), "En-IntelliSense", fill=INK, font=font(54, bold=True))
+    draw.text((point(570), point(214)), "WriteMelo", fill=INK, font=font(54, bold=True))
     draw.text((point(574), point(300)), "Context-aware English writing", fill=MUTED, font=font(25))
     draw.line((point(574), point(364), point(1080), point(364)), fill="#D9E2DD", width=point(3))
     draw.line((point(574), point(410), point(930), point(410)), fill=GOLD, width=point(8))

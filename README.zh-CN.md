@@ -1,5 +1,6 @@
 <div align="center">
-  <img src="docs/assets/logo-mark.svg" width="104" alt="En-IntelliSense Logo Mark" />
+  <img src="docs/assets/writemelo-logo.svg" width="300" alt="写美了（WriteMelo）" />
+  <p><strong>写美了</strong></p>
   <p><strong>先理解你想表达什么，再帮你写得更自然。</strong></p>
   <p>面向英语学习者的上下文智能补全、审查与润色工具。</p>
   <p>
@@ -28,13 +29,15 @@
 
 ---
 
-En-IntelliSense 会先结合整篇草稿理解用户真正想表达的意思，再给出下一步建议。它将单词、短语和句子补全，与上下文审查、原文问题标记、双语解释和一键修缮整合在同一个写作界面中。
+WriteMelo 会先结合整篇草稿理解用户真正想表达的意思，再给出下一步建议。它将单词、短语和句子补全，与上下文审查、原文问题标记、双语解释和一键修缮整合在同一个写作界面中。
 
 ## 下载
 
-<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="360" alt="从 Microsoft Store 下载" />
+<a href="https://apps.microsoft.com/detail/9NPGS9N22396">
+  <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="360" alt="从 Microsoft Store 下载" />
+</a>
 
-**Microsoft Store：** 即将上线。通过微软认证后启用商店链接。
+**Microsoft Store：** 商品页将在通过认证并完成发布后自动生效。
 
 - **GitHub Releases**
 
@@ -44,19 +47,19 @@ En-IntelliSense 会先结合整篇草稿理解用户真正想表达的意思，�
 
 ## Demo
 
-![En-IntelliSense 英语写作工作区](docs/assets/demo.png)
+![WriteMelo 英语写作工作区](docs/assets/demo.png)
 
 ### 界面语言
 
 可以使用应用目前提供的 11 种界面语言，也可以跟随 Windows 系统语言。
 
-![En-IntelliSense 界面语言选择](docs/assets/demo-language.png)
+![WriteMelo 界面语言选择](docs/assets/demo-language.png)
 
 ### 接入自己的 AI 服务
 
 填写兼容模型的 API 接口地址、自己的 API Key 和模型 ID。API Key 仅保存在 Windows 设备上，并由 Windows 加密保护。
 
-![En-IntelliSense AI 服务配置](docs/assets/demo-ai-service.png)
+![WriteMelo AI 服务配置](docs/assets/demo-ai-service.png)
 
 ## 功能
 
@@ -72,7 +75,7 @@ En-IntelliSense 会先结合整篇草稿理解用户真正想表达的意思，�
 
 ## AI 模型、费用与隐私
 
-En-IntelliSense 不包含语言模型、共享 API Key 或免费 AI 额度。AI 短语/句子补全、审查、润色和聊天功能需要每位用户配置自己的 OpenAI 兼容模型服务。费用、限速、数据保留规则和隐私条款均由用户选择的提供商决定；本项目不提供或推荐来源不明的中转站。
+WriteMelo 不包含语言模型、共享 API Key 或免费 AI 额度。AI 短语/句子补全、审查、润色和聊天功能需要每位用户配置自己的 OpenAI 兼容模型服务。费用、限速、数据保留规则和隐私条款均由用户选择的提供商决定；本项目不提供或推荐来源不明的中转站。
 
 没有配置 API Key 时，应用仍可打开，本地单词补全、草稿、Finished 文档和邮件跳转均可使用；右侧会显示 `Add API key for AI`。模型驱动的补全、审查、润色和聊天会保持不可用，直到用户完成配置。
 
@@ -106,7 +109,7 @@ python server.py
 
 ## Windows 桌面版
 
-普通使用时，从 [GitHub 最新版本](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载 `En-IntelliSense-Setup.exe`。安装程序会创建开始菜单快捷方式，并可选择创建桌面快捷方式；不需要终端、Python 或任何构建命令。不希望安装时，也可以下载 `En-IntelliSense-Portable.zip`。
+普通使用时，从 [GitHub 最新版本](https://github.com/ETOLucy/En-IntelliSense/releases/latest) 下载 `WriteMelo-Setup.exe`。安装程序会创建开始菜单快捷方式，并可选择创建桌面快捷方式；不需要终端、Python 或任何构建命令。不希望安装时，也可以下载 `WriteMelo-Portable.zip`。
 
 > **签名状态：** 没有配置签名证书时，安装包仍可生成和使用，但 Windows 可能显示“未知发布者”或 SmartScreen 警告。构建脚本支持稍后为主程序和安装包添加签名及可信时间戳。
 
@@ -116,9 +119,9 @@ python server.py
 powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
 ```
 
-安装版产物为 `dist/En-IntelliSense-Setup.exe`，便携版为 `dist/En-IntelliSense-Portable.zip`。本地没有安装 Inno Setup 6 时，脚本仍会构建便携版并跳过安装包。应用会把本地 Python 服务和前端一起打包，启动时自动选择空闲的回环端口，并在原生 WebView2 窗口中打开工作区。运行成品不要求用户另外安装 Python；当前 Windows 10/11 通常已自带所需的 Microsoft Edge WebView2 Runtime。
+安装版产物为 `dist/WriteMelo-Setup.exe`，便携版为 `dist/WriteMelo-Portable.zip`。本地没有安装 Inno Setup 6 时，脚本仍会构建便携版并跳过安装包。应用会把本地 Python 服务和前端一起打包，启动时自动选择空闲的回环端口，并在原生 WebView2 窗口中打开工作区。运行成品不要求用户另外安装 Python；当前 Windows 10/11 通常已自带所需的 Microsoft Edge WebView2 Runtime。
 
-API Key 和维护者个人模型资源都不会被写进程序。桌面版首次启动会打开 Model settings，用户可以填写 OpenAI 或兼容服务的地址、API Key、模型名称和 API 类型，并在保存前测试连接。API Key 使用 Windows DPAPI 为当前 Windows 账户加密，配置保存在 `%APPDATA%\En-IntelliSense\config.json`，保存后立即生效。环境变量和 `.env` 仍保留为开发者兼容入口。
+API Key 和维护者个人模型资源都不会被写进程序。桌面版首次启动会打开 Model settings，用户可以填写 OpenAI 或兼容服务的地址、API Key、模型名称和 API 类型，并在保存前测试连接。API Key 使用 Windows DPAPI 为当前 Windows 账户加密，配置保存在 `%APPDATA%\WriteMelo\config.json`，保存后立即生效。环境变量和 `.env` 仍保留为开发者兼容入口。
 
 以后取得 PFX 代码签名证书时，可设置 `WINDOWS_CERTIFICATE_PATH`、`WINDOWS_CERTIFICATE_PASSWORD` 和可选的 `WINDOWS_TIMESTAMP_URL` 后运行同一个构建命令。GitHub Actions 对应使用 `WINDOWS_CERTIFICATE_BASE64` 与 `WINDOWS_CERTIFICATE_PASSWORD` 仓库 Secret。
 

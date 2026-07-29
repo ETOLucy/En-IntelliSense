@@ -1,4 +1,4 @@
-# En-IntelliSense User Guide
+# WriteMelo User Guide
 
 [简体中文](USER_GUIDE.zh-CN.md)
 
@@ -33,7 +33,7 @@ The same model is used for completion, review, polish, explanation, and chat. Th
 
 Drafts and finished documents are stored in the current Windows user's local app data. Version 1 does not provide cloud synchronization.
 
-The desktop app can open and save UTF-8 `.txt`, `.md`, and `.markdown` files. Use **Save as** to keep an independent copy. If a file changes in another application, En-IntelliSense asks before overwriting it.
+The desktop app can open and save UTF-8 `.txt`, `.md`, and `.markdown` files. Use **Save as** to keep an independent copy. If a file changes in another application, WriteMelo asks before overwriting it.
 
 ## Email handoff
 

@@ -40,8 +40,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "${{ github.ref_name }}" `
-            "dist/En-IntelliSense-Setup.exe#Windows installer" `
-            "dist/En-IntelliSense-Portable.zip#Portable version" `
+            "dist/WriteMelo-Setup.exe#Windows installer" `
+            "dist/WriteMelo-Portable.zip#Portable version" `
             "dist/SHA256SUMS.txt#SHA-256 checksums" `
-            --title "En-IntelliSense ${{ github.ref_name }}" `
+            --title "WriteMelo ${{ github.ref_name }}" `
             --generate-notes

@@ -9,10 +9,10 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 $venvRoot = Join-Path $projectRoot ".venv-build"
 $python = Join-Path $venvRoot "Scripts\python.exe"
 $distRoot = Join-Path $projectRoot "dist"
-$appRoot = Join-Path $distRoot "En-IntelliSense"
-$appExe = Join-Path $appRoot "En-IntelliSense.exe"
-$portableZip = Join-Path $distRoot "En-IntelliSense-Portable.zip"
-$setupExe = Join-Path $distRoot "En-IntelliSense-Setup.exe"
+$appRoot = Join-Path $distRoot "WriteMelo"
+$appExe = Join-Path $appRoot "WriteMelo.exe"
+$portableZip = Join-Path $distRoot "WriteMelo-Portable.zip"
+$setupExe = Join-Path $distRoot "WriteMelo-Setup.exe"
 $temporaryCertificate = $null
 
 function Find-SignTool {
@@ -121,7 +121,7 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw "Icon generation failed."
     }
-    & $python -m PyInstaller --noconfirm --clean (Join-Path $projectRoot "En-IntelliSense.spec")
+    & $python -m PyInstaller --noconfirm --clean (Join-Path $projectRoot "WriteMelo.spec")
     if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $appExe)) {
         throw "PyInstaller did not produce the Windows application."
     }
@@ -132,7 +132,7 @@ try {
 
     $iscc = Find-InnoCompiler
     if ($iscc) {
-        & $iscc "/DMyAppVersion=$Version" (Join-Path $projectRoot "installer\En-IntelliSense.iss")
+        & $iscc "/DMyAppVersion=$Version" (Join-Path $projectRoot "installer\WriteMelo.iss")
         if ($LASTEXITCODE -ne 0) {
             throw "Inno Setup failed."
         }
