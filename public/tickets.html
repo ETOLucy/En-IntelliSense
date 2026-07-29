@@ -1,0 +1,34 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>工单 - WriteMelo</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="support.css?v=20260729-10">
+</head>
+<body data-page="tickets">
+  <header>
+    <a class="identity identity-link" href="index.html" data-writing-link><img src="logo.svg" alt=""><div><strong>WriteMelo</strong><span>账户中心</span></div></a>
+    <nav class="portal-nav" aria-label="用户中心"><a href="index.html" data-writing-link>写作</a><a href="plans.html">套餐</a><a href="support.html">账户</a><a class="active" aria-current="page" href="tickets.html">工单</a></nav>
+    <button id="signOutButton" class="secondary hidden" type="button">退出</button>
+  </header>
+  <main>
+    <section id="loginSection" class="auth-shell">
+      <div class="auth-context"><p class="eyebrow">WRITEMELO SUPPORT</p><h1>登录后联系支持</h1><p class="lead">工单与账号绑定，方便你持续查看处理进度和历史回复。</p></div>
+      <div class="auth-panel"><div class="auth-progress"><span id="emailStep" class="active"><b>1</b> 邮箱</span><i></i><span id="codeStep"><b>2</b> 验证</span></div><div class="auth-heading"><h2 id="authTitle">登录或注册</h2><p id="authDescription">输入邮箱获取验证码。首次验证成功后将自动创建账号。</p></div><form id="emailForm"><label for="email">邮箱地址</label><input id="email" type="email" autocomplete="email" placeholder="name@example.com" required><button class="auth-submit" type="submit">继续</button><div id="turnstileContainer" class="turnstile-container hidden"></div></form><form id="codeForm" class="hidden"><label for="code">六位验证码</label><input id="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required><button class="auth-submit" type="submit">验证并登录</button><button id="changeEmailButton" class="text-button" type="button">返回并更换邮箱</button></form><p id="loginStatus" class="status"></p><p class="auth-privacy">无需设置密码，也无需单独注册。</p></div>
+    </section>
+    <section id="pageContent" class="hidden portal-page">
+      <div class="page-heading split"><div><p class="eyebrow">SUPPORT</p><h1>我的工单</h1><p>查看处理状态和完整对话记录。</p></div><button id="newTicketButton" type="button">新建工单</button></div>
+      <p id="ticketStatus" class="status" aria-live="polite"></p>
+      <div class="ticket-list" id="ticketRows"></div>
+      <div id="ticketEmpty" class="empty hidden"><strong>还没有工单</strong><span>遇到账号、模型或付款问题时，可以在这里联系支持。</span></div>
+    </section>
+  </main>
+  <dialog id="newTicketDialog"><form id="newTicketForm"><div class="dialog-head"><h2>新建工单</h2><button class="icon-button" data-close="newTicketDialog" type="button" aria-label="关闭">&times;</button></div><label for="ticketCategory">分类</label><select id="ticketCategory" required><option value="technical">技术问题</option><option value="model">模型服务</option><option value="account">账号</option><option value="billing">收费与额度</option><option value="privacy">隐私与数据</option><option value="feedback">建议</option><option value="other">其他</option></select><label for="ticketSubject">主题</label><input id="ticketSubject" maxlength="120" minlength="5" required><label for="ticketBody">问题描述</label><textarea id="ticketBody" rows="8" maxlength="5000" minlength="10" required></textarea><p class="field-note">请勿发送 API Key、密码或包含隐私的真实邮件内容。</p><p id="newTicketStatus" class="status"></p><div class="dialog-actions"><button class="secondary" data-close="newTicketDialog" type="button">取消</button><button type="submit">提交工单</button></div></form></dialog>
+  <dialog id="ticketDialog"><div class="dialog-content"><div class="dialog-head"><div><p class="eyebrow" id="ticketDetailMeta"></p><h2 id="ticketDetailSubject"></h2></div><button class="icon-button" data-close="ticketDialog" type="button" aria-label="关闭">&times;</button></div><div id="ticketMessages" class="message-list"></div><form id="replyForm"><label for="replyBody">追加回复</label><textarea id="replyBody" rows="4" maxlength="5000" required></textarea><p id="replyStatus" class="status"></p><div class="dialog-actions"><button id="closeTicketButton" class="danger-button" type="button">关闭工单</button><button type="submit">发送回复</button></div></form><div id="closedTicketNote" class="closed-note hidden"><p>此工单已关闭，不能继续回复。支持人员仍可在必要时重新打开。</p><button id="archiveTicketButton" class="danger-button" type="button">从我的列表移除</button></div></div></dialog>
+  <script src="portal-links.js?v=20260729-7"></script>
+  <script src="support.js?v=20260729-10"></script>
+</body>
+</html>

@@ -100,15 +100,13 @@ try:
     evaluate(socket, 4, "document.querySelector('#coachToggle').click(); document.querySelector('#moreButton').click();")
     if not evaluate(socket, 5, "!document.querySelector('#writingCoach').classList.contains('closed') && !document.querySelector('#documentMenu').classList.contains('hidden') && document.querySelectorAll('#documentMenu [data-doc-action]').length === 7 && document.querySelectorAll('#documentMenu [data-desktop-file]:not(.hidden)').length === 0"):
         raise RuntimeError("Document menu actions are incomplete")
-    evaluate(socket, 6, "document.querySelector('#moreButton').click(); document.querySelector('#finishButton').click();")
-    if not evaluate(socket, 7, "!document.querySelector('#emailModal').classList.contains('hidden') && document.querySelector('#emailRecipientInput').type === 'email' && document.querySelector('#openDefaultEmail') && document.querySelectorAll('[data-email-provider]').length === 0 && document.querySelector('label[for=\"emailRecipientInput\"]').textContent.includes('To')"):
-        raise RuntimeError("Email handoff did not open")
-    email_screenshot = command(socket, 100, "Page.captureScreenshot", {"format": "png"})
-    (root / "email-ui-check.png").write_bytes(base64.b64decode(email_screenshot["data"]))
-    evaluate(socket, 8, "window.pywebview = { api: { open_external: async url => { window.__openedEmailUrl = url; return { ok: true }; } } }; Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: text => { window.__copiedEmail = text; return Promise.resolve(); } } }); document.querySelector('#openDefaultEmail').click();")
+    evaluate(socket, 6, "document.querySelector('#moreButton').click(); Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: text => { window.__copiedDocument = text; return Promise.resolve(); } } }); document.querySelector('#copyDocumentButton').click();")
     time.sleep(.2)
-    if not evaluate(socket, 9, "window.__openedEmailUrl.startsWith('mailto:emma%40example.com') && window.__openedEmailUrl.includes('subject=Greetings%20from%20Shanghai') && window.__copiedEmail.includes('To: emma@example.com') && window.__copiedEmail.includes('Subject: Greetings from Shanghai') && window.__copiedEmail.includes('It was so lovely') && document.querySelector('#emailModal').classList.contains('hidden')"):
-        raise RuntimeError("Default email handoff did not copy and open the message")
+    if not evaluate(socket, 7, "window.__copiedDocument.includes('emma@example.com') && window.__copiedDocument.includes('Greetings from Shanghai') && window.__copiedDocument.includes('It was so lovely')"):
+        raise RuntimeError("One-click copy did not include the complete letter")
+    evaluate(socket, 8, "document.querySelector('#finishButton').click();")
+    if not evaluate(socket, 9, "!document.querySelector('#finishedView').classList.contains('hidden')"):
+        raise RuntimeError("Finishing a letter did not open the archive")
     evaluate(socket, 14, "localStorage.removeItem('enwrite-finished'); document.querySelector('#format').value = 'essay'; document.querySelector('#format').dispatchEvent(new Event('change')); document.querySelector('#finishButton').click();")
     if not evaluate(socket, 15, "!document.querySelector('#finishedView').classList.contains('hidden') && document.querySelector('#finishedCount').textContent === '1' && document.querySelectorAll('.finished-item').length === 1"):
         raise RuntimeError("Finishing a document did not open the archive")

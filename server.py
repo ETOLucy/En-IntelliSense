@@ -319,11 +319,15 @@ class WriteMeloHandler(SimpleHTTPRequestHandler):
         if self.reject_untrusted_request():
             return
         if self.path == "/api/status":
+            account_portal_url = os.getenv("WRITEMELO_ACCOUNT_URL", "")
+            if not account_portal_url and os.getenv("WRITEMELO_PORT") == "8000":
+                account_portal_url = "http://127.0.0.1:8787/support.html"
             self.send_json(200, {
                 "configured": bool(os.getenv("OPENAI_API_KEY")),
                 "provider_mode": "byok",
                 "storage_scope": storage_scope(),
                 "desktop": desktop_mode(),
+                "account_portal_url": account_portal_url,
             })
             return
         if self.path == "/api/config":

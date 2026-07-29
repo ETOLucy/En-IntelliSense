@@ -115,7 +115,7 @@ class DocumentApi:
 
     def open_external(self, url):
         value = str(url or "")
-        allowed = value.startswith(("mailto:", "https://", "http://"))
+        allowed = value.startswith(("https://", "http://"))
         allowed_store = value.startswith("ms-windows-store://pdp/?ProductId=")
         if not allowed and not allowed_store:
             return {"ok": False, "error": "Unsupported external URL."}
@@ -123,6 +123,29 @@ class DocumentApi:
             return {"ok": bool(webbrowser.open(value, new=2))}
         except webbrowser.Error as error:
             return {"ok": False, "error": f"Could not open the system application: {error}"}
+
+    def store_status(self):
+        # Store APIs require an MSIX/Store identity and an HWND-associated
+        # StoreContext. Development and unpackaged builds must never fake it.
+        return {
+            "ok": True,
+            "status": "not_store_package",
+            "available": False,
+            "message": "Install the Microsoft Store build to make purchases.",
+        }
+
+    def store_products(self):
+        return {"ok": False, "status": "not_store_package", "products": []}
+
+    def purchase_store_product(self, store_id):
+        return {
+            "ok": False,
+            "status": "not_store_package",
+            "product_id": str(store_id or ""),
+        }
+
+    def restore_store_purchases(self):
+        return {"ok": False, "status": "not_store_package", "purchases": []}
 
 def run():
     server = ThreadingHTTPServer(("127.0.0.1", 0), WriteMeloHandler)

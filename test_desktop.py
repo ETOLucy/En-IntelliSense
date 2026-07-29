@@ -63,6 +63,13 @@ class DocumentApiTests(unittest.TestCase):
         public_state = [name for name in vars(api) if not name.startswith("_")]
         self.assertEqual(public_state, [])
 
+    def test_unpacked_build_never_fakes_store_purchase(self):
+        api = desktop.DocumentApi()
+        self.assertEqual(api.store_status()["status"], "not_store_package")
+        purchase = api.purchase_store_product("writemelo.units.1000")
+        self.assertFalse(purchase["ok"])
+        self.assertEqual(purchase["status"], "not_store_package")
+
 
 if __name__ == "__main__":
     unittest.main()

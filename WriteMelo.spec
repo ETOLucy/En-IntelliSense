@@ -8,6 +8,8 @@ datas = [
     (str(root / "app.js"), "."),
     (str(root / "completion.js"), "."),
     (str(root / "logo.svg"), "."),
+    (str(root / "byok-privacy.html"), "."),
+    (str(root / "public" / "support.css"), "public"),
 ]
 a = Analysis(
     [str(root / "desktop.py")],

@@ -13,6 +13,14 @@ const LEGACY_STORAGE_KEYS = ['enwrite-draft', 'enwrite-finished', 'enwrite-custo
 const STORAGE_MIGRATION_KEY = 'enwrite-storage-isolation-v1';
 let storageScope = 'local';
 
+function modelRequestHeaders() {
+  const accessToken = sessionStorage.getItem('writemelo-access-token') || '';
+  return {
+    'Content-Type': 'application/json',
+    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+  };
+}
+
 const SETTINGS_I18N = {
   en: { ui_language: 'Interface language', ai_service: 'AI service', subscription_mode: 'Subscription - recommended for learners', developer_mode: 'Custom model service - for developers', subscription_code: 'Subscription code', subscription_help: 'Enter the code from your purchase. No model setup is required.', show: 'Show', developer_help: 'Connect a model service with a compatible Chat Completions or Responses endpoint.', api_endpoint: 'API endpoint', api_key: 'API key', api_key_help: 'Encrypted for your Windows account and never included in the app package.', main_model: 'Review and chat model ID', fast_model: 'Autocomplete model ID', api_protocol: 'Compatible API protocol', test_connection: 'Test connection', save_settings: 'Save settings' },
   zh: { ui_language: '界面语言', ai_service: 'AI 服务', subscription_mode: '订阅版 - 推荐英语学习者', developer_mode: '自定义模型服务 - 面向开发者', subscription_code: '订阅码', subscription_help: '输入购买后获得的订阅码，无需配置模型。', show: '显示', developer_help: '连接提供兼容 Chat Completions 或 Responses 接口的模型服务。', api_endpoint: 'API 接口地址', api_key: 'API Key', api_key_help: '使用当前 Windows 账户加密，不会写入安装包。', main_model: '审查与聊天模型 ID', fast_model: '自动补全模型 ID', api_protocol: '兼容 API 协议', test_connection: '测试连接', save_settings: '保存设置' },
@@ -69,6 +77,11 @@ const DETAIL_I18N = {
   ru: { format_letter: 'Письмо или эл. почта', format_essay: 'Эссе', format_message: 'Короткое сообщение', audience_friend: 'Друг', audience_colleague: 'Коллега', audience_teacher: 'Преподаватель', audience_customer: 'Клиент', audience_general: 'Широкая аудитория', level_simple: 'Простой', level_natural: 'Естественный', level_advanced: 'Продвинутый', completion_auto: 'Авто', completion_word: 'Слово', completion_phrase: 'Фраза', completion_sentence: 'Предложение', tone_warm: 'Тёплый и дружелюбный', tone_professional: 'Профессиональный', tone_casual: 'Неформальный', tone_confident: 'Уверенный', writing_flow: 'Связность текста', flow_start: 'Начните писать', flow_shape: 'Приобретает форму', flow_good: 'Хорошо', flow_note_start: 'Напишите ещё немного, чтобы увидеть подсказки.', flow_note_shape: 'Ваша мысль приобретает форму. Продолжайте развивать её.', flow_note_good: 'Текст понятен и легко читается.', no_issues: 'Явных проблем нет', no_issues_note: 'Черновик звучит естественно для текущего уровня.', no_issues_yet: 'Проблем пока нет', no_issues_yet_note: 'Продолжайте писать, и помощник проверит черновик.', useful_phrases: 'Полезные фразы', review_wait: 'Остановитесь ненадолго, и помощник проверит черновик.', store_price: 'Цена в Store', save_ai: 'Сохранить сервис ИИ' }
 };
 
+const NAV_I18N = {
+  en: { write: 'Write', plans_nav: 'Plans', account_nav: 'Account', tickets_nav: 'Tickets', completion_off: 'Off' },
+  zh: { write: '写作', plans_nav: '套餐', account_nav: '账户', tickets_nav: '工单', completion_off: '关闭' },
+};
+
 const HELP_I18N = {
   en: { api_key_help: 'Your API key stays on this computer and is protected by Windows encryption. It is never uploaded to WriteMelo servers.' },
   zh: { api_key_help: 'API Key 仅保存在这台电脑上，并由 Windows 加密保护；不会上传到 WriteMelo 服务器。' },
@@ -116,16 +129,39 @@ let activeUiLanguage = 'en';
 function resolvedUiLanguage(value = 'auto') {
   const requested = !value || value === 'auto' ? (navigator.language || 'en') : value;
   const language = requested.toLowerCase().split('-')[0];
-  return SETTINGS_I18N[language] ? language : 'en';
+  return language === 'zh' ? 'zh' : 'en';
 }
 
 function applyUiLanguage(value) {
   const language = resolvedUiLanguage(value);
   activeUiLanguage = language;
-  const messages = { ...SETTINGS_I18N[language], ...APP_I18N[language], ...COMMERCE_I18N[language], ...DETAIL_I18N[language], ...HELP_I18N[language], ...REVIEW_I18N[language], ...WORKSPACE_I18N[language] };
-  const fallback = { ...SETTINGS_I18N.en, ...APP_I18N.en, ...COMMERCE_I18N.en, ...DETAIL_I18N.en, ...HELP_I18N.en, ...REVIEW_I18N.en, ...WORKSPACE_I18N.en };
+  const messages = { ...SETTINGS_I18N[language], ...APP_I18N[language], ...COMMERCE_I18N[language], ...DETAIL_I18N[language], ...HELP_I18N[language], ...REVIEW_I18N[language], ...WORKSPACE_I18N[language], ...NAV_I18N[language] };
+  const fallback = { ...SETTINGS_I18N.en, ...APP_I18N.en, ...COMMERCE_I18N.en, ...DETAIL_I18N.en, ...HELP_I18N.en, ...REVIEW_I18N.en, ...WORKSPACE_I18N.en, ...NAV_I18N.en };
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  $('#copyDocumentButton').textContent = language === 'zh' ? '复制全文' : 'Copy text';
+  $('#accessGuideButton').textContent = language === 'zh' ? 'AI 服务' : 'AI service';
+  if (language === 'zh') {
+    $('#accessNoticeTitle').textContent = '选择 AI 功能的使用方式';
+    $('#trialAccessTitle').textContent = '免费基础试用';
+    $('#trialAccessText').textContent = '无需 API Key。受个人额度和全站免费资源池限制，用完后不会自动扣费。';
+    $('#byokAccessTitle').textContent = '换用更好的模型';
+    $('#byokAccessText').textContent = '需要更好的长文衔接、语气和复杂改写时，可在 Windows 客户端自备 API Key。';
+    $('#trialAccessLink').textContent = '登录试用';
+    $('#byokGuideLink').textContent = '比较模型';
+    $('#accessPrivacyTitle').textContent = '免费试用用于判断流程是否适合你，模型质量仍会影响结果';
+    $('#accessPrivacyText').textContent = '更强模型通常更擅长长上下文、细微语气和复杂修改，但价格不等于绝对质量。自备 Key 仍只保存在 Windows 本机。';
+  } else {
+    $('#accessNoticeTitle').textContent = 'Choose how to use AI features';
+    $('#trialAccessTitle').textContent = 'Free basic trial';
+    $('#trialAccessText').textContent = 'No API key required. Personal and shared free limits apply; there is no automatic charge.';
+    $('#byokAccessTitle').textContent = 'Use a better model';
+    $('#byokAccessText').textContent = 'Bring your own API Key in the Windows app for stronger long-context, tone and revision quality.';
+    $('#trialAccessLink').textContent = 'Sign in';
+    $('#byokGuideLink').textContent = 'Compare models';
+    $('#accessPrivacyTitle').textContent = 'The free trial tests the workflow; model quality still affects the result.';
+    $('#accessPrivacyText').textContent = 'Stronger models usually handle long context, nuance and complex revisions better, but price does not guarantee quality. Your own Key stays in the Windows app.';
+  }
   document.querySelectorAll('[data-i18n]').forEach(element => {
     const message = messages[element.dataset.i18n] || fallback[element.dataset.i18n];
     if (message) element.textContent = message;
@@ -210,6 +246,7 @@ function localWordSuggestion(value) {
 }
 
 function showSuggestion(suggestion, kind) {
+  suggestion = EnWriteCompletion.normalizeSuggestionBoundary(editor.value, suggestion, kind);
   activeSuggestion = suggestion;
   activeKind = kind;
   renderMirror();
@@ -227,6 +264,7 @@ function clearSuggestion() {
 }
 
 function remoteMode(value) {
+  if (completionMode === 'off') return '';
   if (completionMode !== 'auto') return completionMode;
   if (/([A-Za-z][A-Za-z'-]{2,})$/.test(value)) return 'word';
   return /[.!?][\s\n]*$/.test(value) ? 'sentence' : 'phrase';
@@ -234,7 +272,11 @@ function remoteMode(value) {
 
 function scheduleCompletion() {
   clearTimeout(completionTimer);
-  if (completionRequest) completionRequest.abort();
+  if (completionRequest) {
+    completionRequest.abort();
+    completionRequest = null;
+  }
+  if (completionMode === 'off') return clearSuggestion();
   const value = editor.value;
   const atEnd = editor.selectionStart === value.length && editor.selectionEnd === value.length;
   if (!atEnd || value === dismissedValue || !value.trim()) return clearSuggestion();
@@ -262,7 +304,7 @@ async function requestCompletion(value, mode) {
     const streaming = mode !== 'word';
     const response = await fetch(streaming ? '/api/complete-stream' : '/api/complete', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: modelRequestHeaders(),
       signal: completionRequest.signal,
       body: JSON.stringify({
         text: value,
@@ -320,10 +362,21 @@ async function checkModel() {
     const data = await response.json();
     desktopApp = Boolean(data.desktop);
     $('#settingsButton').classList.toggle('hidden', !desktopApp);
-    modelConfigured = Boolean(data.configured);
+    const localAccountUrl = ['127.0.0.1', 'localhost'].includes(location.hostname)
+      ? `${location.protocol}//${location.hostname}:8787/support.html`
+      : 'support.html';
+    const portalUrl = data.account_portal_url || localAccountUrl;
+    $('#accountPortalLink').href = portalUrl;
+    $('#plansPortalLink').href = portalUrl.replace(/support\.html(?:$|[?#])/, 'plans.html');
+    $('#ticketsPortalLink').href = portalUrl.replace(/support\.html(?:$|[?#])/, 'tickets.html');
+    $('#trialAccessLink').href = portalUrl;
+    const needsTrialSignIn = Boolean(data.requires_account && !sessionStorage.getItem('writemelo-access-token'));
+    modelConfigured = Boolean(data.configured) && !needsTrialSignIn;
     storageScope = data.storage_scope || 'local';
     $('#connectionState').className = `connection-state ${modelConfigured ? 'online' : 'offline'}`;
-    $('#connectionState').innerHTML = `<i></i> ${translated(modelConfigured ? 'model_connected' : 'configure_model')}`;
+    $('#connectionState').innerHTML = `<i></i> ${needsTrialSignIn
+      ? (activeUiLanguage === 'zh' ? '登录后试用' : 'Sign in to try')
+      : translated(modelConfigured ? 'model_connected' : 'configure_model')}`;
     if (modelConfigured) { scheduleCompletion(); scheduleReview(); }
     else if (desktopApp && !sessionStorage.getItem(scopedKey('settings-dismissed'))) openModelSettings();
     return data;
@@ -382,7 +435,7 @@ async function openModelSettings() {
 function closeModelSettings() {
   $('#settingsModal').classList.add('hidden');
   sessionStorage.setItem(scopedKey('settings-dismissed'), '1');
-  if ($('#emailModal').classList.contains('hidden')) document.body.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
 }
 
 async function submitModelConfig(path) {
@@ -457,7 +510,7 @@ async function reviewDraft(manual = true) {
   $('#reviewStatus').textContent = translated('reviewing');
   try {
     const response = await fetch('/api/review', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: reviewRequest.signal,
+      method: 'POST', headers: modelRequestHeaders(), signal: reviewRequest.signal,
       body: JSON.stringify({ text: editor.value, level: currentLevel, language: $('#explanationLanguage').value, format: $('#format').value, audience: $('#relationship').value, tone: $('#tone').value })
     });
     const data = await response.json();
@@ -536,12 +589,6 @@ function notify(message) {
   toast.textContent = message;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2200);
-}
-
-function emailDraft() {
-  const modalOpen = !$('#emailModal').classList.contains('hidden');
-  const modalAddress = modalOpen ? $('#emailRecipientInput').value.trim() : '';
-  return { to: modalAddress || $('#recipient').value.trim(), subject: $('#subject').value.trim(), body: editor.value };
 }
 
 function finishedDocuments() {
@@ -642,22 +689,6 @@ function deleteFinishedDocument(id) {
   renderFinishedDocuments(); notify('Finished document deleted');
 }
 
-function openEmailModal() {
-  const draft = emailDraft();
-  $('#emailRecipientInput').value = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.to) ? draft.to : '';
-  $('#emailRecipientInput').setCustomValidity('');
-  $('#emailSummarySubject').textContent = draft.subject || 'No subject';
-  $('#emailModal').classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  $('#emailRecipientInput').focus();
-}
-
-function closeEmailModal() {
-  $('#emailModal').classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  $('#finishButton').focus();
-}
-
 function closeDocumentMenu() {
   $('#documentMenu').classList.add('hidden');
   $('#moreButton').setAttribute('aria-expanded', 'false');
@@ -748,9 +779,7 @@ async function runDocumentAction(action) {
   if (action === 'save-as') return saveLocalDocument(true);
   if (action === 'review') return reviewDraft(true);
   if (action === 'copy') {
-    const draftText = `${$('#title').value}\n\n${editor.value}`;
-    try { await navigator.clipboard.writeText(draftText); notify('Draft copied'); }
-    catch { notify('Clipboard access was blocked'); }
+    await copyCurrentDocument();
     return;
   }
   if (action === 'download') {
@@ -769,6 +798,12 @@ async function runDocumentAction(action) {
 }
 
 function friendlyModelError(message) {
+  if (/sign-in|required|session expired/i.test(message || '')) {
+    return '请先到账户页面登录，再使用免费试用额度。';
+  }
+  if (/allowance|usage limit|quota|capacity|neurons/i.test(message || '')) {
+    return '今日免费模型额度已用完。你可以稍后再试，或在 Windows 客户端配置自己的模型。';
+  }
   if (/connection|reach model|1005[34]|network|fetch/i.test(message || '')) {
     return '模型服务连接暂时中断，系统已自动重试，请稍后再试。';
   }
@@ -808,7 +843,7 @@ async function requestAssist(action) {
   openAssist(isSubject ? 'Subject ideas 标题建议' : action === 'polish_text' ? 'Polished versions 正文润色' : action === 'simplify' ? 'Simpler English 简单表达' : 'Meaning and usage 翻译与解释');
   try {
     const response = await fetch('/api/assist', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: modelRequestHeaders(),
       body: JSON.stringify({ action, text, context: editor.value, level: currentLevel, language: $('#explanationLanguage').value })
     });
     const data = await response.json();
@@ -900,7 +935,7 @@ async function sendChat(message) {
   const selection = hasSelection ? editor.value.slice(editor.selectionStart, editor.selectionEnd) : '';
   try {
     const response = await fetch('/api/chat', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: modelRequestHeaders(),
       body: JSON.stringify({ message: text, context: `Subject: ${$('#subject').value}\n\n${editor.value}`, selection, history: chatHistory, language: $('#explanationLanguage').value })
     });
     const data = await response.json();
@@ -953,7 +988,11 @@ document.querySelectorAll('[data-level]').forEach(button => button.addEventListe
 
 document.querySelectorAll('[data-completion]').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('[data-completion]').forEach(item => item.classList.remove('selected'));
-  button.classList.add('selected'); completionMode = button.dataset.completion; dismissedValue = ''; scheduleCompletion();
+  button.classList.add('selected');
+  completionMode = button.dataset.completion;
+  storageSet('completion-mode', completionMode);
+  dismissedValue = '';
+  scheduleCompletion();
 }));
 
 $('#format').addEventListener('change', event => setFormat(event.target.value));
@@ -972,24 +1011,43 @@ $('#finishedList').addEventListener('click', event => {
 });
 $('#refreshPhrases').addEventListener('click', () => { phraseOffset = (phraseOffset + 1) % 3; renderPhrases(); notify('Phrase ideas refreshed'); });
 $('#reviewDraft').addEventListener('click', () => reviewDraft(true));
+$('#copyDocumentButton').addEventListener('click', copyCurrentDocument);
 $('#finishButton').addEventListener('click', () => {
-  if ($('#format').value === 'letter') openEmailModal();
-  else {
-    archiveCurrentDocument(); showDocumentView('finished');
-    notify(`${content[$('#format').value].finish} saved to Finished`);
-  }
+  archiveCurrentDocument();
+  showDocumentView('finished');
+  notify(`${content[$('#format').value].finish} saved to Finished`);
 });
 $('#themeButton').addEventListener('click', () => document.body.classList.toggle('dark'));
-$('#preferencesButton').addEventListener('click', () => {
-  $('#uiLanguage').value = storageGet('ui-language') || 'auto';
-  $('#languageStatus').textContent = '';
-  $('#preferencesModal').classList.remove('hidden');
+function closeAccessGuide() {
+  $('#accessGuideModal').classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  $('#accessGuideButton').focus();
+}
+$('#accessGuideButton').addEventListener('click', () => {
+  $('#accessGuideModal').classList.remove('hidden');
   document.body.classList.add('modal-open');
-  $('#uiLanguage').focus();
+  $('#closeAccessGuide').focus();
 });
+$('#closeAccessGuide').addEventListener('click', closeAccessGuide);
+$('#accessGuideBackdrop').addEventListener('click', closeAccessGuide);
 function closePreferences() {
   $('#preferencesModal').classList.add('hidden');
   document.body.classList.remove('modal-open');
+}
+
+async function copyCurrentDocument() {
+  const format = $('#format').value;
+  const parts = [];
+  if (format === 'letter' && $('#recipient').value.trim()) parts.push(`${translated('to')}: ${$('#recipient').value.trim()}`);
+  if (format === 'letter' && $('#subject').value.trim()) parts.push(`${translated('subject')}: ${$('#subject').value.trim()}`);
+  if ($('#title').value.trim()) parts.push($('#title').value.trim());
+  if (editor.value.trim()) parts.push(editor.value.trim());
+  try {
+    await navigator.clipboard.writeText(parts.join('\n\n'));
+    notify(activeUiLanguage === 'zh' ? '全文已复制' : 'Document copied');
+  } catch {
+    notify(activeUiLanguage === 'zh' ? '无法访问剪贴板' : 'Clipboard access was blocked');
+  }
 }
 $('#closePreferences').addEventListener('click', closePreferences);
 $('#preferencesBackdrop').addEventListener('click', closePreferences);
@@ -1030,45 +1088,12 @@ $('#closeCoach').addEventListener('click', () => setCoachOpen(false));
 $('#coachToggle').addEventListener('click', () => setCoachOpen($('#writingCoach').classList.contains('closed')));
 document.querySelectorAll('#title, #recipient, #subject').forEach(input => input.addEventListener('input', saveDraft));
 
-async function copyInvite() {
-  const link = `${location.href.split('#')[0]}#write-together`;
-  try { await navigator.clipboard.writeText(link); notify('Invite link copied'); }
-  catch { notify('Invite link: ' + link); }
-}
-$('#shareButton').addEventListener('click', copyInvite);
 suggestionBar.addEventListener('click', acceptSuggestion);
 $('#polishSubject').addEventListener('click', () => requestAssist('polish_subject'));
 $('#polishText').addEventListener('click', () => requestAssist('polish_text'));
 $('#explainText').addEventListener('click', () => requestAssist('explain'));
 $('#simplifyText').addEventListener('click', () => requestAssist('simplify'));
 $('#closeAssist').addEventListener('click', () => $('#assistResult').classList.add('hidden'));
-$('#closeEmailModal').addEventListener('click', closeEmailModal);
-$('#emailBackdrop').addEventListener('click', closeEmailModal);
-$('#emailRecipientInput').addEventListener('input', event => event.currentTarget.setCustomValidity(''));
-$('#openDefaultEmail').addEventListener('click', async () => {
-  const input = $('#emailRecipientInput');
-  if (!input.reportValidity()) return;
-  const draft = emailDraft();
-  const complete = EnWriteCompletion.buildCompleteEmailText(draft);
-  try { await navigator.clipboard.writeText(complete); } catch {}
-  archiveCurrentDocument();
-  const url = EnWriteCompletion.buildEmailComposeUrl('default', draft);
-  const api = desktopDocumentApi();
-  if (api?.open_external) {
-    const result = await api.open_external(url);
-    if (!result.ok) return notify(result.error || 'Could not open the default email app');
-  } else {
-    window.location.href = url;
-  }
-  closeEmailModal();
-  notify('Email copied and opened in the default app');
-});
-$('#copyEmailDraft').addEventListener('click', async () => {
-  const draft = emailDraft();
-  const completeEmail = EnWriteCompletion.buildCompleteEmailText(draft);
-  try { await navigator.clipboard.writeText(completeEmail); notify('Complete email copied'); }
-  catch { notify('Clipboard access was blocked'); }
-});
 $('#moreButton').addEventListener('click', event => { event.stopPropagation(); toggleDocumentMenu(); });
 document.querySelectorAll('[data-doc-action]').forEach(button => button.addEventListener('click', () => runDocumentAction(button.dataset.docAction)));
 document.addEventListener('click', event => {
@@ -1080,8 +1105,8 @@ document.addEventListener('keydown', event => {
     if (key === 'o') { event.preventDefault(); openLocalDocument(); return; }
     if (key === 's') { event.preventDefault(); saveLocalDocument(event.shiftKey); return; }
   }
-  if (event.key === 'Escape' && !$('#emailModal').classList.contains('hidden')) closeEmailModal();
   if (event.key === 'Escape' && !$('#settingsModal').classList.contains('hidden')) closeModelSettings();
+  if (event.key === 'Escape' && !$('#accessGuideModal').classList.contains('hidden')) closeAccessGuide();
   if (event.key === 'Escape' && !$('#documentMenu').classList.contains('hidden')) { closeDocumentMenu(); $('#moreButton').focus(); }
 });
 document.querySelectorAll('[data-coach-tab]').forEach(button => button.addEventListener('click', () => {
@@ -1105,6 +1130,11 @@ function loadScopedWorkspace() {
   detachLocalDocument();
   applyUiLanguage(storageGet('ui-language') || 'auto');
   $('#explanationLanguage').value = storageGet('explanation-language') || languageByLocale[(navigator.language || 'en').slice(0, 2)] || 'English';
+  const savedCompletionMode = storageGet('completion-mode');
+  completionMode = ['off', 'auto', 'word', 'phrase', 'sentence'].includes(savedCompletionMode) ? savedCompletionMode : 'auto';
+  document.querySelectorAll('[data-completion]').forEach(button => {
+    button.classList.toggle('selected', button.dataset.completion === completionMode);
+  });
   const saved = storageGet('draft');
   if (saved) {
     try {

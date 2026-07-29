@@ -20,13 +20,16 @@ button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .app-shell { min-height: 100vh; }
-.topbar { height: 68px; display: grid; grid-template-columns: 260px 1fr 260px; align-items: center; padding: 0 22px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.85); }
+.topbar { height: 68px; display: grid; grid-template-columns: 240px minmax(120px, 1fr) minmax(360px, auto); align-items: center; padding: 0 22px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.85); }
 .brand { display: flex; min-width: 0; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-family: var(--font-writing); font-size: 19px; font-weight: 600; white-space: nowrap; }
 .brand-mark { display: block; width: 38px; height: 38px; flex: 0 0 38px; }
 .draft-state { justify-self: center; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
 .saved-dot { width: 7px; height: 7px; border-radius: 50%; background: #5ba378; }
-.top-actions { justify-self: end; display: flex; align-items: center; gap: 8px; }
-.share-button, .coach-toggle { height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green); font-size: 11px; font-weight: 600; }
+.top-actions { justify-self: end; display: flex; align-items: center; gap: 6px; }
+.app-nav { display: flex; align-items: center; gap: 4px; margin-right: 8px; padding-right: 12px; border-right: 1px solid var(--line); }
+.app-nav a { padding: 7px 8px; border-radius: 4px; color: var(--muted); font-size: 11px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.app-nav a:hover, .app-nav a.active { color: var(--green); background: var(--surface-2); }
+.coach-toggle { height: 34px; padding: 0 11px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green); font-size: 11px; font-weight: 600; }
 .coach-toggle[aria-expanded="true"] { border-color: #aac1b4; background: var(--surface-2); }
 .icon-btn, .more-btn { display: grid; place-items: center; width: 34px; height: 34px; border: 0; background: transparent; border-radius: 6px; color: var(--muted); }
 .icon-btn:hover, .more-btn:hover { background: var(--surface-2); color: var(--ink); }
@@ -48,12 +51,14 @@ body.coach-closed main { grid-template-columns: 240px minmax(480px, 1fr); }
 select { width: 100%; height: 36px; padding: 0 30px 0 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); outline: none; }
 select:focus { border-color: var(--green); }
 .segmented { display: grid; grid-template-columns: repeat(3, 1fr); padding: 3px; border-radius: 6px; background: var(--surface-2); }
-.completion-level { grid-template-columns: repeat(4, 1fr); }
+.completion-level { grid-template-columns: repeat(5, 1fr); }
 .completion-level button { font-size: 9px; }
 .segmented button { padding: 6px 3px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 10px; }
 .segmented .selected { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.08); font-weight: 600; }
 .workspace { position: relative; padding: 44px clamp(30px, 5vw, 82px) 24px; background: var(--bg); }
 .compose-view.hidden, .archive-view.hidden { display: none; }
+.service-button { height: 32px; padding: 0 11px; border: 1px solid #a9c5b6; border-radius: 5px; color: var(--green); background: #f3f8f5; font-size: 10px; font-weight: 700; }
+.service-button:hover { border-color: var(--green); background: #eaf3ee; }
 .archive-view { max-width: 760px; margin: 0 auto; }
 .archive-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
 .archive-heading h1 { margin-top: 7px; }
@@ -142,6 +147,8 @@ kbd { padding: 2px 5px; border: 1px solid #cad2cc; border-bottom-width: 2px; bor
 .editor-footer { max-width: 760px; margin: 16px auto 0; display: flex; align-items: center; gap: 18px; color: var(--muted); font-size: 11px; }
 .editor-footer strong { color: var(--ink); }
 .shortcut { margin-left: auto; }
+.copy-document-button { height: 38px; padding: 0 14px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green); font-size: 11px; font-weight: 600; }
+.copy-document-button:hover { border-color: var(--green); background: #f3f8f5; }
 .send-button { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 15px; border: 0; border-radius: 5px; background: var(--green); color: white; font-size: 11px; font-weight: 600; }
 .send-button svg { width: 14px; }
 .coach-panel { padding: 23px 18px; border-left: 1px solid var(--line); }
@@ -215,26 +222,23 @@ kbd { padding: 2px 5px; border: 1px solid #cad2cc; border-bottom-width: 2px; bor
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 18px); padding: 10px 16px; border-radius: 5px; background: #18241f; color: white; opacity: 0; pointer-events: none; transition: .2s; font-size: 12px; box-shadow: var(--shadow); }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 .hidden { display: none !important; }
-.email-modal { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; }
-.email-modal.hidden { display: none; }
 .modal-backdrop { position: absolute; inset: 0; width: 100%; border: 0; background: rgba(18, 29, 24, .42); backdrop-filter: blur(2px); }
-.email-dialog { position: relative; width: min(520px, 100%); padding: 22px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); box-shadow: 0 24px 70px rgba(20, 35, 28, .22); }
-.email-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; }
-.email-dialog-head span { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: 1.2px; }
-.email-dialog-head h2 { margin: 5px 0 0; font-family: var(--font-writing); font-size: 25px; letter-spacing: 0; }
-.email-dialog-head > button { width: 30px; height: 30px; border: 0; background: transparent; color: var(--muted); font-size: 20px; }
-.email-summary { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 8px 12px; margin-top: 18px; padding: 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
-.email-summary span, .email-summary label { align-self: center; color: var(--muted); font-size: 10px; }
-.email-summary strong { overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
-.email-summary input { width: 100%; min-width: 0; height: 30px; padding: 0 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); outline: 0; font-size: 11px; }
-.email-summary input:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(40, 100, 77, .1); }
-.email-import-note { margin: 12px 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
-.email-import-note strong { color: var(--ink); }
-.copy-email { width: 100%; height: 36px; margin-top: 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green); font-size: 10px; font-weight: 700; }
 body.modal-open { overflow: hidden; }
 .settings-modal { position: fixed; z-index: 25; inset: 0; display: grid; place-items: center; padding: 20px; }
 .settings-modal.hidden { display: none; }
 .settings-dialog { position: relative; width: min(560px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; padding: 24px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); box-shadow: 0 24px 70px rgba(20, 35, 28, .22); }
+.access-guide-dialog { width: min(680px, 100%); }
+.access-choice-list { margin-top: 22px; border-top: 1px solid var(--line); }
+.access-choice-list article { display: grid; grid-template-columns: minmax(0, 1fr) 110px; align-items: center; gap: 20px; min-height: 100px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.access-choice-list article > div { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 12px; }
+.access-choice-list article > div > span { grid-row: 1 / 3; color: var(--green); font-family: var(--font-writing); font-size: 12px; }
+.access-choice-list strong { font-family: var(--font-writing); font-size: 17px; }
+.access-choice-list p { margin: 5px 0 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+.access-choice-list a { display: grid; min-height: 34px; place-items: center; border: 1px solid var(--green); border-radius: 5px; color: var(--green); font-size: 10px; font-weight: 700; text-decoration: none; }
+.access-choice-list a:hover, .access-choice-list a:focus-visible { color: #fff; background: var(--green); outline: 0; }
+.access-privacy-note { display: grid; gap: 4px; margin: 18px 0 0; padding: 13px 14px; border-left: 3px solid var(--green); background: #eef5f1; }
+.access-privacy-note strong { font-size: 11px; }
+.access-privacy-note span { color: var(--muted); font-size: 9px; }
 .plan-dialog { width: min(820px, 100%); }
 .visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0 !important; }
 .plan-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -265,6 +269,10 @@ body.modal-open { overflow: hidden; }
 #settingsForm input, #settingsForm select, #preferencesForm input, #preferencesForm select { box-sizing: border-box; width: 100%; min-width: 0; height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--ink); outline: none; font-size: 11px; line-height: normal; }
 #settingsForm input:focus, #settingsForm select:focus, #preferencesForm input:focus, #preferencesForm select:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(40, 100, 77, .1); }
 #settingsForm > small { color: var(--muted); font-size: 9px; line-height: 1.5; }
+.key-boundary { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; margin: 8px 0 2px; padding: 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); font-size: 9px; line-height: 1.5; }
+.key-boundary strong { color: var(--green); }
+.key-boundary span { color: var(--muted); }
+.key-boundary a { color: var(--green); font-weight: 700; }
 .preferences-dialog { width: min(460px, 100%); }
 #preferencesForm > small { color: var(--muted); font-size: 9px; line-height: 1.5; }
 .settings-mode-panel { display: grid; gap: 10px; margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--line); }
@@ -292,14 +300,17 @@ body.dark .suggestion-popover { background: #21382d; }
 body.dark .title-input { color: var(--ink); }
 @media (max-width: 1050px) {
   main { grid-template-columns: 200px minmax(450px, 1fr); }
-  .topbar { grid-template-columns: 220px 1fr 190px; }
+  .topbar { grid-template-columns: 200px minmax(80px, 1fr) minmax(260px, auto); }
   .coach-panel { position: fixed; z-index: 5; right: 0; top: 68px; bottom: 0; width: 300px; box-shadow: -12px 0 35px rgba(0,0,0,.12); transform: translateX(100%); transition: transform .2s; }
   .coach-panel.open { transform: translateX(0); }
 }
 @media (max-width: 720px) {
   .topbar { height: 58px; grid-template-columns: 1fr auto; padding: 0 14px; }
   .draft-state { display: none; }
-  .top-actions .icon-btn { display: none; }
+  .app-nav { margin-right: 2px; padding-right: 6px; }
+  .app-nav a { display: none; }
+  .app-nav a.active { display: block; }
+  .top-actions .icon-btn:not(#settingsButton) { display: none; }
   main { display: block; min-height: calc(100vh - 58px); }
   .left-panel { display: none; }
   .workspace { width: 100vw; max-width: 100vw; min-width: 0; padding: 42px 14px 24px; overflow: hidden; }
@@ -308,6 +319,7 @@ body.dark .title-input { color: var(--ink); }
   .finished-item { grid-template-columns: 1fr; }
   .finished-actions { justify-content: flex-start; }
   .letter-heading, .address-fields, .editor-tools, .assist-result, .editor-wrap, .editor-footer { width: calc(100vw - 28px); max-width: calc(100vw - 28px); min-width: 0; }
+  .access-choice-list article { grid-template-columns: 1fr; }
   .address-fields label { grid-template-columns: 60px minmax(0, 1fr); padding: 0 16px; }
   .address-fields input { width: 100%; min-width: 0; }
   .address-fields .subject-row { grid-template-columns: 60px minmax(0, 1fr); }
@@ -325,9 +337,9 @@ body.dark .title-input { color: var(--ink); }
   .shortcut { display: none; }
   .send-button { margin-left: auto; }
   .coach-panel { top: 58px; width: min(90vw, 320px); }
-  .email-dialog { padding: 18px; }
   .settings-dialog { padding: 18px; }
   .settings-grid { grid-template-columns: 1fr; gap: 4px; }
+  .key-boundary { grid-template-columns: 1fr; }
   .plan-grid { grid-template-columns: 1fr; }
   .settings-actions { flex-direction: column-reverse; }
   .settings-actions button { width: 100%; }

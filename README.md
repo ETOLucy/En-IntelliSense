@@ -75,7 +75,7 @@ Connect a compatible model endpoint with your own API key and model ID. The key 
 - Translation, explanation, simplification, and contextual bilingual chat.
 - Useful phrases replace the selection or current sentence instead of appending duplicate text.
 - Letter, essay, and message formats with local draft persistence.
-- Copy a complete email and open the operating system's default email application through the standard `mailto:` handler.
+- Copy the complete current document in one click for letters, essays, and messages.
 - Keep completed documents in a local Finished archive and reopen any item as an editable copy.
 
 <a id="model-quota-and-privacy"></a>

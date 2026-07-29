@@ -6,7 +6,7 @@
     <meta name="description" content="WriteMelo is a context-aware English writing workspace with autocomplete and inline review." />
     <title>WriteMelo</title>
     <link rel="icon" href="logo.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260729-9" />
   </head>
   <body>
     <div class="app-shell">
@@ -14,9 +14,14 @@
         <a class="brand" href="#" aria-label="WriteMelo home"><img class="brand-mark" src="logo.svg" alt="" /><span>WriteMelo</span></a>
         <div class="draft-state"><span class="saved-dot"></span><span id="saveStatus" data-i18n="saved">Saved</span></div>
         <div class="top-actions">
-          <button class="share-button" id="shareButton" type="button" title="Copy a link to WriteMelo" data-i18n="share">Share</button>
+          <nav class="app-nav" aria-label="Primary navigation">
+            <a class="active" href="#" data-i18n="write">Write</a>
+            <a id="plansPortalLink" href="plans.html" data-i18n="plans_nav">Plans</a>
+            <a id="accountPortalLink" href="support.html" data-i18n="account_nav">Account</a>
+            <a id="ticketsPortalLink" href="tickets.html" data-i18n="tickets_nav">Tickets</a>
+          </nav>
+          <button class="service-button" id="accessGuideButton" type="button">AI service</button>
           <button class="coach-toggle" id="coachToggle" type="button" aria-controls="writingCoach" aria-expanded="true" data-i18n="coach">Coach</button>
-          <button class="icon-btn" id="preferencesButton" type="button" aria-label="Language and region" title="Language and region">&#127760;</button>
           <button class="icon-btn hidden" id="settingsButton" type="button" aria-label="Plans and AI service" title="Plans and AI service">&#9881;</button>
           <button class="icon-btn" id="themeButton" type="button" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
         </div>
@@ -56,18 +61,10 @@
             <select id="explanationLanguage">
               <option value="Chinese">中文</option>
               <option value="English">English</option>
-              <option value="Spanish">Español</option>
-              <option value="Japanese">日本語</option>
-              <option value="Korean">한국어</option>
-              <option value="French">Français</option>
-              <option value="German">Deutsch</option>
-              <option value="Portuguese">Português</option>
-              <option value="Arabic">العربية</option>
-              <option value="Hindi">हिन्दी</option>
-              <option value="Russian">Русский</option>
             </select>
             <label data-i18n="completion">Completion</label>
             <div class="segmented completion-level" id="completionMode" role="group" aria-label="Completion level">
+              <button type="button" data-completion="off" data-i18n="completion_off">Off</button>
               <button type="button" class="selected" data-completion="auto" data-i18n="completion_auto">Auto</button>
               <button type="button" data-completion="word" data-i18n="completion_word">Word</button>
               <button type="button" data-completion="phrase" data-i18n="completion_phrase">Phrase</button>
@@ -134,6 +131,7 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
           <div class="editor-footer">
             <span><strong id="wordCount">0</strong> <span data-i18n="words">words</span></span>
             <span class="shortcut"><kbd>Tab</kbd> <span data-i18n="tab_accept">accept</span> <kbd>Esc</kbd> <span data-i18n="esc_dismiss">dismiss</span></span>
+            <button class="copy-document-button" id="copyDocumentButton" type="button">Copy text</button>
             <button class="send-button" id="finishButton" type="button">Finish draft <span aria-hidden="true">→</span></button>
           </div>
           </div>
@@ -175,14 +173,18 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
         </aside>
       </main>
     </div>
-    <div class="email-modal hidden" id="emailModal" role="dialog" aria-modal="true" aria-labelledby="emailModalTitle">
-      <button class="modal-backdrop" id="emailBackdrop" type="button" aria-label="Close email options"></button>
-      <section class="email-dialog">
-        <div class="email-dialog-head"><div><span>READY TO SEND</span><h2 id="emailModalTitle">Open in your email</h2></div><button id="closeEmailModal" type="button" aria-label="Close">×</button></div>
-        <div class="email-summary"><label for="emailRecipientInput">To / 收件人</label><input id="emailRecipientInput" type="email" placeholder="recipient@example.com" autocomplete="email" required aria-describedby="recipientHelp" /><span>Subject</span><strong id="emailSummarySubject">No subject</strong></div>
-        <p class="email-import-note" id="recipientHelp">The complete message is copied before the system email app opens, so it can be pasted if the app does not accept a long body.</p>
-        <button id="openDefaultEmail" type="button">Open default email app</button>
-        <button class="copy-email" id="copyEmailDraft" type="button">Copy complete email</button>
+    <div class="settings-modal hidden" id="accessGuideModal" role="dialog" aria-modal="true" aria-labelledby="accessNoticeTitle">
+      <button class="modal-backdrop" id="accessGuideBackdrop" type="button" aria-label="Close AI service information"></button>
+      <section class="settings-dialog access-guide-dialog">
+        <div class="settings-head">
+          <div><span>WRITEMELO AI</span><h2 id="accessNoticeTitle">Choose how to use AI features</h2></div>
+          <button id="closeAccessGuide" type="button" aria-label="Close AI service information">&times;</button>
+        </div>
+        <div class="access-choice-list">
+          <article><div><span>01</span><strong id="trialAccessTitle">Free basic trial</strong><p id="trialAccessText">Start without a key. Availability is limited by your allowance and the shared free pool.</p></div><a id="trialAccessLink" href="support.html">Sign in</a></article>
+          <article><div><span>02</span><strong id="byokAccessTitle">Use a better model</strong><p id="byokAccessText">Bring your own API Key when you need stronger tone, context and revision quality.</p></div><a id="byokGuideLink" href="byok-privacy.html" target="_blank" rel="noreferrer">Compare models</a></article>
+        </div>
+        <p class="access-privacy-note"><strong id="accessPrivacyTitle">Free is for trying the workflow; model quality still matters.</strong><span id="accessPrivacyText">A stronger model usually handles long context, nuance and complex revisions better. Your own Key stays in the Windows app.</span></p>
       </section>
     </div>
     <div class="settings-modal hidden" id="preferencesModal" role="dialog" aria-modal="true" aria-labelledby="preferencesTitle">
@@ -198,15 +200,6 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
             <option value="auto" data-i18n="system_default">System default</option>
             <option value="zh-CN">简体中文</option>
             <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="pt-BR">Português (Brasil)</option>
-            <option value="ar">العربية</option>
-            <option value="hi">हिन्दी</option>
-            <option value="ru">Русский</option>
           </select>
           <small data-i18n="language_available">Only languages with reviewed interface translations are listed.</small>
           <p class="settings-status" id="languageStatus" aria-live="polite"></p>
@@ -234,6 +227,11 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
               <button id="toggleApiKey" type="button" aria-label="Show API key" title="Show API key" data-i18n="show">Show</button>
             </div>
             <small id="apiKeyHelp" data-i18n="api_key_help">Your API key stays on this computer and is protected by Windows encryption. It is never uploaded to WriteMelo servers.</small>
+            <div class="key-boundary">
+              <strong>Local-only key</strong>
+              <span>Sent only to the WriteMelo process on 127.0.0.1, then directly to your selected provider.</span>
+              <a href="byok-privacy.html" target="_blank" rel="noreferrer">Verify how it works</a>
+            </div>
             <label for="modelName" data-i18n="main_model">Model ID</label>
             <input id="modelName" placeholder="example-model" />
             <label for="modelApiStyle" data-i18n="api_protocol">Compatible API protocol</label>
@@ -251,7 +249,7 @@ Life here has been busy, but in a good way. Last weekend, I</textarea>
       </section>
     </div>
     <div class="toast" id="toast" role="status"></div>
-    <script src="completion.js"></script>
-    <script src="app.js"></script>
+    <script src="completion.js?v=20260729-9"></script>
+    <script src="app.js?v=20260729-9"></script>
   </body>
 </html>

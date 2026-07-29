@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>套餐 - WriteMelo</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="support.css?v=20260729-10">
+</head>
+<body data-page="plans">
+  <header>
+    <a class="identity identity-link" href="index.html" data-writing-link><img src="logo.svg" alt=""><div><strong>WriteMelo</strong><span>账户中心</span></div></a>
+    <nav class="portal-nav" aria-label="用户中心"><a href="index.html" data-writing-link>写作</a><a class="active" aria-current="page" href="plans.html">套餐</a><a href="support.html">账户</a><a href="tickets.html">工单</a></nav>
+    <button id="signOutButton" class="secondary hidden" type="button">退出</button>
+  </header>
+  <main>
+    <section id="loginSection" class="auth-shell">
+      <div class="auth-context"><p class="eyebrow">WRITEMELO ACCOUNT</p><h1>登录后管理套餐</h1><p class="lead">购买记录由 Microsoft Store 处理，WriteMelo 只同步验证后的使用权限。</p></div>
+      <div class="auth-panel"><div class="auth-progress"><span id="emailStep" class="active"><b>1</b> 邮箱</span><i></i><span id="codeStep"><b>2</b> 验证</span></div><div class="auth-heading"><h2 id="authTitle">登录或注册</h2><p id="authDescription">输入邮箱获取验证码。首次验证成功后将自动创建账号。</p></div><form id="emailForm"><label for="email">邮箱地址</label><input id="email" type="email" autocomplete="email" placeholder="name@example.com" required><button class="auth-submit" type="submit">继续</button><div id="turnstileContainer" class="turnstile-container hidden"></div></form><form id="codeForm" class="hidden"><label for="code">六位验证码</label><input id="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required><button class="auth-submit" type="submit">验证并登录</button><button id="changeEmailButton" class="text-button" type="button">返回并更换邮箱</button></form><p id="loginStatus" class="status"></p><p class="auth-privacy">无需设置密码，也无需单独注册。</p></div>
+    </section>
+    <section id="pageContent" class="hidden portal-page">
+      <div class="page-heading split"><div><p class="eyebrow">PLANS & USAGE</p><h1>先免费试，再决定是否换模型</h1><p>基础试用不要求 API Key。更强模型通常能改善长文衔接、语气和复杂修改，但价格不代表绝对质量。</p></div><button id="restoreButton" class="secondary" type="button">恢复购买</button></div>
+      <p id="storeStatus" class="status" aria-live="polite"></p>
+      <div class="plan-grid">
+        <article class="plan-option current"><div><strong>免费基础试用</strong><span>无需 API Key</span></div><p>每月 <b id="betaPlanUnits">300</b> 使用单位：补全 1 单位、改写 4 单位、对话 5 单位、全文检查 7 单位。还受全站每日免费资源池限制，用完后停止，不会自动扣费。</p><button type="button" disabled>当前可用</button></article>
+        <article class="plan-option"><div><strong>Plus 月度订阅</strong><span>Microsoft Store</span></div><p>每月 3,000 使用单位，更高频率限制与更多设备。</p><button class="store-buy" data-product-id="writemelo.plus.monthly" type="button">在商店购买</button></article>
+        <article class="plan-option"><div><strong>用量包</strong><span>一次性购买</span></div><p>固定 1,000 或 5,000 单位。价格和订单以 Microsoft Store 为准。</p><button class="store-buy" data-product-id="writemelo.units.1000" type="button">购买 1,000 单位</button><button class="store-buy secondary" data-product-id="writemelo.units.5000" type="button">购买 5,000 单位</button></article>
+        <article class="plan-option byok-option"><div><strong>自备更好的模型</strong><span>Windows 本地模式</span></div><p>适合正式邮件、长文和更细致的语气修改。费用直接支付给模型供应商；Key 使用当前 Windows 账户加密，不上传到 WriteMelo 云端。</p><a class="button-link secondary" href="byok-privacy.html">比较模型并配置</a></article>
+      </div>
+    </section>
+  </main>
+  <script src="portal-links.js?v=20260729-7"></script>
+  <script src="support.js?v=20260729-10"></script>
+</body>
+</html>

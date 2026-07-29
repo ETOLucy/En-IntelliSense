@@ -1,3 +1,7 @@
+import { accountApi, authenticateSession, consumeAccountUsage } from './account-service.js';
+import { resolveModelEnvironment } from './model-providers.js';
+export { SubscriptionGuard } from './subscription-guard.js';
+
 const securityHeaders = {
   'x-content-type-options': 'nosniff',
   'referrer-policy': 'no-referrer',
@@ -32,6 +36,33 @@ function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: jsonHeaders });
 }
 
+const CLIENT_SECRET_FIELDS = new Set(['api_key', 'apikey', 'provider_key', 'authorization']);
+
+function containsClientSecret(value) {
+  if (!value || typeof value !== 'object') return false;
+  if (Array.isArray(value)) return value.some(containsClientSecret);
+  return Object.entries(value).some(([key, child]) =>
+    CLIENT_SECRET_FIELDS.has(key.toLowerCase()) || containsClientSecret(child));
+}
+
+async function rejectClientSecrets(request) {
+  if (request.method !== 'POST') return null;
+  const contentType = request.headers.get('content-type') || '';
+  if (!contentType.toLowerCase().includes('application/json')) return null;
+  try {
+    const data = await request.clone().json();
+    if (containsClientSecret(data)) {
+      return json({
+        error: 'API keys are accepted only by the local Windows app and must not be uploaded to WriteMelo cloud services.',
+        code: 'client_secret_rejected',
+      }, 400);
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
 async function serveAsset(request, env) {
   const response = await env.ASSETS.fetch(request);
   if (!response.ok || !['GET', 'HEAD'].includes(request.method)) return response;
@@ -47,7 +78,7 @@ async function serveAsset(request, env) {
   headers.set('permissions-policy', 'camera=(), microphone=(), geolocation=()');
   headers.set('cross-origin-resource-policy', 'same-origin');
   if (pathname.endsWith('.html') || pathname === '/') {
-    headers.set('content-security-policy', "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
+    headers.set('content-security-policy', "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
   }
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
@@ -82,12 +113,19 @@ async function chatText(env, instructions, prompt, maxTokens = 300, model = env.
     if (!env.AI) throw new Error('No model provider is configured');
     const workersModel = env.CLOUDFLARE_AI_MODEL;
     if (!workersModel || workersModel.startsWith('example-')) throw new Error('Workers AI model is not configured');
-    const result = await env.AI.run(workersModel, {
-      messages: [{ role: 'system', content: instructions }, { role: 'user', content: prompt }],
-      max_tokens: maxTokens,
-      temperature: 0.25
-    });
-    return typeof result === 'string' ? result : String(result?.response || '');
+    try {
+      const result = await env.AI.run(workersModel, {
+        messages: [{ role: 'system', content: instructions }, { role: 'user', content: prompt }],
+        max_tokens: maxTokens,
+        temperature: 0.25
+      });
+      return typeof result === 'string' ? result : String(result?.response || '');
+    } catch (error) {
+      if (/quota|limit|capacity|neurons|allocation/i.test(error?.message || '')) {
+        throw new Error('The shared free model allowance is unavailable or exhausted. Try again later or use your own model in the Windows app.');
+      }
+      throw error;
+    }
   }
   const response = await fetchWithRetry(`${apiBase(env)}/chat/completions`, {
     method: 'POST', headers: headers(env),
@@ -188,7 +226,16 @@ export { compareVersions, normalizeCompletion, obsoleteDesktopClient };
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (String(env.ENVIRONMENT || '').toLowerCase() === 'development'
+        && ['/', '/index.html'].includes(url.pathname)) {
+      return Response.redirect(`http://${url.hostname}:8000/`, 302);
+    }
     if (!url.pathname.startsWith('/api/')) return serveAsset(request, env);
+    const secretResponse = await rejectClientSecrets(request);
+    if (secretResponse) return secretResponse;
+    const accountResponse = await accountApi(request, env);
+    if (accountResponse) return accountResponse;
+    env = await resolveModelEnvironment(env);
     const workersAIModel = env.CLOUDFLARE_AI_MODEL || '';
     const configured = Boolean(
       (env.OPENAI_API_KEY && env.OPENAI_BASE_URL && !env.OPENAI_BASE_URL.includes('example.com')
@@ -197,13 +244,20 @@ export default {
     );
     if (url.pathname === '/api/status') return json({
       configured,
-      provider_mode: 'hosted'
+      provider_mode: env.OPENAI_API_KEY ? 'hosted' : 'free_trial',
+      trial_model_tier: env.OPENAI_API_KEY ? null : 'basic',
+      requires_account: String(env.REQUIRE_ACCOUNT_AUTH || '') === '1',
     });
     if (!configured) return json({ error: 'No model provider is configured' }, 503);
     if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
     const upgrade = obsoleteDesktopClient(request, env);
     if (upgrade) return upgrade;
     try {
+      if (String(env.REQUIRE_ACCOUNT_AUTH || '') === '1') {
+        const user = await authenticateSession(request, env);
+        const usageResponse = await consumeAccountUsage(request, env, user, url.pathname);
+        if (usageResponse) return usageResponse;
+      }
       if (url.pathname === '/api/complete') return await complete(request, env, false);
       if (url.pathname === '/api/complete-stream') return await complete(request, env, true);
       if (url.pathname === '/api/review') return await review(request, env);

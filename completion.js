@@ -49,6 +49,12 @@
     return rule ? rule[1] : '';
   }
 
+  function normalizeSuggestionBoundary(value, suggestion, kind) {
+    const text = String(suggestion || '');
+    if (kind === 'word' || !value || /\s$/.test(value) || !/^[A-Za-z0-9]/.test(text)) return text;
+    return ` ${text}`;
+  }
+
   function getSentenceRange(value, cursorStart, cursorEnd = cursorStart) {
     if (cursorStart !== cursorEnd) return { start: cursorStart, end: cursorEnd, text: value.slice(cursorStart, cursorEnd) };
     let anchor = cursorStart;
@@ -81,20 +87,5 @@
     }).filter(Boolean).sort((a, b) => a.start - b.start);
   }
 
-  function buildEmailComposeUrl(provider, draft, customTemplate = '') {
-    const to = String(draft.to || '').trim();
-    const subject = String(draft.subject || '').trim();
-    const body = String(draft.body || '');
-    const encoded = { to: encodeURIComponent(to), subject: encodeURIComponent(subject), body: encodeURIComponent(body) };
-    return `mailto:${encoded.to}?subject=${encoded.subject}&body=${encoded.body}`;
-  }
-
-  function buildCompleteEmailText(draft) {
-    const to = String(draft.to || '').trim();
-    const subject = String(draft.subject || '').trim();
-    const body = String(draft.body || '');
-    return `To: ${to}\nSubject: ${subject}\n\n${body}`;
-  }
-
-  return { getWordSuggestion, getContextSuggestion, getSentenceRange, findIssueRanges, buildEmailComposeUrl, buildCompleteEmailText };
+  return { getWordSuggestion, getContextSuggestion, normalizeSuggestionBoundary, getSentenceRange, findIssueRanges };
 });

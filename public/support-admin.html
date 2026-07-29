@@ -1,0 +1,176 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>运营管理 - WriteMelo</title>
+    <link rel="icon" href="logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="support.css?v=20260729-10" />
+    <link rel="stylesheet" href="support-admin.css?v=20260729-10" />
+  </head>
+  <body>
+    <header>
+      <a class="identity identity-link" href="index.html" data-writing-link>
+        <img src="logo.svg" alt="" />
+        <div><strong>WriteMelo</strong><span>运营管理</span></div>
+      </a>
+      <nav class="portal-nav" aria-label="管理中心">
+        <a href="#users" data-admin-view="users">用户与额度</a>
+        <a href="#providers" data-admin-view="providers">模型供应商</a>
+        <a href="#orders" data-admin-view="orders">订单</a>
+        <a href="#tickets" data-admin-view="tickets">工单</a>
+        <a href="#audit" data-admin-view="audit">风控与审计</a>
+      </nav>
+      <button id="refreshButton" class="secondary" type="button">刷新</button>
+    </header>
+    <main>
+      <section id="localAuthSection" class="local-auth">
+        <label for="localAdminSecret">本地开发管理员密钥</label>
+        <div class="inline-form">
+          <input id="localAdminSecret" type="password" autocomplete="current-password" />
+          <button id="unlockButton" type="button">解锁</button>
+        </div>
+        <p>生产环境应由 Cloudflare Access 验证管理员身份，不使用此输入框。</p>
+      </section>
+
+      <section class="admin-overview" aria-label="运营状态">
+        <dl class="admin-metrics">
+          <div><dt>用户总数</dt><dd id="metricUsers">-</dd></div>
+          <div><dt>可用账号</dt><dd id="metricActiveUsers">-</dd></div>
+          <div><dt>待处理工单</dt><dd id="metricOpenTickets">-</dd></div>
+          <div><dt>已配置线路</dt><dd id="metricProviders">-</dd></div>
+        </dl>
+      </section>
+
+      <section id="users" class="admin-section" data-admin-panel="users">
+        <div class="queue-heading">
+          <div><p class="eyebrow">USER POLICY</p><h1>用户与额度</h1></div>
+          <form id="userFilterForm"><input id="userSearchInput" type="search" placeholder="搜索邮箱或用户 ID" /><button type="submit">搜索</button></form>
+        </div>
+        <p class="field-note">这里只管理账号状态、套餐、月额度、请求频率和设备上限，不展示用户写作正文或 API Key。</p>
+        <p id="userStatus" class="status" aria-live="polite"></p>
+        <div class="table-wrap"><table><thead><tr><th>用户</th><th>状态</th><th>套餐</th><th>已用 / 月额度</th><th>频率</th><th>设备</th><th>最近登录</th></tr></thead><tbody id="userRows"></tbody></table><div id="userEmpty" class="empty hidden">没有符合条件的用户。</div></div>
+      </section>
+
+      <section id="providers" class="admin-provider-section admin-section" data-admin-panel="providers" hidden>
+        <div class="queue-heading">
+          <div><p class="eyebrow">MODEL ROUTING</p><h1>模型供应商</h1></div>
+        </div>
+        <p class="field-note">密钥由 Worker Secrets 保存；此处只能切换已配置线路，不能查看明文密钥。大陆优先官方 DeepSeek / 通义千问，国际支持地区优先官方低成本线路。</p>
+        <p id="providerStatus" class="status" aria-live="polite"></p>
+        <div id="providerRows" class="provider-rows"></div>
+      </section>
+
+      <section id="orders" class="admin-section" data-admin-panel="orders" hidden>
+        <div class="queue-heading">
+          <div><p class="eyebrow">STORE COMMERCE</p><h1>订单</h1></div>
+        </div>
+        <p class="field-note">显示 Microsoft Store 提交到服务端的购买验证记录。订单状态以商店验证结果为准。</p>
+        <p id="orderStatus" class="status" aria-live="polite"></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>用户</th><th>商品</th><th>类型</th><th>验证状态</th><th>交易号</th><th>创建时间</th></tr></thead>
+            <tbody id="orderRows"></tbody>
+          </table>
+          <div id="orderEmpty" class="empty hidden">还没有订单记录。</div>
+        </div>
+      </section>
+
+      <section id="tickets" class="admin-section" data-admin-panel="tickets" hidden>
+        <div class="queue-heading">
+          <div><p class="eyebrow">SUPPORT QUEUE</p><h1>工单队列</h1></div>
+          <form id="filterForm">
+            <input id="searchInput" type="search" placeholder="搜索主题、邮箱或工单号" />
+            <select id="statusFilter" aria-label="状态">
+              <option value="">全部状态</option>
+              <option value="open">待处理</option>
+              <option value="in_progress">处理中</option>
+              <option value="waiting_for_user">等待用户</option>
+              <option value="resolved">已解决</option>
+              <option value="closed">已关闭</option>
+            </select>
+            <button type="submit">筛选</button>
+          </form>
+        </div>
+        <p id="queueStatus" class="status" aria-live="polite"></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>主题</th><th>用户</th><th>分类</th><th>优先级</th><th>状态</th><th>最近更新</th></tr></thead>
+            <tbody id="queueRows"></tbody>
+          </table>
+          <div id="queueEmpty" class="empty hidden">没有符合条件的工单。</div>
+        </div>
+      </section>
+
+      <section id="audit" class="admin-section" data-admin-panel="audit" hidden>
+        <div class="queue-heading">
+          <div><p class="eyebrow">RISK &amp; AUDIT</p><h1>风控与审计</h1></div>
+        </div>
+        <p class="field-note">记录管理员对用户策略、模型线路和工单执行的操作。正文和 API Key 不进入审计日志。</p>
+        <p id="auditStatus" class="status" aria-live="polite"></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>操作者</th><th>操作</th><th>对象</th><th>结果</th><th>来源 IP</th><th>时间</th></tr></thead>
+            <tbody id="auditRows"></tbody>
+          </table>
+          <div id="auditEmpty" class="empty hidden">还没有审计记录。</div>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="adminUserDialog">
+      <form id="adminUserForm">
+        <div class="dialog-head"><div><p class="eyebrow" id="adminUserId"></p><h2 id="adminUserEmail"></h2></div><button class="icon-button" id="closeAdminUser" type="button" aria-label="关闭">&times;</button></div>
+        <div class="admin-fields">
+          <div><label for="adminUserStatus">账号状态</label><select id="adminUserStatus"><option value="active">可用</option><option value="suspended">暂停</option></select></div>
+          <div><label for="adminUserPlan">套餐</label><select id="adminUserPlan"><option value="beta">Beta</option><option value="plus">Plus</option><option value="pro">Pro</option></select></div>
+          <div><label for="adminUserUnits">每月使用单位</label><input id="adminUserUnits" type="number" min="0" max="100000" required /></div>
+          <div><label for="adminUserRpm">每分钟请求数</label><input id="adminUserRpm" type="number" min="1" max="180" required /></div>
+          <div><label for="adminUserDevices">设备上限</label><input id="adminUserDevices" type="number" min="1" max="10" required /></div>
+        </div>
+        <p class="field-note">修改会立即影响托管 AI 服务，并记录在管理员审计日志中。</p>
+        <p id="adminUserSaveStatus" class="status" aria-live="polite"></p>
+        <div class="dialog-actions"><button class="secondary" id="cancelAdminUser" type="button">取消</button><button type="submit">保存用户策略</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="adminTicketDialog">
+      <form id="adminTicketForm">
+        <div class="dialog-head">
+          <div><p id="adminTicketMeta" class="eyebrow"></p><h2 id="adminTicketSubject"></h2><p id="adminTicketEmail" class="ticket-email"></p></div>
+          <button class="icon-button" id="closeAdminTicket" type="button" aria-label="关闭">&times;</button>
+        </div>
+        <div class="admin-fields">
+          <div>
+            <label for="adminTicketStatus">状态</label>
+            <select id="adminTicketStatus">
+              <option value="open">待处理</option>
+              <option value="in_progress">处理中</option>
+              <option value="waiting_for_user">等待用户</option>
+              <option value="resolved">已解决</option>
+              <option value="closed">已关闭</option>
+            </select>
+          </div>
+          <div>
+            <label for="adminTicketPriority">优先级</label>
+            <select id="adminTicketPriority">
+              <option value="low">低</option>
+              <option value="normal">普通</option>
+              <option value="high">高</option>
+              <option value="urgent">紧急</option>
+            </select>
+          </div>
+        </div>
+        <div id="adminMessages" class="message-list"></div>
+        <label for="adminReply">回复用户</label>
+        <textarea id="adminReply" rows="5" maxlength="5000"></textarea>
+        <p id="adminReplyNote" class="field-note">不需要回复时可以只更新状态或优先级。</p>
+        <p id="adminTicketSaveStatus" class="status" aria-live="polite"></p>
+        <div class="dialog-actions"><button class="secondary" id="cancelAdminTicket" type="button">取消</button><button id="saveAdminTicket" type="submit">保存更改</button></div>
+      </form>
+    </dialog>
+    <script src="portal-links.js?v=20260729-7"></script>
+    <script src="support-admin.js?v=20260729-10"></script>
+  </body>
+</html>

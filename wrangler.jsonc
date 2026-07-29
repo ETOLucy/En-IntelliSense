@@ -11,9 +11,40 @@
   "ai": {
     "binding": "AI"
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "writemelo-beta",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SUBSCRIPTION_GUARD",
+        "class_name": "SubscriptionGuard"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["SubscriptionGuard"]
+    }
+  ],
   "vars": {
+    "ENVIRONMENT": "development",
+    "REQUIRE_ACCOUNT_AUTH": "1",
+    "MODEL_PROVIDER": "custom_openai_compatible",
     "OPENAI_BASE_URL": "https://api.example.com",
     "OPENAI_MODEL": "example-model",
-    "CLOUDFLARE_AI_MODEL": "example-workers-ai-model"
+    "PROVIDER_BACKUP_A_BASE_URL": "https://api.example.com",
+    "PROVIDER_BACKUP_A_ID": "custom_openai_compatible",
+    "PROVIDER_BACKUP_A_MODEL": "example-model",
+    "PROVIDER_BACKUP_B_BASE_URL": "https://api.example.com",
+    "PROVIDER_BACKUP_B_ID": "custom_openai_compatible",
+    "PROVIDER_BACKUP_B_MODEL": "example-model",
+    "CLOUDFLARE_AI_MODEL": "@cf/meta/llama-3.1-8b-instruct"
   }
 }
