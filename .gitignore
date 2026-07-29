@@ -40,6 +40,8 @@ test-results/
 tmp-*.png
 desktop-assets/*.ico
 desktop-assets/*.png
+!desktop-assets/app-icon.ico
+!desktop-assets/app-icon.png
 store/
 scripts/build_msix.ps1
 scripts/check_release.ps1

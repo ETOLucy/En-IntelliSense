@@ -9,4 +9,3 @@
 - [User guide](USER_GUIDE.md)
 - [使用指南](USER_GUIDE.zh-CN.md)
 - [Open-source boundaries](OPEN_SOURCE_BOUNDARIES.md)
-- [Account service local debugging](operations/ACCOUNT_LOCAL_DEBUG.zh-CN.md)
