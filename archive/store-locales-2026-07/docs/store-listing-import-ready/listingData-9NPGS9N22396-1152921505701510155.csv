@@ -1,0 +1,608 @@
+﻿"Field","ID","Type (Type)","default","en-us","zh-cn","es-es","ja-jp","ko-kr","fr-fr","de-de","pt-br","ar-sa","hi-in","ru-ru"
+"Description","2","Text","","En-IntelliSense is a focused writing workspace for composing and improving English.
+
+Write letters, essays, messages, notes, and other drafts in a clean desktop editor. Use AI assistance to continue text, review grammar and clarity, polish wording, explain corrections, or simplify a passage.
+
+You choose the AI service. Configure a compatible endpoint, your own API key, model ID, and supported protocol in Model Settings. En-IntelliSense does not include shared API credit or a bundled model subscription.
+
+Highlights:
+- AI completion, review, polishing, explanations, and simplification
+- Local draft workspace
+- Open and save TXT and Markdown files
+- Interface available in 11 languages
+- API keys protected on Windows with DPAPI
+- No advertising or analytics
+
+Drafts and settings remain in the current Windows user profile. Text submitted for an AI action is sent directly to the model provider you configure and is subject to that provider's terms and privacy practices.","En-IntelliSense 是一款专注于英文创作与修改的桌面写作工具。
+
+你可以在简洁的编辑器中撰写信件、文章、消息、笔记和其他草稿，并使用 AI 续写、检查语法与表达、润色文字、解释修改原因或简化段落。
+
+AI 服务由你选择。你可以在“模型设置”中配置兼容的服务地址、自己的 API Key、模型 ID 和受支持的协议。En-IntelliSense 不提供共享 API 额度，也不捆绑模型订阅。
+
+主要功能：
+- AI 续写、检查、润色、解释与简化
+- 本地草稿工作区
+- 打开和保存 TXT、Markdown 文件
+- 界面支持 11 种语言
+- 使用 Windows DPAPI 保护 API Key
+- 无广告、无分析追踪
+
+草稿和设置保存在当前 Windows 用户配置文件中。仅当你主动使用 AI 功能时，相关文本才会直接发送到你配置的模型服务商，并受该服务商的条款和隐私政策约束。","En-IntelliSense es un espacio de escritura centrado en redactar y mejorar textos en inglés.
+
+Escribe cartas, ensayos, mensajes, notas y otros borradores. Usa la IA para continuar el texto, revisar la gramática y la claridad, pulir la redacción, explicar correcciones o simplificar un fragmento.
+
+Tú eliges el servicio de IA. Configura un endpoint compatible, tu propia clave API, el ID del modelo y un protocolo admitido. La aplicación no incluye créditos API compartidos ni una suscripción a modelos.
+
+Funciones principales:
+- Completar, revisar, pulir, explicar y simplificar con IA
+- Borradores locales
+- Abrir y guardar archivos TXT y Markdown
+- Interfaz en 11 idiomas
+- Claves API protegidas con Windows DPAPI
+- Sin publicidad ni analítica
+
+Los borradores y ajustes permanecen en el perfil del usuario actual de Windows. El texto usado en una acción de IA se envía directamente al proveedor configurado y queda sujeto a sus términos y política de privacidad.","En-IntelliSense は、英語の文章作成と改善に集中できるデスクトップワークスペースです。
+
+手紙、エッセイ、メッセージ、メモなどをシンプルなエディターで作成できます。AI による文章の続き、文法と明瞭さの確認、表現の推敲、修正理由の説明、文章の簡略化を利用できます。
+
+AI サービスは自分で選択します。互換エンドポイント、自分の API キー、モデル ID、対応プロトコルを設定してください。本アプリに共有 API クレジットやモデルのサブスクリプションは含まれません。
+
+主な機能:
+- AI による補完、確認、推敲、説明、簡略化
+- ローカルの下書き
+- TXT と Markdown ファイルの読み書き
+- 11 言語のインターフェイス
+- Windows DPAPI による API キー保護
+- 広告、分析なし
+
+下書きと設定は現在の Windows ユーザープロファイル内に保存されます。AI 操作に使用した文章は、設定したモデル提供元に直接送信され、その提供元の規約とプライバシーポリシーが適用されます。","En-IntelliSense는 영어 글을 작성하고 개선하는 데 집중할 수 있는 데스크톱 작업 공간입니다.
+
+깔끔한 편집기에서 편지, 에세이, 메시지, 메모와 기타 초안을 작성하세요. AI로 문장을 이어 쓰고, 문법과 명확성을 검토하고, 표현을 다듬고, 수정 사항을 설명하거나 문장을 간결하게 만들 수 있습니다.
+
+AI 서비스는 사용자가 선택합니다. 호환 엔드포인트, 자신의 API 키, 모델 ID와 지원 프로토콜을 설정하세요. 공유 API 크레딧이나 모델 구독은 포함되지 않습니다.
+
+주요 기능:
+- AI 이어 쓰기, 검토, 다듬기, 설명 및 단순화
+- 로컬 초안 작업 공간
+- TXT 및 Markdown 파일 열기와 저장
+- 11개 언어 인터페이스
+- Windows DPAPI로 API 키 보호
+- 광고 및 분석 없음
+
+초안과 설정은 현재 Windows 사용자 프로필에 저장됩니다. AI 작업에 사용한 텍스트는 설정한 모델 제공업체로 직접 전송되며 해당 제공업체의 약관과 개인정보 처리방침이 적용됩니다.","En-IntelliSense est un espace de travail consacré à la rédaction et à l'amélioration de textes en anglais.
+
+Rédigez lettres, essais, messages, notes et autres brouillons dans un éditeur épuré. Utilisez l'IA pour poursuivre un texte, vérifier la grammaire et la clarté, améliorer le style, expliquer des corrections ou simplifier un passage.
+
+Vous choisissez le service d'IA. Configurez un endpoint compatible, votre propre clé API, l'identifiant du modèle et un protocole pris en charge. Aucun crédit API partagé ni abonnement à un modèle n'est inclus.
+
+Fonctions principales :
+- Complétion, révision, amélioration, explication et simplification par IA
+- Brouillons locaux
+- Ouverture et enregistrement de fichiers TXT et Markdown
+- Interface disponible en 11 langues
+- Clés API protégées par Windows DPAPI
+- Sans publicité ni analyse d'utilisation
+
+Les brouillons et réglages restent dans le profil Windows actuel. Le texte utilisé pour une action d'IA est envoyé directement au fournisseur configuré et relève de ses conditions et de sa politique de confidentialité.","En-IntelliSense ist ein übersichtlicher Arbeitsbereich zum Verfassen und Verbessern englischer Texte.
+
+Schreiben Sie Briefe, Aufsätze, Nachrichten, Notizen und andere Entwürfe. Nutzen Sie KI, um Texte fortzusetzen, Grammatik und Verständlichkeit zu prüfen, Formulierungen zu verbessern, Korrekturen zu erklären oder Passagen zu vereinfachen.
+
+Sie wählen den KI-Dienst. Konfigurieren Sie einen kompatiblen Endpunkt, Ihren eigenen API-Schlüssel, die Modell-ID und ein unterstütztes Protokoll. Gemeinsames API-Guthaben oder ein Modellabonnement sind nicht enthalten.
+
+Funktionen:
+- KI-Vervollständigung, Prüfung, Überarbeitung, Erklärung und Vereinfachung
+- Lokale Entwürfe
+- TXT- und Markdown-Dateien öffnen und speichern
+- Benutzeroberfläche in 11 Sprachen
+- API-Schlüssel mit Windows DPAPI geschützt
+- Keine Werbung oder Analyse
+
+Entwürfe und Einstellungen bleiben im aktuellen Windows-Benutzerprofil. Für eine KI-Aktion verwendeter Text wird direkt an den konfigurierten Anbieter gesendet und unterliegt dessen Bedingungen und Datenschutzrichtlinie.","En-IntelliSense é um espaço de trabalho focado em escrever e melhorar textos em inglês.
+
+Escreva cartas, redações, mensagens, notas e outros rascunhos em um editor simples. Use IA para continuar o texto, revisar gramática e clareza, aprimorar a redação, explicar correções ou simplificar um trecho.
+
+Você escolhe o serviço de IA. Configure um endpoint compatível, sua própria chave de API, o ID do modelo e um protocolo aceito. O aplicativo não inclui créditos de API compartilhados nem assinatura de modelos.
+
+Principais recursos:
+- Conclusão, revisão, aprimoramento, explicação e simplificação com IA
+- Rascunhos locais
+- Abrir e salvar arquivos TXT e Markdown
+- Interface em 11 idiomas
+- Chaves de API protegidas pelo Windows DPAPI
+- Sem anúncios ou análise de uso
+
+Rascunhos e configurações permanecem no perfil atual do Windows. O texto usado em uma ação de IA é enviado diretamente ao provedor configurado e está sujeito aos termos e à política de privacidade desse provedor.","En-IntelliSense مساحة كتابة مكتبية مخصصة لإنشاء النصوص الإنجليزية وتحسينها.
+
+اكتب الرسائل والمقالات والملاحظات والمسودات الأخرى في محرر واضح. استخدم الذكاء الاصطناعي لمتابعة النص ومراجعة القواعد والوضوح وتحسين الصياغة وشرح التصحيحات أو تبسيط فقرة.
+
+أنت تختار خدمة الذكاء الاصطناعي. اضبط نقطة نهاية متوافقة ومفتاح API الخاص بك ومعرّف النموذج وبروتوكولاً مدعوماً. لا يتضمن التطبيق رصيد API مشتركاً أو اشتراكاً في نموذج.
+
+أبرز الميزات:
+- الإكمال والمراجعة والتحسين والشرح والتبسيط بالذكاء الاصطناعي
+- مسودات محلية
+- فتح ملفات TXT وMarkdown وحفظها
+- واجهة متاحة بـ 11 لغة
+- حماية مفاتيح API بواسطة Windows DPAPI
+- بلا إعلانات أو تحليلات
+
+تبقى المسودات والإعدادات في ملف تعريف مستخدم Windows الحالي. يُرسل النص المستخدم في إجراء ذكاء اصطناعي مباشرة إلى موفر النموذج الذي تضبطه ويخضع لشروطه وممارسات الخصوصية لديه.","En-IntelliSense अंग्रेज़ी लिखने और उसे बेहतर बनाने के लिए एक केंद्रित डेस्कटॉप कार्यक्षेत्र है।
+
+साफ़-सुथरे संपादक में पत्र, निबंध, संदेश, नोट और अन्य ड्राफ़्ट लिखें। टेक्स्ट आगे बढ़ाने, व्याकरण और स्पष्टता जाँचने, भाषा सुधारने, सुधार समझाने या अनुच्छेद सरल बनाने के लिए AI का उपयोग करें।
+
+AI सेवा आप चुनते हैं। संगत एंडपॉइंट, अपनी API कुंजी, मॉडल ID और समर्थित प्रोटोकॉल सेट करें। ऐप में साझा API क्रेडिट या मॉडल सदस्यता शामिल नहीं है।
+
+मुख्य सुविधाएँ:
+- AI पूर्णता, समीक्षा, सुधार, व्याख्या और सरलीकरण
+- स्थानीय ड्राफ़्ट
+- TXT और Markdown फ़ाइलें खोलना और सहेजना
+- 11 भाषाओं में इंटरफ़ेस
+- Windows DPAPI से API कुंजी की सुरक्षा
+- कोई विज्ञापन या एनालिटिक्स नहीं
+
+ड्राफ़्ट और सेटिंग वर्तमान Windows उपयोगकर्ता प्रोफ़ाइल में रहते हैं। AI कार्रवाई के लिए इस्तेमाल टेक्स्ट सीधे आपके चुने मॉडल प्रदाता को भेजा जाता है और उस प्रदाता की शर्तों तथा गोपनीयता नीति के अधीन होता है।","En-IntelliSense — рабочее пространство для написания и улучшения текстов на английском языке.
+
+Пишите письма, эссе, сообщения, заметки и другие черновики в удобном редакторе. Используйте ИИ, чтобы продолжить текст, проверить грамматику и ясность, улучшить формулировки, объяснить исправления или упростить фрагмент.
+
+Сервис ИИ выбираете вы. Укажите совместимую конечную точку, свой ключ API, идентификатор модели и поддерживаемый протокол. Общие кредиты API и подписка на модель не предоставляются.
+
+Основные возможности:
+- Дополнение, проверка, улучшение, объяснение и упрощение с помощью ИИ
+- Локальные черновики
+- Открытие и сохранение TXT и Markdown
+- Интерфейс на 11 языках
+- Защита ключей API с помощью Windows DPAPI
+- Без рекламы и аналитики
+
+Черновики и настройки остаются в профиле текущего пользователя Windows. Текст для операции ИИ отправляется напрямую выбранному поставщику модели и регулируется его условиями и политикой конфиденциальности."
+"ReleaseNotes","3","Text","","Initial Microsoft Store release. Includes the writing workspace, local drafts, TXT/Markdown file support, 11 interface languages, and bring-your-own-key model configuration.","Microsoft Store 首个版本。包含写作工作区、本地草稿、TXT/Markdown 文件支持、11 种界面语言和自带 API Key 的模型配置。","Primera versión para Microsoft Store, con editor, borradores locales, archivos TXT/Markdown, 11 idiomas y configuración de modelos con tu propia clave API.","Microsoft Store 初回リリース。ライティングワークスペース、ローカル下書き、TXT/Markdown、11 言語、自分の API キーによるモデル設定を搭載。","Microsoft Store 첫 릴리스입니다. 글쓰기 작업 공간, 로컬 초안, TXT/Markdown, 11개 언어와 개인 API 키 모델 설정을 포함합니다.","Première version Microsoft Store : espace de rédaction, brouillons locaux, fichiers TXT/Markdown, 11 langues et configuration de modèle avec votre propre clé API.","Erste Microsoft Store-Version mit Schreibbereich, lokalen Entwürfen, TXT/Markdown, 11 Sprachen und Modellkonfiguration mit eigenem API-Schlüssel.","Primeira versão na Microsoft Store, com área de escrita, rascunhos locais, TXT/Markdown, 11 idiomas e configuração de modelo com sua própria chave de API.","الإصدار الأول في Microsoft Store، ويشمل مساحة الكتابة والمسودات المحلية وملفات TXT وMarkdown و11 لغة وإعداد النموذج بمفتاح API الخاص بك.","पहला Microsoft Store रिलीज़। इसमें लेखन कार्यक्षेत्र, स्थानीय ड्राफ़्ट, TXT/Markdown, 11 भाषाएँ और अपनी API कुंजी से मॉडल कॉन्फ़िगरेशन शामिल हैं।","Первый выпуск в Microsoft Store: редактор, локальные черновики, TXT/Markdown, 11 языков и настройка модели с собственным ключом API."
+"Title","4","Text","","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense"
+"ShortTitle","5","Text","","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense"
+"SortTitle","6","Text","","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense","En-IntelliSense"
+"VoiceTitle","7","Text","","","","","","","","","","","",""
+"ShortDescription","8","Text","","AI-assisted English writing with your own compatible model API.","使用你自己的兼容模型 API 辅助英文写作。","Escritura en inglés con IA usando tu propia API de modelo compatible.","自分の互換モデル API を使って英語ライティングを AI で支援。","자신의 호환 모델 API를 사용하는 AI 영어 글쓰기 도구.","Aide à l'écriture en anglais avec votre propre API de modèle compatible.","KI-gestütztes Schreiben auf Englisch mit Ihrer eigenen kompatiblen Modell-API.","Escrita em inglês com IA usando sua própria API de modelo compatível.","مساعدة ذكية للكتابة بالإنجليزية باستخدام واجهة نموذج متوافقة خاصة بك.","अपने संगत मॉडल API से AI-सहायता प्राप्त अंग्रेज़ी लेखन।","Помощь ИИ в английском письме с вашим совместимым API модели."
+"DevStudio","9","Text","","","","","","","","","","","",""
+"CopyrightTrademarkInformation","12","Text","","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy","Copyright (c) 2026 Lucyy"
+"AdditionalLicenseTerms","13","Text","","","","","","","","","","","",""
+"DesktopScreenshot1","100","Relative path (or URL to file in Partner Center)","","assets/store-en-us.png","assets/store-zh-cn.png","assets/store-es-es.png","assets/store-ja-jp.png","assets/store-ko-kr.png","assets/store-fr-fr.png","assets/store-de-de.png","assets/store-pt-br.png","assets/store-ar-sa.png","assets/store-hi-in.png","assets/store-ru-ru.png"
+"DesktopScreenshot2","101","Relative path (or URL to file in Partner Center)","","","assets/demo-language.png","","","","","","","","",""
+"DesktopScreenshot3","102","Relative path (or URL to file in Partner Center)","","","assets/demo-ai-service.png","","","","","","","","",""
+"DesktopScreenshot4","103","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot5","104","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot6","105","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot7","106","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot8","107","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot9","108","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot10","109","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot11","110","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot12","111","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot13","112","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot14","113","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot15","114","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot16","115","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot17","116","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot18","117","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot19","118","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot20","119","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot21","120","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot22","121","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot23","122","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot24","123","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot25","124","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot26","125","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot27","126","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot28","127","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot29","128","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshot30","129","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"DesktopScreenshotCaption1","150","Text","","Focused English writing workspace","专注的英文写作工作区","Espacio centrado en escribir en inglés","英語作成に集中できるワークスペース","영어 글쓰기에 집중하는 작업 공간","Espace consacré à l'écriture en anglais","Arbeitsbereich für englische Texte","Espaço focado na escrita em inglês","مساحة مخصصة للكتابة بالإنجليزية","अंग्रेज़ी लेखन के लिए केंद्रित कार्यक्षेत्र","Рабочее пространство для английских текстов"
+"DesktopScreenshotCaption2","151","Text","","","可选择 11 种界面语言","","","","","","","","",""
+"DesktopScreenshotCaption3","152","Text","","","配置你自己的兼容 AI 服务","","","","","","","","",""
+"DesktopScreenshotCaption4","153","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption5","154","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption6","155","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption7","156","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption8","157","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption9","158","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption10","159","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption11","160","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption12","161","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption13","162","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption14","163","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption15","164","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption16","165","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption17","166","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption18","167","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption19","168","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption20","169","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption21","170","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption22","171","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption23","172","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption24","173","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption25","174","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption26","175","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption27","176","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption28","177","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption29","178","Text","","","","","","","","","","","",""
+"DesktopScreenshotCaption30","179","Text","","","","","","","","","","","",""
+"MobileScreenshot1","200","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot2","201","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot3","202","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot4","203","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot5","204","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot6","205","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot7","206","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot8","207","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot9","208","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot10","209","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot11","210","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot12","211","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot13","212","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot14","213","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot15","214","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot16","215","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot17","216","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot18","217","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot19","218","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot20","219","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot21","220","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot22","221","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot23","222","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot24","223","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot25","224","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot26","225","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot27","226","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot28","227","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot29","228","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshot30","229","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"MobileScreenshotCaption1","250","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption2","251","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption3","252","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption4","253","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption5","254","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption6","255","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption7","256","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption8","257","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption9","258","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption10","259","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption11","260","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption12","261","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption13","262","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption14","263","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption15","264","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption16","265","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption17","266","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption18","267","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption19","268","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption20","269","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption21","270","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption22","271","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption23","272","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption24","273","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption25","274","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption26","275","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption27","276","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption28","277","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption29","278","Text","","","","","","","","","","","",""
+"MobileScreenshotCaption30","279","Text","","","","","","","","","","","",""
+"XboxScreenshot1","300","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot2","301","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot3","302","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot4","303","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot5","304","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot6","305","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot7","306","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot8","307","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot9","308","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot10","309","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot11","310","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot12","311","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot13","312","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot14","313","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot15","314","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot16","315","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot17","316","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot18","317","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot19","318","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot20","319","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot21","320","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot22","321","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot23","322","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot24","323","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot25","324","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot26","325","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot27","326","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot28","327","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot29","328","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshot30","329","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxScreenshotCaption1","350","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption2","351","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption3","352","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption4","353","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption5","354","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption6","355","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption7","356","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption8","357","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption9","358","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption10","359","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption11","360","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption12","361","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption13","362","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption14","363","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption15","364","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption16","365","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption17","366","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption18","367","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption19","368","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption20","369","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption21","370","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption22","371","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption23","372","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption24","373","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption25","374","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption26","375","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption27","376","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption28","377","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption29","378","Text","","","","","","","","","","","",""
+"XboxScreenshotCaption30","379","Text","","","","","","","","","","","",""
+"HolographicScreenshot1","400","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot2","401","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot3","402","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot4","403","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot5","404","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot6","405","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot7","406","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot8","407","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot9","408","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot10","409","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot11","410","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot12","411","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot13","412","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot14","413","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot15","414","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot16","415","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot17","416","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot18","417","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot19","418","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot20","419","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot21","420","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot22","421","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot23","422","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot24","423","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot25","424","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot26","425","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot27","426","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot28","427","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot29","428","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshot30","429","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"HolographicScreenshotCaption1","450","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption2","451","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption3","452","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption4","453","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption5","454","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption6","455","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption7","456","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption8","457","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption9","458","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption10","459","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption11","460","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption12","461","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption13","462","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption14","463","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption15","464","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption16","465","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption17","466","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption18","467","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption19","468","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption20","469","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption21","470","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption22","471","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption23","472","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption24","473","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption25","474","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption26","475","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption27","476","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption28","477","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption29","478","Text","","","","","","","","","","","",""
+"HolographicScreenshotCaption30","479","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshot11","510","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot12","511","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot13","512","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot14","513","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot15","514","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot16","515","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot17","516","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot18","517","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot19","518","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot20","519","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot21","520","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot22","521","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot23","522","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot24","523","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot25","524","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot26","525","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot27","526","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot28","527","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot29","528","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshot30","529","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption11","560","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption12","561","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption13","562","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption14","563","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption15","564","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption16","565","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption17","566","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption18","567","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption19","568","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption20","569","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption21","570","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption22","571","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption23","572","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption24","573","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption25","574","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption26","575","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption27","576","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption28","577","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption29","578","Text","","","","","","","","","","","",""
+"SurfaceHubScreenshotCaption30","579","Text","","","","","","","","","","","",""
+"StoreLogo720x1080","600","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"StoreLogo1080x1080","601","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"StoreLogo300x300","602","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"OverrideLogosForWin10","603","True/False","","False","False","False","False","False","False","False","False","False","False","False"
+"StoreLogoOverride150x150","604","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"StoreLogoOverride71x71","605","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"PromoImage1920x1080","606","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"PromoImage2400x1200","607","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxBrandedKeyArt584x800","608","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxTitledHero1920x1080","609","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"XboxFeaturedPromo1080x1080","610","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"OptionalPromo358x358","611","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"OptionalPromo1000x800","612","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"OptionalPromo414x180","613","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Feature1","700","Text","","AI-assisted English writing","AI 辅助英文写作","Escritura en inglés asistida por IA","AI を活用した英語ライティング","AI 영어 글쓰기 지원","Rédaction en anglais assistée par IA","KI-gestütztes Schreiben auf Englisch","Escrita em inglês assistida por IA","مساعدة ذكية للكتابة بالإنجليزية","AI-सहायता प्राप्त अंग्रेज़ी लेखन","Английское письмо с помощью ИИ"
+"Feature2","701","Text","","Completion, review, polishing, explanations, and simplification","续写、检查、润色、解释与简化","Completar, revisar, pulir, explicar y simplificar","補完、確認、推敲、説明、簡略化","이어 쓰기, 검토, 다듬기, 설명 및 단순화","Compléter, réviser, améliorer, expliquer et simplifier","Vervollständigen, prüfen, verbessern, erklären und vereinfachen","Completar, revisar, aprimorar, explicar e simplificar","الإكمال والمراجعة والتحسين والشرح والتبسيط","पूर्णता, समीक्षा, सुधार, व्याख्या और सरलीकरण","Дополнение, проверка, улучшение, объяснение и упрощение"
+"Feature3","702","Text","","Bring your own compatible model API","接入你自己的兼容模型 API","Usa tu propia API de modelo compatible","自分の互換モデル API を使用","자신의 호환 모델 API 사용","Utilisez votre propre API de modèle compatible","Eigene kompatible Modell-API verwenden","Use sua própria API de modelo compatível","استخدم واجهة نموذج متوافقة خاصة بك","अपना संगत मॉडल API उपयोग करें","Используйте свой совместимый API модели"
+"Feature4","703","Text","","Local drafts in your Windows user profile","草稿保存在 Windows 用户配置文件中","Borradores locales en tu perfil de Windows","Windows ユーザープロファイル内の下書き","Windows 사용자 프로필의 로컬 초안","Brouillons locaux dans votre profil Windows","Lokale Entwürfe im Windows-Benutzerprofil","Rascunhos locais no perfil do Windows","مسودات محلية في ملف مستخدم Windows","Windows उपयोगकर्ता प्रोफ़ाइल में स्थानीय ड्राफ़्ट","Локальные черновики в профиле Windows"
+"Feature5","704","Text","","Open and save TXT and Markdown files","打开和保存 TXT、Markdown 文件","Abre y guarda TXT y Markdown","TXT と Markdown の読み書き","TXT 및 Markdown 열기와 저장","Ouvrez et enregistrez TXT et Markdown","TXT und Markdown öffnen und speichern","Abra e salve TXT e Markdown","فتح ملفات TXT وMarkdown وحفظها","TXT और Markdown खोलें व सहेजें","Открывайте и сохраняйте TXT и Markdown"
+"Feature6","705","Text","","Interface available in 11 languages","界面支持 11 种语言","Interfaz disponible en 11 idiomas","11 言語のインターフェイス","11개 언어 인터페이스","Interface disponible en 11 langues","Benutzeroberfläche in 11 Sprachen","Interface disponível em 11 idiomas","واجهة متاحة بـ 11 لغة","11 भाषाओं में इंटरफ़ेस","Интерфейс на 11 языках"
+"Feature7","706","Text","","","","","","","","","","","",""
+"Feature8","707","Text","","","","","","","","","","","",""
+"Feature9","708","Text","","","","","","","","","","","",""
+"Feature10","709","Text","","","","","","","","","","","",""
+"Feature11","710","Text","","","","","","","","","","","",""
+"Feature12","711","Text","","","","","","","","","","","",""
+"Feature13","712","Text","","","","","","","","","","","",""
+"Feature14","713","Text","","","","","","","","","","","",""
+"Feature15","714","Text","","","","","","","","","","","",""
+"Feature16","715","Text","","","","","","","","","","","",""
+"Feature17","716","Text","","","","","","","","","","","",""
+"Feature18","717","Text","","","","","","","","","","","",""
+"Feature19","718","Text","","","","","","","","","","","",""
+"Feature20","719","Text","","","","","","","","","","","",""
+"MinimumHardwareReq1","800","Text","","","","","","","","","","","",""
+"MinimumHardwareReq2","801","Text","","","","","","","","","","","",""
+"MinimumHardwareReq3","802","Text","","","","","","","","","","","",""
+"MinimumHardwareReq4","803","Text","","","","","","","","","","","",""
+"MinimumHardwareReq5","804","Text","","","","","","","","","","","",""
+"MinimumHardwareReq6","805","Text","","","","","","","","","","","",""
+"MinimumHardwareReq7","806","Text","","","","","","","","","","","",""
+"MinimumHardwareReq8","807","Text","","","","","","","","","","","",""
+"MinimumHardwareReq9","808","Text","","","","","","","","","","","",""
+"MinimumHardwareReq10","809","Text","","","","","","","","","","","",""
+"MinimumHardwareReq11","810","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq1","850","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq2","851","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq3","852","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq4","853","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq5","854","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq6","855","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq7","856","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq8","857","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq9","858","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq10","859","Text","","","","","","","","","","","",""
+"RecommendedHardwareReq11","860","Text","","","","","","","","","","","",""
+"SearchTerm1","900","Text","","English writing","英文写作","escritura inglesa","英語ライティング","영어 글쓰기","écriture anglaise","Englisch schreiben","escrita em inglês","كتابة إنجليزية","अंग्रेज़ी लेखन","английское письмо"
+"SearchTerm2","901","Text","","AI writing","AI写作","escritura IA","AIライティング","AI 글쓰기","écriture IA","KI Schreiben","escrita com IA","كتابة بالذكاء الاصطناعي","AI लेखन","ИИ для текста"
+"SearchTerm3","902","Text","","grammar","语法检查","gramática","英文法","영문법","grammaire","Grammatik","gramática","قواعد","व्याकरण","грамматика"
+"SearchTerm4","903","Text","","proofreading","英文润色","corrección","校正","교정","relecture","Korrekturlesen","revisão","تدقيق","प्रूफरीडिंग","корректура"
+"SearchTerm5","904","Text","","Markdown","Markdown","Markdown","Markdown","Markdown","Markdown","Markdown","Markdown","Markdown","Markdown","Markdown"
+"SearchTerm6","905","Text","","","","","","","","","","","",""
+"SearchTerm7","906","Text","","","","","","","","","","","",""
+"TrailerToPlayAtTopOfListing","999","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer1","1000","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer2","1001","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer3","1002","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer4","1003","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer5","1004","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer6","1005","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer7","1006","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer8","1007","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer9","1008","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer10","1009","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer11","1010","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer12","1011","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer13","1012","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer14","1013","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"Trailer15","1014","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerTitle1","1020","Text","","","","","","","","","","","",""
+"TrailerTitle2","1021","Text","","","","","","","","","","","",""
+"TrailerTitle3","1022","Text","","","","","","","","","","","",""
+"TrailerTitle4","1023","Text","","","","","","","","","","","",""
+"TrailerTitle5","1024","Text","","","","","","","","","","","",""
+"TrailerTitle6","1025","Text","","","","","","","","","","","",""
+"TrailerTitle7","1026","Text","","","","","","","","","","","",""
+"TrailerTitle8","1027","Text","","","","","","","","","","","",""
+"TrailerTitle9","1028","Text","","","","","","","","","","","",""
+"TrailerTitle10","1029","Text","","","","","","","","","","","",""
+"TrailerTitle11","1030","Text","","","","","","","","","","","",""
+"TrailerTitle12","1031","Text","","","","","","","","","","","",""
+"TrailerTitle13","1032","Text","","","","","","","","","","","",""
+"TrailerTitle14","1033","Text","","","","","","","","","","","",""
+"TrailerTitle15","1034","Text","","","","","","","","","","","",""
+"TrailerThumbnail1","1040","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail2","1041","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail3","1042","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail4","1043","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail5","1044","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail6","1045","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail7","1046","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail8","1047","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail9","1048","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail10","1049","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail11","1050","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail12","1051","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail13","1052","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail14","1053","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerThumbnail15","1054","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption1","1055","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption2","1056","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption3","1057","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption4","1058","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption5","1059","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption6","1060","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption7","1061","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption8","1062","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption9","1063","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption10","1064","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption11","1065","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption12","1066","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption13","1067","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption14","1068","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerClosedCaption15","1069","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription1","1070","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription2","1071","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription3","1072","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription4","1073","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription5","1074","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription6","1075","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription7","1076","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription8","1077","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription9","1078","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription10","1079","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription11","1080","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription12","1081","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription13","1082","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription14","1083","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"TrailerAudioDescription15","1084","Relative path (or URL to file in Partner Center)","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","",
