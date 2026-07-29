@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "debug": "powershell -ExecutionPolicy Bypass -File ./scripts/start_debug.ps1",
-    "test": "node test_completion.js && node test_worker.mjs && node test_edgeone_proxy.mjs && node test_i18n.mjs",
+    "test": "node tests/test_completion.js && node tests/test_worker.mjs && node tests/test_edgeone_proxy.mjs && node tests/test_i18n.mjs",
     "privacy": "powershell -ExecutionPolicy Bypass -File ./scripts/check_privacy.ps1"
   }
 }

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { DEFAULT_API_UPSTREAM, proxyApiRequest } from './node-functions/_shared/proxy.js';
+import { DEFAULT_API_UPSTREAM, proxyApiRequest } from '../node-functions/_shared/proxy.js';
 
 let capturedUrl;
 let capturedOptions;

@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const completion = require('./completion');
+const completion = require('../completion');
 
 assert.equal(completion.getWordSuggestion('Hi, Ayna! I would love to hel', 'natural'), 'p');
 assert.equal(completion.getWordSuggestion('This is imp', 'simple'), 'ortant');
