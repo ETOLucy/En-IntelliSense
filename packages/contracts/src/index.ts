@@ -89,7 +89,7 @@ export interface Revision {
   id: string;
   documentId: string;
   text: string;
-  source: 'user' | 'local-fix' | 'ai';
+  source: 'user' | 'local-fix' | 'ai' | 'restore';
   createdAt: string;
   summary: string;
 }
@@ -115,4 +115,29 @@ export interface ByokChatRequest {
 
 export interface ByokChatResult {
   reply: string;
+}
+
+export type SupportedTextFileExtension = '.txt' | '.text' | '.md' | '.markdown';
+
+export interface OpenedTextFile {
+  name: string;
+  reference: string;
+  content: string;
+}
+
+export interface SaveTextFileInput {
+  reference?: string;
+  suggestedName: string;
+  content: string;
+  saveAs: boolean;
+}
+
+export interface SavedTextFile {
+  name: string;
+  reference: string;
+}
+
+export interface OpenedDictionaryFile {
+  name: string;
+  content: string;
 }

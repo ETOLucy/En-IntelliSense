@@ -4,7 +4,7 @@ Last updated: July 30, 2026
 
 ## Local processing
 
-WriteMelo stores documents, revision snapshots, settings, consent choices, and personal dictionary entries on the device. Local completion, spelling, grammar rules, outlines, and checklists run without sending writing to WriteMelo or an AI provider.
+WriteMelo stores documents, revision snapshots, settings, consent choices, writing-activity counters, and personal dictionary entries on the device. Imported `.txt` or Hunspell `.dic` word lists are parsed locally and stored as personal words. Local completion, spelling, deterministic writing rules, outlines, diffs, and checklists run without sending writing to WriteMelo or an AI provider.
 
 In the browser, local data is stored in IndexedDB and local storage. In the Windows application, Electron keeps that browser profile in the current Windows user's application-data directory.
 
@@ -12,7 +12,7 @@ In the browser, local data is stored in IndexedDB and local storage. In the Wind
 
 AI is off by default. While it is off, WriteMelo makes no AI API requests and creates no AI provider charges. Local completion, spelling, diagnostics, outlines, and revision history remain available.
 
-Enabling question-only mode does not send the document. When the user asks a question, only that question and the minimum required request settings are sent to the configured provider. Attaching the current full document requires a separate checkbox; while enabled, every AI question also sends the active document until the user turns the option off. Any actual AI request may consume provider quota or incur charges under the provider's terms, and full-document requests generally use more tokens.
+Question-only mode does not send the document. When the user asks, only that question and the minimum required request settings are sent to the configured provider. Question-plus-document mode also sends the active document. Selecting a mode sends nothing by itself. Any actual AI request may consume provider quota or incur charges under the provider's terms, and full-document requests generally use more tokens.
 
 The current beta UI implements this consent boundary. A production AI provider must not be enabled until its endpoint, retention terms, regional routing, and account controls are configured and reviewed.
 
@@ -25,6 +25,10 @@ Remote providers receive the text required for an approved request and may retai
 ## Accounts and diagnostics
 
 Local writing features do not require an account. Hosted account and support services may process email addresses, authentication events, quota usage, purchase records, and support messages when those services are enabled. Production secrets, provider pools, abuse thresholds, user writing, and logs are not stored in this public repository.
+
+## Files opened from the device
+
+WriteMelo reads or writes `.txt`, `.text`, `.md`, and `.markdown` only after the user chooses a file or save destination. The browser uses the browser's file picker and granted handle. The Windows app uses native dialogs and permits IPC file access only for paths authorized during the current application session. File content is not uploaded merely because it was opened or saved.
 
 ## Contact
 

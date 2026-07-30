@@ -74,7 +74,9 @@ try {
   await page.keyboard.type(' Updated');
   await page.getByText('Saved locally', { exact: true }).waitFor();
   await page.getByTitle('Revision history').click();
-  await page.getByText('Edited document', { exact: true }).waitFor();
+  await page.locator('.revision').first().waitFor();
+  await page.getByTitle('Preview changes').first().click();
+  await page.locator('.revision-preview').waitFor();
   await screenshot(page, 'demo-2.0-history.png');
 
   await page.getByTitle('New document').click();
@@ -84,7 +86,6 @@ try {
   await page.locator('.cm-inline-completion').waitFor();
   await screenshot(page, 'demo-2.0-inline-completion.png');
 
-  await page.locator('.document-item').filter({ hasText: 'Project follow-up' }).click();
   await page.getByRole('button', { name: 'AI', exact: true }).click();
   await page.getByRole('button', { name: 'Enable AI', exact: true }).click();
   await page.getByRole('dialog').waitFor();

@@ -32,6 +32,31 @@ describe('local writing service', () => {
     expect(diagnostics[1]?.fixes[0]?.edit?.insert).toBe('really like');
   });
 
+  it('lints common high-confidence grammar and punctuation mistakes', () => {
+    const diagnostics = getLocalDiagnostics(context(
+      'I could of sent alot of informations. We can discuss about it !! It depends of timing.',
+    ));
+
+    expect(diagnostics.map(item => item.id.split(':')[0])).toEqual([
+      'modal-of',
+      'alot',
+      'informations',
+      'discuss-about',
+      'space-before-punctuation',
+      'repeated-punctuation',
+      'depend-of',
+    ]);
+    expect(diagnostics.map(item => item.fixes[0]?.edit?.insert)).toEqual([
+      'could have',
+      'a lot',
+      'information',
+      'discuss',
+      '',
+      '!',
+      'depends on',
+    ]);
+  });
+
   it('builds an outline and submission checklist', () => {
     const result = analyzeWriting(context('Hello there.\n\nThank you for your help.\n\nBest regards.'));
     expect(result.outline).toHaveLength(3);

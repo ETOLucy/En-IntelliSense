@@ -45,7 +45,7 @@ Every screenshot below comes from the working application. You can reproduce the
 
 **What you do:** Select the issue for lowercase `i`.
 
-**What happens:** WriteMelo explains the rule and offers an exact replacement. The fix changes only the affected range, not the whole sentence.
+**What happens:** The issue is marked in the text and the editor gutter. Hover it for the reason and Quick Fix, or select the matching Problems item to focus the exact range. The fix changes only that range.
 
 **What you gain:** You learn why the expression is wrong and keep control over every edit.
 
@@ -69,7 +69,7 @@ Every screenshot below comes from the working application. You can reproduce the
 
 **What you do:** Edit the document, then open **Revision history**.
 
-**What happens:** WriteMelo records local snapshots and offers a Restore action.
+**What happens:** WriteMelo compares the snapshot with the current text, highlights word-level additions and removals, and shows change counts. Restore requires confirmation and can be undone.
 
 **What you gain:** Experiment with wording without losing the earlier version.
 
@@ -79,7 +79,7 @@ Every screenshot below comes from the working application. You can reproduce the
 
 ![Explicit AI consent dialog](assets/demo-2.0-ai-consent.png)
 
-**What you do:** Open **AI**, choose Enable AI, and decide separately whether the full document may be sent.
+**What you do:** Open **AI** and choose **Off**, **Question only**, or **Question + full document**.
 
 **What happens:** The dialog separates three states: AI off makes zero API calls and creates no provider charges; question-only sends only what you type; full-document mode attaches the active document to every question until disabled.
 
@@ -101,7 +101,7 @@ Every screenshot below comes from the working application. You can reproduce the
 
 ## The point of the workflow
 
-WriteMelo is useful before AI is enabled: completion reduces typing, diagnostics explain mistakes, quick fixes apply precise edits, outline checks structure, and history protects revisions. AI is an optional final tool, not the product's prerequisite.
+WriteMelo provides a defined local toolset before AI is enabled: limited completion reduces typing, deterministic diagnostics explain covered mistakes, quick fixes apply precise edits, outline checks structure, and revision diff makes earlier text inspectable. AI is optional and does not silently replace the draft.
 
 ## When each feature is useful
 
@@ -123,7 +123,9 @@ WriteMelo is useful before AI is enabled: completion reduces typing, diagnostics
 | A learner does not need advanced vocabulary everywhere | Adjusts candidates to the learning level | Choose a level | Keep suggestions understandable |
 | A long draft becomes structurally hard to scan | Turns paragraphs into a clickable outline | Select an item to return to the text | Spot missing or unbalanced sections |
 | A finished email may lack a greeting, request, or ending | Generates a format-specific submission checklist | Review each item | Catch complete-message problems, not just grammar |
-| A rewrite is worse than the original | Stores local revision snapshots automatically | Restore a chosen revision | Experiment without losing earlier work |
+| A rewrite is worse than the original | Shows a word-level diff and change counts | Preview and confirm restore; undo if needed | Inspect what changed before replacing the draft |
+| A local text or Markdown file needs editing | Opens and saves `.txt`, `.text`, `.md`, or `.markdown` | Choose each source or destination | Use WriteMelo with real files rather than copy/paste |
+| A team or subject word list already exists | Imports `.txt` or Hunspell `.dic` words locally | Review and choose the file | Reduce repeated spelling false positives |
 | Several emails or essays are in progress | Stores and switches local documents in the left pane | Create, switch, or delete | Keep drafts out of scattered temporary files |
 | You do not want an account, network, or AI | Completion, spelling, diagnostics, outline, and history remain local | Leave AI off | Preserve the core value at no AI cost |
 | Local rules cannot judge whether a tone is too forceful | Lets you ask AI only after explicit consent | Full-document access is a separate choice | Reserve AI for the problems that need deeper context |
@@ -132,7 +134,7 @@ WriteMelo is useful before AI is enabled: completion reduces typing, diagnostics
 
 ## Which features do not need AI
 
-WriteMelo's core workflow does not depend on AI. Roughly 80% of everyday capabilities can run on the device; AI is reserved for deeper semantic questions that deterministic rules cannot judge reliably.
+The features listed below run on the device; no percentage is claimed because writing tasks and required depth vary. AI is reserved for semantic questions that deterministic rules do not cover reliably.
 
 ### Entirely local
 
@@ -145,7 +147,9 @@ WriteMelo's core workflow does not depend on AI. Roughly 80% of everyday capabil
 - Capitalization, common collocation, and common word-class checks.
 - US and UK English selection.
 - Format-specific outlines and submission checklists for Letter, Essay, and Message.
-- Automatic saving, multiple local documents, and revision history.
+- Automatic saving, multiple local documents, word-level revision diff, restore confirmation, and undo.
+- Opening and saving `.txt`, `.text`, `.md`, and `.markdown`.
+- Importing personal words from `.txt` and Hunspell `.dic`.
 - English and Simplified Chinese interface.
 
 These capabilities combine an offline dictionary, spelling algorithms, English rules, common collocations, format snippets, current-document analysis, and candidate ranking. They require no account, network request, or API key.
@@ -156,7 +160,7 @@ These capabilities combine an offline dictionary, spelling algorithms, English r
 - Longer continuations for known expressions.
 - Limited grammar, repetition, and clarity checks.
 - Adjusting candidates to a learner level.
-- Ranking candidates from local usage history.
+- Ranking candidates from a mature local usage-history model (planned; current history does not yet form a full learning loop).
 
 Frequent patterns such as `I hope → you have been doing well.` and `Thank you for → your time and consideration.` can run locally. Open-ended, rare, or whole-document-dependent continuation cannot be treated as genuinely understood by a rule system.
 
@@ -178,4 +182,4 @@ Local core: frequent, deterministic, low-cost writing support, enabled by defaul
 AI enhancement: semantics, tone, and open-ended generation, invoked by the user
 ```
 
-WriteMelo does not claim that local rules can exhaust English grammar. It does promise that everyday completion, spelling, common mistakes, terminology consistency, and document structure do not require AI. When deeper understanding is needed, the user decides whether to send text and incur provider costs.
+WriteMelo does not claim complete grammar checking or general terminology-consistency analysis. Today it provides offline spelling from a 49,568-entry word list, 61 ranked completion words, 7 fixed snippets, document-entity reuse, and a small tested set of deterministic writing rules. When deeper understanding is needed, the user decides whether to send text and incur provider costs.

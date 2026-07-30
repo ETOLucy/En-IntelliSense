@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { pathToFileURL } from 'node:url';
 import { registerByokHandlers } from './byok.js';
+import { registerFileHandlers } from './files.js';
 
 const currentDirectory = dirname(fileURLToPath(import.meta.url));
 const rendererPath = join(currentDirectory, '..', '..', 'web', 'dist', 'index.html');
@@ -53,6 +54,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   registerByokHandlers({ userDataPath: app.getPath('userData'), isTrustedSender });
+  registerFileHandlers({ isTrustedSender });
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

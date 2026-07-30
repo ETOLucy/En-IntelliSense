@@ -9,3 +9,8 @@
 - [User guide](USER_GUIDE.md)
 - [使用指南](USER_GUIDE.zh-CN.md)
 - [Open-source boundaries](OPEN_SOURCE_BOUNDARIES.md)
+- [开源与私有数据边界](OPEN_SOURCE_BOUNDARIES.zh-CN.md)
+- [Security policy](../SECURITY.md)
+- [安全策略](../SECURITY.zh-CN.md)
+- [Privacy notice](../PRIVACY.md)
+- [隐私说明](../PRIVACY.zh-CN.md)

@@ -42,20 +42,22 @@ WriteMelo brings those capabilities into one writing workbench. It understands d
 | Language service | Local English context analysis |
 | Quick Fix | Exact one-click corrections with explanations |
 | Document symbols | Paragraph outline and submission checklist |
-| Source control | Local revision snapshots and restore |
+| Source control | Local snapshots, word-level diff, restore, and undo |
 | AI coding assistant | Optional AI enabled only with consent |
 
 ## Core features
 
 - English word and phrase completion powered by local rules and document entities.
 - Proper-name, acronym, and mixed-case term reuse without boosting every repeated word.
-- Offline English spelling with `nspell` and `dictionary-en`.
-- Local grammar and wording diagnostics with exact one-click edits.
+- Offline English spelling with `nspell` and a 49,568-entry `dictionary-en` word list.
+- Inline error, warning, and suggestion markers with hover explanations, a lint gutter, Problems navigation, and exact Quick Fix edits.
 - Letter, essay, and message snippets and submission checklists.
-- Document outline, local revisions, and personal dictionary.
+- Document outline and local revisions with word-level diff, restore confirmation, and undo.
+- Personal dictionary entries plus `.txt` and Hunspell `.dic` dictionary import (up to 50,000 imported words).
+- Renameable local documents and real open/save/save-as for `.txt`, `.text`, `.md`, and `.markdown`.
 - Simplified Chinese and English UI; US and UK English writing variants.
 - IndexedDB storage in the web app and Electron profile storage on Windows.
-- AI disabled by default, with separate consent for full-document transmission.
+- Three explicit AI modes: off, question only, and question with the full active document.
 - Optional BYOK for OpenAI, Groq, Together AI, OpenRouter, Ollama, and compatible endpoints in the Windows app.
 
 ## Use cases
@@ -95,10 +97,11 @@ apps/worker    Hono entry and existing Cloudflare Worker services
 packages/
   contracts    shared data contracts
   i18n         zh-CN and English UI messages
+  revision-core pure TypeScript revision comparison and summaries
   writing-core pure TypeScript completion and analysis
 ```
 
-The writing core does not depend on React, Electron, Hono, Cloudflare, or an AI provider. UI events become a `WritingContext`; the core returns candidates, diagnostics, edits, outline items, and checklist results. The web app renders those results and persists documents locally. AI requests must cross a separate consent boundary.
+The writing core does not depend on React, Electron, Hono, Cloudflare, or an AI provider. UI events become a `WritingContext`; the core returns candidates, diagnostics, edits, outline items, and checklist results. An editor adapter maps diagnostics into CodeMirror without moving rules into the UI. `revision-core` compares text without accessing Dexie, while the web app orchestrates rendering and local persistence. AI requests must cross a separate consent boundary.
 
 See [Architecture](docs/product/ARCHITECTURE.md) and [Roadmap](docs/product/IMPLEMENTATION-ROADMAP.md).
 
@@ -126,7 +129,7 @@ The command creates an NSIS installer and a portable executable in `release/`. P
 
 ## Privacy
 
-Documents, personal dictionary entries, and revisions stay on the device. Local completion, spelling, and diagnostics do not require an account or network request. BYOK keys are encrypted with Windows `safeStorage`; approved requests go directly to the selected provider, whose own retention and billing terms apply. See [Privacy](PRIVACY.md).
+Documents, imported personal words, writing-activity counters, and revisions stay on the device. Local completion, spelling, and diagnostics do not require an account or network request. Files opened from disk are read or written only after the user chooses them. BYOK keys are encrypted with Windows `safeStorage`; approved requests go directly to the selected provider, whose own retention and billing terms apply. See [Privacy](PRIVACY.md).
 
 ## Friendly links
 

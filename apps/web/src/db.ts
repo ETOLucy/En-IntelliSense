@@ -4,6 +4,9 @@ import type { EnglishVariant, LearnerLevel, Revision, WritingFormat } from '@wri
 export interface LocalDocument {
   id: string;
   title: string;
+  titleSource?: 'derived' | 'custom';
+  fileName?: string;
+  fileReference?: string;
   text: string;
   format: WritingFormat;
   level: LearnerLevel;

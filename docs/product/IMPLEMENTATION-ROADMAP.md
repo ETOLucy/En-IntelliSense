@@ -5,15 +5,20 @@
 - CodeMirror workbench, bilingual UI, local documents, and responsive inspector.
 - Local completion for vocabulary, snippets, proper names, acronyms, and product terms.
 - Offline spelling, deterministic diagnostics, quick fixes, outline, checklist, revisions, and personal dictionary.
-- Explicit optional-AI and full-document consent boundary.
+- Inline lint marks, hover explanations, gutter markers, Quick Fix, and Problems-to-editor navigation.
+- Word-level revision diff, preview, restore confirmation, undo, snapshot dedupe, and retention.
+- Renameable documents; real `.txt`, `.text`, `.md`, and `.markdown` open/save; `.txt` and Hunspell `.dic` dictionary import.
+- Typo-tolerant candidates and fixed-expression inline continuation with Tab/Escape.
+- Explicit three-mode optional-AI consent boundary.
 - Secure Electron shell, Windows installer, portable build, and automated tests.
 
 ## 2.1: learning intelligence
 
 - Local collocation index and level-aware vocabulary ranking.
-- Typo-tolerant completion that preserves exact replacement ranges.
-- Inline phrase continuation with Tab to accept and Escape to dismiss.
-- Revision diff view, reusable snippets, and import/export.
+- Grow the active completion vocabulary beyond the current 61 ranked words and 7 fixed snippets.
+- Build a genuine local usage-history feedback loop for completion ranking.
+- Expand terminology-consistency and grammar coverage with measured precision and regression tests.
+- User-authored reusable snippets and additional explicitly supported file formats.
 - Accessibility and keyboard-command audit.
 
 ## 2.2: hosted beta

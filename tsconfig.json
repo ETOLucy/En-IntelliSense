@@ -4,6 +4,7 @@
     { "path": "./packages/contracts/tsconfig.json" },
     { "path": "./packages/i18n/tsconfig.json" },
     { "path": "./packages/writing-core/tsconfig.json" },
+    { "path": "./packages/revision-core/tsconfig.json" },
     { "path": "./apps/web/tsconfig.json" },
     { "path": "./apps/desktop/tsconfig.json" },
     { "path": "./apps/worker/tsconfig.json" }

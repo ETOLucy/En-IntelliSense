@@ -16,18 +16,22 @@ The first screen is the editor. Documents save automatically on the device.
 - Choose Letter, Essay, or Message above the editor.
 - Type at least two letters to open local completion suggestions.
 - Use the left pane to create or switch documents.
+- Rename the active document from its title control.
+- Use **Open**, **Save**, or **Save as** for `.txt`, `.text`, `.md`, and `.markdown`. `Ctrl+S` saves an opened file back to its authorized path.
 - Use Writing settings to select US or UK English and a learning level.
 - Switch the interface between English and Simplified Chinese from the header.
 
 ## Review and fix
 
-The Issues tab lists local spelling, grammar, wording, clarity, and repetition checks. Select an issue to read the explanation and apply an exact replacement. Spelling items can also be added to the personal dictionary.
+Issues also appear directly in the editor as error, warning, or suggestion marks. Hover a mark for its reason and available Quick Fix. Selecting an item in **Problems** focuses and selects the same text; applying a fix immediately recomputes the list. The gutter indicates lines that contain issues.
 
-The Outline tab shows paragraph structure and a format-specific submission checklist. The History tab stores local snapshots and can restore an earlier draft.
+Spelling uses a built-in 49,568-entry English word list. Add individual words from a spelling issue, or import a `.txt` file with one word per line or a Hunspell `.dic` file from Settings. Imported words are deduplicated locally and are limited to 50,000.
+
+The Outline tab shows paragraph structure and a format-specific submission checklist. The History tab compares a snapshot with the current text using a word-level diff and change counts. Review the preview before confirming a restore; the restore can then be undone. Snapshots are deduplicated, written no more than once per 30 seconds during editing, and limited to the newest 100 per document.
 
 ## Optional AI
 
-AI is off by default. Local writing tools remain available while it is off. Enabling AI requires an explicit confirmation; sending a complete document has a separate checkbox. The current beta establishes this consent boundary but does not promise a production hosted provider until regional routing, retention, account, and quota controls are configured.
+AI is off by default. Choose one of three modes: **Off**, **Question only**, or **Question + full document**. Changing a mode sends nothing; a provider is contacted only after a question is submitted. The browser preview does not include a configured hosted provider. The Windows app supports user-configured providers.
 
 ## Bring your own AI provider
 
@@ -36,7 +40,7 @@ The Windows app can connect directly to OpenAI, Groq, Together AI, OpenRouter, O
 1. Open **AI** in the right inspector.
 2. Choose a provider and confirm its endpoint and model ID.
 3. Enter an API key when the provider requires one, then choose **Save provider**.
-4. Enable AI consent and ask a question. Full-document transmission remains a separate choice.
+4. Choose question-only or question-plus-document mode, then ask a question.
 
 Saved keys are encrypted with Windows `safeStorage` and are not returned to the renderer. Remote providers receive approved request text and may charge under their own terms. WriteMelo does not guarantee a free provider allowance. Ollama can use its localhost endpoint without an API key.
 

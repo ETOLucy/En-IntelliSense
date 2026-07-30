@@ -43,20 +43,22 @@ WriteMelo 把这些能力收进一个写作工作台。它理解当前文档中�
 | Language Service | 本地英语上下文分析器 |
 | Quick Fix | 精确范围的一键改正与解释 |
 | Document Symbols | 段落大纲与提交检查 |
-| Source Control | 本地版本快照与恢复 |
+| Source Control | 本地快照、词级 Diff、恢复与撤销 |
 | AI 编程助手 | 由用户明确启用的可选 AI |
 
 ## 核心能力
 
 - 基于本地规则、词频和文档实体的英文单词/短语补全。
 - 复用当前文章中的专有名词、缩写和混合大小写产品名，不把普通重复词误当成重点。
-- 使用 `nspell` 与 `dictionary-en` 的离线英语拼写检查。
-- 本地语法与措辞诊断，提供精确范围的一键修复。
+- 使用 `nspell` 与 49,568 词条 `dictionary-en` 词表的离线英语拼写检查。
+- 正文内区分错误、警告和建议，支持悬浮解释、边缘标记、问题面板定位和精确 Quick Fix。
 - 邮件、作文和消息片段，以及对应的提交检查清单。
-- 文档大纲、本地版本历史和个人词典。
+- 文档大纲，以及带词级 Diff、恢复确认和恢复撤销的本地版本历史。
+- 个人词典，并可导入 `.txt` 或 Hunspell `.dic` 词典（最多 50,000 个导入词）。
+- 文档重命名，以及真正打开、保存和另存为 `.txt`、`.text`、`.md`、`.markdown` 文件。
 - 简体中文与英文界面；美式与英式英语写作变体。
 - Web 使用 IndexedDB，Windows 使用 Electron 用户目录持久化。
-- AI 默认关闭；发送整篇文档需要单独同意。
+- AI 有三个明确模式：关闭、仅发送问题、问题加当前全文。
 - Windows 应用可自备 OpenAI、Groq、Together AI、OpenRouter、Ollama 或兼容接口。
 
 ## 使用场景
@@ -96,10 +98,11 @@ apps/worker    Hono 入口和现有 Cloudflare Worker 业务
 packages/
   contracts    共享数据协议
   i18n         中英文界面文本
+  revision-core 纯 TypeScript 版本比较与摘要
   writing-core 纯 TypeScript 写作算法
 ```
 
-`writing-core` 不依赖 React、Electron、Hono、Cloudflare 或任何 AI 供应商。界面把编辑状态整理成 `WritingContext`，核心返回补全候选、诊断、文本编辑、大纲和检查项；Web 层负责展示并把文档保存到本机。AI 请求必须经过独立的同意边界。
+`writing-core` 不依赖 React、Electron、Hono、Cloudflare 或任何 AI 供应商。界面把编辑状态整理成 `WritingContext`，核心返回补全候选、诊断、文本编辑、大纲和检查项；编辑器适配层再把诊断映射为 CodeMirror 标记，业务规则不会进入 UI。`revision-core` 只比较文本、不访问 Dexie，Web 层负责展示与本地持久化编排。AI 请求必须经过独立的同意边界。
 
 详细说明见[架构文档](docs/product/ARCHITECTURE.zh-CN.md)和[实现路线](docs/product/IMPLEMENTATION-ROADMAP.zh-CN.md)。
 
@@ -127,7 +130,7 @@ npm run package:windows
 
 ## 隐私
 
-文档、个人词典和版本历史保留在设备上。本地补全、拼写和诊断不需要账号或联网。BYOK Key 使用 Windows `safeStorage` 加密保存；经用户同意的请求会直达所选供应商，并受供应商自身留存与计费条款约束。详见[隐私说明](PRIVACY.zh-CN.md)。
+文档、导入的个人词汇、写作活动计数和版本历史保留在设备上。本地补全、拼写和诊断不需要账号或联网。从磁盘打开的文件只会在用户选择后读取或写回。BYOK Key 使用 Windows `safeStorage` 加密保存；经用户同意的请求会直达所选供应商，并受供应商自身留存与计费条款约束。详见[隐私说明](PRIVACY.zh-CN.md)。
 
 ## 友情链接
 
